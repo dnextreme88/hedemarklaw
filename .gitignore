@@ -1,0 +1,38 @@
+# WordPress core — replaced wholesale on every update
+/wp-admin/
+/wp-includes/
+/index.php
+/license.txt
+/readme.html
+/wp-*.php
+/xmlrpc.php
+
+# Secrets — DB credentials and security salts
+wp-config.php
+
+# Studio's SQLite database (binary, see note below)
+/wp-content/database/
+
+# Generated / transient content
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/upgrade-temp-backup/
+/wp-content/cache/
+/wp-content/mu-plugins/
+/wp-content/db.php
+/wp-content/advanced-cache.php
+/wp-content/object-cache.php
+*.log
+/.htaccess
+
+# Bundled default themes and the sample plugin
+/wp-content/themes/twenty*/
+/wp-content/plugins/hello.php
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+._*
+.idea/
+.vscode/
+*.swp
