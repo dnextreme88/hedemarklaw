@@ -5,4 +5,5 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-08-18** | [Elementor Blog page + branded single posts for Hedemark Law](20260818-elementor-blog-page.md) |
 | **2026-08-17** | [Elementor "About Your Attorney" page for Hedemark Law](20260817-elementor-about-page.md) |
