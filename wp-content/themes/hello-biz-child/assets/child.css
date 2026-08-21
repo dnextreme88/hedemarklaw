@@ -11,6 +11,7 @@
 	--hp-blue: #377DBD;
 	--hp-bluelight: #8FB9DF;
 	--hp-azure: #0F4C85;
+	--hp-mist: #EAF4F6;
 	--hp-muted: #525252;
 	--hp-hairline: #DCE4EA;
 	--hp-serif: 'Fraunces', Georgia, serif;
@@ -303,16 +304,20 @@ body {
 	}
 }
 
-/* Stats row: keep the two metrics side by side. */
+/* Stats row: keep the two metrics side by side, flush with the column's
+   left edge (drop Elementor's default 10px container padding so the first
+   metric lines up with the bio and the "More about Justin" link). */
 .hp-stats-row {
 	flex-wrap: nowrap !important;
 	align-items: flex-start !important;
+	padding-left: 0 !important;
 }
 .hp-stat {
 	flex: 1 1 0 !important;
 	width: auto !important;
 	max-width: none !important;
 	min-width: 0 !important;
+	padding-left: 0 !important;
 }
 
 /* Circular attorney portrait. Override Elementor's default image rules. */
@@ -712,3 +717,189 @@ body {
 	color: var(--hp-fog);
 }
 .hp-cta__btn--ghost:hover { border-color: var(--hp-fog); }
+
+/* =====================================================================
+   HOMEPAGE (front page built in Elementor — mirrors index.html)
+   ===================================================================== */
+
+/* ---- Hero: blurred photo backdrop + fog wash --------------------- */
+/* Elementor paints the hero photo as the container background image on
+   .hp-hero; the ::before layer (above the image, below the content)
+   blurs it via backdrop-filter and lays the fog gradient over it. */
+.hp-hero {
+	position: relative;
+	isolation: isolate;
+}
+/* Fog wash + blur over the hero photo. High specificity + !important so
+   Elementor's own .e-con::before rule can't suppress `content`. */
+.elementor-element.hp-hero::before {
+	content: "" !important;
+	display: block !important;
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(
+		to bottom,
+		rgba(244, 247, 249, 0.5),
+		rgba(244, 247, 249, 0.75) 55%,
+		rgba(244, 247, 249, 0.92)
+	);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+	pointer-events: none;
+}
+
+/* ---- Card rows (Services + Who we help) -------------------------- */
+/* Elementor forces flex children to width:100%; pin them to equal
+   columns (same technique as .hp-stat), stacking under 880px. */
+.hp-cards-row {
+	flex-wrap: nowrap !important;
+	align-items: stretch !important;
+}
+.hp-card {
+	flex: 1 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+	background: #fff;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	padding: 32px !important;
+	transition: border-color .2s ease, box-shadow .2s ease;
+}
+.hp-card:hover {
+	border-color: rgba(55, 125, 189, 0.5);
+	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.08);
+}
+/* Whole-card link (Who we help): tint the title on hover. */
+a.hp-card { text-decoration: none; }
+.hp-card:hover .elementor-heading-title { color: var(--hp-blue) !important; }
+
+/* Icon circle inside a service card. */
+.hp-card .elementor-icon {
+	background: var(--hp-mist) !important;
+	color: var(--hp-azure) !important;
+}
+
+/* "Learn more →" inline text link inside a card. */
+.hp-learn a,
+a.hp-learn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-ink);
+	text-decoration: none;
+	transition: color .2s ease;
+}
+.hp-learn a::after,
+a.hp-learn::after {
+	content: "\2192";
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+.hp-learn a:hover,
+a.hp-learn:hover { color: var(--hp-blue); }
+.hp-learn a:hover::after,
+a.hp-learn:hover::after { transform: translateX(3px); }
+
+@media (max-width: 880px) {
+	.hp-cards-row { flex-wrap: wrap !important; }
+	.hp-card {
+		flex-basis: 100% !important;
+		width: 100% !important;
+	}
+}
+
+/* ---- Testimonials slider (Elementor HTML widget) ----------------- */
+.hp-testi { text-align: center; }
+.hp-testi__track {
+	position: relative;
+	min-height: 280px;
+}
+.hp-testi__slide { transition: opacity 1.25s ease; }
+.hp-testi__slide[hidden] { display: none; }
+.hp-testi__stars {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
+	color: var(--hp-blue);
+	margin-bottom: 24px;
+}
+.hp-testi__stars svg { width: 16px; height: 16px; }
+.hp-testi__quote {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-style: italic;
+	font-size: 24px;
+	line-height: 1.35;
+	color: var(--hp-ink);
+	margin: 0 0 24px;
+}
+@media (min-width: 1024px) {
+	.hp-testi__quote { font-size: 30px; }
+}
+.hp-testi__name {
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-muted);
+}
+.hp-testi__dots {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 32px;
+}
+.hp-testi__dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: var(--hp-hairline);
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: background .2s ease;
+}
+.hp-testi__dot.is-active { background: var(--hp-blue); }
+
+/* ---- FAQ (Elementor Accordion widget) ---------------------------- */
+.hp-faq .elementor-accordion { border: 0; }
+.hp-faq .elementor-accordion-item {
+	border: 1px solid var(--hp-hairline) !important;
+	border-radius: 16px;
+	background: #fff;
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+.hp-faq .elementor-tab-title {
+	border: 0 !important;
+	padding: 20px 24px;
+	font-family: var(--hp-sans);
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 1.4;
+	background: transparent !important;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+/* Chevron sits on the right of the question (matches the mockup). */
+.hp-faq .elementor-tab-title .elementor-accordion-title { order: 1; }
+.hp-faq .elementor-tab-title .elementor-accordion-icon { order: 2; margin: 0 !important; }
+.hp-faq .elementor-tab-title a,
+.hp-faq .elementor-tab-title .elementor-accordion-title { color: var(--hp-ink); }
+.hp-faq .elementor-tab-content {
+	border: 0 !important;
+	padding: 0 24px 20px !important;
+	background: transparent !important;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	line-height: 1.7;
+	color: var(--hp-muted);
+}
+.hp-faq .elementor-accordion-icon { color: var(--hp-muted); }
