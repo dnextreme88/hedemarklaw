@@ -75,3 +75,30 @@ $year = date( 'Y' );
 
 	</div>
 </footer>
+
+<?php if ( is_front_page() ) : ?>
+	<button id="hp-totop" class="hp-totop" type="button" aria-label="Back to top">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+			<path d="M12 19V5" />
+			<path d="m5 12 7-7 7 7" />
+		</svg>
+	</button>
+	<script>
+		( function () {
+			var btn = document.getElementById( 'hp-totop' );
+			if ( ! btn ) { return; }
+			function toggle() {
+				if ( window.pageYOffset > 400 ) {
+					btn.classList.add( 'is-visible' );
+				} else {
+					btn.classList.remove( 'is-visible' );
+				}
+			}
+			window.addEventListener( 'scroll', toggle, { passive: true } );
+			toggle();
+			btn.addEventListener( 'click', function () {
+				window.scrollTo( { top: 0, behavior: 'smooth' } );
+			} );
+		} )();
+	</script>
+<?php endif; ?>
