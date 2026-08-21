@@ -1008,3 +1008,79 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	color: var(--hp-muted);
 }
 .hp-faq .elementor-accordion-icon { color: var(--hp-muted); }
+
+/* =====================================================================
+   SERVICES page (built in Elementor — mirrors services.html)
+   ===================================================================== */
+
+/* Constrain the header-band intro (eyebrow + H1) like the mockup's
+   max-w-3xl so the headline wraps to two lines. */
+.hp-measure { max-width: 768px; }
+
+/* ---- Consultation checklist (Text Editor widget, ✅ list) -------- */
+.hp-checklist ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.hp-checklist li {
+	font-family: var(--hp-sans);
+	font-size: 18px; /* text-lg */
+	font-weight: 500;
+	color: var(--hp-ink);
+	line-height: 1.5;
+}
+.hp-checklist li + li { margin-top: 12px; }
+
+/* ---- Services list rows (media 1fr / body 2fr) ------------------- */
+/* Elementor forces flex children to width:100%; pin them to a 1:2 split
+   (same technique as .hp-about-row/.hp-stat), stacking under 768px. */
+.hp-svc-row {
+	flex-wrap: nowrap !important;
+	align-items: flex-start !important;
+}
+.hp-svc-media {
+	flex: 1 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+.hp-svc-body {
+	flex: 2 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl). */
+.elementor .hp-svc-media img,
+.hp-svc-media img {
+	width: 100% !important;
+	height: 160px !important;
+	object-fit: cover;
+	border-radius: 16px;
+	display: block;
+}
+/* Fraunces service heading + muted relaxed body (safety net; widget
+   typography also carries the exact sizes). */
+.hp-svc-media .elementor-heading-title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	color: var(--hp-ink);
+}
+.hp-svc-body p {
+	font-family: var(--hp-sans);
+	color: var(--hp-muted);
+	line-height: 1.625; /* leading-relaxed */
+}
+.hp-svc-body p + p { margin-top: 16px; }
+/* Hairline divider above the 2nd and 3rd rows. */
+.hp-svc-row--divided { border-top: 1px solid var(--hp-hairline); }
+
+@media (max-width: 767px) {
+	.hp-svc-row { flex-wrap: wrap !important; }
+	.hp-svc-media,
+	.hp-svc-body {
+		flex-basis: 100% !important;
+		width: 100% !important;
+	}
+}
