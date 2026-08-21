@@ -246,7 +246,21 @@ body {
 .hp-footer__col li { margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
 .hp-footer__col a { color: rgba(0, 48, 91, 0.8); text-decoration: none; transition: color .2s ease; }
 .hp-footer__col a:hover { color: var(--hp-blue); }
-.hp-footer__contact li { color: rgba(0, 48, 91, 0.8); }
+.hp-footer__contact li {
+	color: rgba(0, 48, 91, 0.8);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+/* The address wraps to two lines — pin its icon to the first line. */
+.hp-footer__contact li:first-child { align-items: flex-start; }
+.hp-footer__icon {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+	color: var(--hp-muted);
+}
+.hp-footer__contact li:first-child .hp-footer__icon { margin-top: 2px; }
 
 .hp-footer__link {
 	display: inline-block;
