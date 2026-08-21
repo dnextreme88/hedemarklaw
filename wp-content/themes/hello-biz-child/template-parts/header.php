@@ -25,6 +25,7 @@ $has_menu  = has_nav_menu( 'menu-1' );
 					Hedemark <em>Law</em>
 				</a>
 			<?php } ?>
+			<span class="hp-header__tagline">a Professional Corporation</span>
 		</div>
 
 		<input type="checkbox" id="hp-nav-toggle" class="hp-nav-toggle" aria-hidden="true">

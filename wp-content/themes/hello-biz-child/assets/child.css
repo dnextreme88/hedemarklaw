@@ -34,10 +34,10 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 50;
-	background: rgba(201, 210, 216, 0.9); /* hairline #DCE4EA @ 90% — matches blog.html bg-hairline/90 */
+	background: rgba(0, 48, 91, 0.9); /* ink #00305B @ 90% — dark header, matches the brand mark */
 	backdrop-filter: saturate(180%) blur(10px);
 	-webkit-backdrop-filter: saturate(180%) blur(10px);
-	border-bottom: 1px solid var(--hp-hairline);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .hp-header__inner {
@@ -51,21 +51,40 @@ body {
 	gap: 24px;
 }
 
+.hp-header__brand {
+	display: flex;
+	align-items: center;
+}
 .hp-header__brand img,
 .hp-header__brand .custom-logo {
 	height: 36px;
 	width: auto;
 	display: block;
 }
+/* "a Professional Corporation" tagline, divided from the logo. */
+.hp-header__tagline {
+	margin-left: 16px;
+	padding-left: 16px;
+	border-left: 1px solid rgba(255, 255, 255, 0.25);
+	font-family: var(--hp-sans);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #fff;
+	white-space: nowrap;
+}
+@media (max-width: 600px) {
+	.hp-header__tagline { display: none; }
+}
 
 .hp-wordmark {
 	font-family: var(--hp-serif);
 	font-size: 22px;
-	color: var(--hp-ink);
+	color: var(--hp-fog);
 	text-decoration: none;
 	font-weight: 500;
 }
-.hp-wordmark em { color: var(--hp-blue); font-style: italic; }
+.hp-wordmark em { color: var(--hp-bluelight); font-style: italic; }
 
 .hp-nav {
 	display: flex;
@@ -87,13 +106,13 @@ body {
 	font-family: var(--hp-sans);
 	font-size: 14px;
 	font-weight: 500;
-	color: rgba(0, 48, 91, 0.8);
+	color: #fff;
 	text-decoration: none;
 	transition: color .2s ease;
 }
-.hp-nav__list a:hover { color: var(--hp-ink); }
+.hp-nav__list a:hover { color: var(--hp-blue); }
 .hp-nav__list .current-menu-item > a,
-.hp-nav__list .current_page_item > a { color: var(--hp-ink); }
+.hp-nav__list .current_page_item > a { color: #fff; }
 
 .hp-nav__actions {
 	display: flex;
@@ -107,20 +126,20 @@ body {
 	gap: 8px;
 	font-size: 14px;
 	font-weight: 500;
-	color: rgba(0, 48, 91, 0.8);
+	color: #fff;
 	text-decoration: none;
 	white-space: nowrap;
 	transition: color .2s ease;
 }
-.hp-phone:hover { color: var(--hp-ink); }
+.hp-phone:hover { color: var(--hp-blue); }
 .hp-phone svg { width: 16px; height: 16px; }
 
 .hp-btn {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	background: var(--hp-ink);
-	color: var(--hp-fog);
+	background: var(--hp-blue); /* blue CTA on the navy bar — matches the hero button */
+	color: #fff;
 	font-size: 14px;
 	font-weight: 500;
 	padding: 10px 20px;
@@ -129,7 +148,11 @@ body {
 	white-space: nowrap;
 	transition: background .2s ease;
 }
-.hp-btn:hover { background: var(--hp-blue); color: #fff; }
+/* Keep the resting look on interaction — overrides the parent theme's
+   generic a:hover / a:active dark color so the CTA text stays white. */
+.hp-btn:hover,
+.hp-btn:focus,
+.hp-btn:active { background: var(--hp-blue); color: #fff; }
 
 /* Mobile toggle (CSS only) */
 .hp-nav-toggle,
@@ -144,7 +167,7 @@ body {
 		width: 44px;
 		height: 44px;
 		cursor: pointer;
-		color: var(--hp-ink);
+		color: var(--hp-fog);
 	}
 	.hp-burger span {
 		display: block;
@@ -161,8 +184,8 @@ body {
 		flex-direction: column;
 		align-items: stretch;
 		gap: 0;
-		background: var(--hp-fog);
-		border-bottom: 1px solid var(--hp-hairline);
+		background: rgba(0, 48, 91, 0.97);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 		padding: 8px 24px 24px;
 		display: none;
 	}
@@ -292,17 +315,18 @@ body {
 	right: 24px;
 	bottom: 24px;
 	z-index: 60;
-	width: 48px;
 	height: 48px;
+	padding: 0 14px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--hp-ink);
-	color: var(--hp-fog);
+	background: var(--hp-blue);
+	color: #fff;
 	border: 0;
 	border-radius: 999px;
 	cursor: pointer;
 	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.25);
+	/* match the "Book a free consultation" button: blue fill, white icon */
 	/* hidden until scrolled — fade + slide up on reveal */
 	opacity: 0;
 	visibility: hidden;
@@ -321,14 +345,33 @@ body {
 }
 /* press feedback on click */
 .hp-totop.is-visible:active { transform: translateY(0) scale(0.92); }
-.hp-totop svg { width: 20px; height: 20px; }
+.hp-totop svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* "Back to top" label — hidden until hover, then expands + fades in. */
+.hp-totop__label {
+	max-width: 0;
+	opacity: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1;
+	transition: max-width .75s ease, opacity .5s ease, margin-right .3s ease;
+}
+.hp-totop:hover .hp-totop__label,
+.hp-totop:focus-visible .hp-totop__label {
+	max-width: 150px;
+	opacity: 1;
+	margin-right: 8px;
+}
 
 @media (max-width: 640px) {
 	.hp-totop {
 		right: 16px;
 		bottom: 16px;
-		width: 44px;
 		height: 44px;
+		padding: 0 12px;
 	}
 }
 

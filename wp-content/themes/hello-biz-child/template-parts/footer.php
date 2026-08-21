@@ -17,8 +17,8 @@ $year = date( 'Y' );
 		<div class="hp-footer__grid">
 
 			<div class="hp-footer__brand">
-				<p class="hp-footer__wordmark">Hedemark <em>Law</em></p>
-				<p class="hp-footer__blurb">A professional corporation focused on estate planning, probate, and trust administration in San Francisco.</p>
+				<p class="hp-footer__wordmark">Hedemark Law, P.C.</p>
+				<p class="hp-footer__blurb">A professional corporation focused on estate planning, probate, and trust administration serving the San Francisco Bay Area.</p>
 				<div class="hp-footer__social">
 					<a href="https://www.facebook.com/Hedemarklaw" aria-label="Facebook">f</a>
 					<a href="https://www.linkedin.com/in/justin-hedemark-esq-a76085b8/" aria-label="LinkedIn">in</a>
@@ -78,6 +78,7 @@ $year = date( 'Y' );
 
 <?php if ( is_front_page() ) : ?>
 	<button id="hp-totop" class="hp-totop" type="button" aria-label="Back to top">
+		<span class="hp-totop__label">Back to top</span>
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 			<path d="M12 19V5" />
 			<path d="m5 12 7-7 7 7" />
