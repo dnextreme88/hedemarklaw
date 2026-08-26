@@ -1084,3 +1084,226 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 		width: 100% !important;
 	}
 }
+
+/* =====================================================================
+   PRICING pages (built in Elementor — main /pricing/ + 3 subpages)
+   ===================================================================== */
+
+/* Whole-card link overlay. Elementor's container "Link" does not emit an
+   anchor in this build, so each pricing card carries an anchor that covers
+   the card. Elementor also makes every widget wrapper position:relative, so
+   the overlay's own wrapper (class hp-card__linkwrap) is promoted to the
+   full-card overlay; the anchor then fills that wrapper. */
+.hp-card { position: relative; }
+.hp-card__linkwrap {
+	position: absolute !important;
+	inset: 0;
+	z-index: 2;
+	margin: 0 !important;
+}
+.hp-card__linkwrap .elementor-widget-container { height: 100%; }
+.hp-card__link {
+	position: absolute;
+	inset: 0;
+	display: block;
+	border-radius: 16px;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+.hp-card__link:focus-visible {
+	outline: 2px solid var(--hp-blue);
+	outline-offset: 2px;
+}
+
+/* ---- Price teaser on a main-page card (inside .hp-card) ---------- */
+/* One short cost line under the card title, above the description. */
+.hp-price {
+	font-family: var(--hp-sans);
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--hp-blue);
+	line-height: 1.3;
+	margin: 0;
+}
+
+/* "View pricing →" cue inside a whole-card link (a span, not an anchor,
+   to avoid nesting an <a> inside the card's own link). */
+.hp-cardmore {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-ink);
+	transition: color .2s ease;
+}
+.hp-cardmore::after {
+	content: "\2192";
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+.hp-card:hover .hp-cardmore { color: var(--hp-blue); }
+.hp-card:hover .hp-cardmore::after { transform: translateX(3px); }
+
+/* ---- Prominent price figure on the Estate Planning subpage ------- */
+.hp-bigprice {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: clamp(36px, 6vw, 56px);
+	line-height: 1.1;
+	color: var(--hp-ink);
+	margin: 0;
+}
+
+/* Soft callout box — used for the "subject to change / hourly" note
+   the SOP wants kept easy to update. Mist tint, hairline border. */
+.hp-note {
+	background: var(--hp-mist);
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	padding: 24px 28px;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--hp-ink2);
+}
+.hp-note strong { color: var(--hp-ink); }
+
+/* ---- Probate statutory-fee calculator (HTML widget + inline JS) --- */
+/* Self-contained client-side widget; scoped like .hp-testi. */
+.hp-calc {
+	background: #fff;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	padding: 32px;
+	max-width: 560px;
+}
+/* Label on the left, input on the right, gap no wider than 1em. */
+.hp-calc__inputrow {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+	flex-wrap: wrap;
+}
+.hp-calc__label {
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--hp-ink);
+	margin: 0;
+	white-space: nowrap;
+}
+/* Input group: the $ sits inline inside the bordered field (no absolute
+   positioning), so it can never overlap the typed value. */
+.hp-calc__field {
+	flex: 1 1 auto;
+	min-width: 180px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 0 16px;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 10px;
+	background: var(--hp-fog);
+}
+.hp-calc__prefix {
+	font-family: var(--hp-sans);
+	font-size: 18px;
+	color: var(--hp-muted);
+}
+.hp-calc__input {
+	flex: 1 1 auto;
+	width: 100%;
+	min-width: 0;
+	font-family: var(--hp-sans);
+	font-size: 18px;
+	color: var(--hp-ink);
+	padding: 14px 0;
+	border: none;
+	background: transparent;
+	outline: none;
+	-moz-appearance: textfield;
+}
+.hp-calc__input::-webkit-outer-spin-button,
+.hp-calc__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.hp-calc__field:focus-within {
+	border-color: var(--hp-blue);
+	box-shadow: 0 0 0 3px rgba(55, 125, 189, 0.15);
+}
+.hp-calc__results {
+	margin-top: 24px;
+	border-top: 1px solid var(--hp-hairline);
+	padding-top: 24px;
+}
+.hp-calc__row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 8px 0;
+}
+.hp-calc__row-label {
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	color: var(--hp-muted);
+}
+.hp-calc__row-value {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: 22px;
+	color: var(--hp-ink);
+	white-space: nowrap;
+}
+.hp-calc__row--total {
+	border-top: 1px solid var(--hp-hairline);
+	margin-top: 8px;
+	padding-top: 16px;
+}
+.hp-calc__row--total .hp-calc__row-value { color: var(--hp-blue); font-size: 26px; }
+.hp-calc__note {
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--hp-muted);
+	margin: 20px 0 0;
+}
+.hp-calc__disclaimer {
+	font-family: var(--hp-sans);
+	font-size: 13px;
+	font-style: italic;
+	line-height: 1.55;
+	color: var(--hp-muted);
+	margin: 12px 0 0;
+}
+
+/* ---- Trust Administration hourly rate table --------------------- */
+.hp-rate-table {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	max-width: 520px;
+}
+.hp-rate-table li {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 18px 0;
+	border-top: 1px solid var(--hp-hairline);
+}
+.hp-rate-table li:last-child { border-bottom: 1px solid var(--hp-hairline); }
+.hp-rate-table .hp-rate-role {
+	font-family: var(--hp-sans);
+	font-size: 18px;
+	font-weight: 500;
+	color: var(--hp-ink);
+}
+.hp-rate-table .hp-rate-amount {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: 24px;
+	color: var(--hp-blue);
+	white-space: nowrap;
+}
