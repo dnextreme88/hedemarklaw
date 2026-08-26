@@ -1,0 +1,1086 @@
+/* =====================================================================
+   Hedemark Law — child theme styles (header, footer, Elementor helpers)
+   Palette: ink #00305B · fog #F4F7F9 · blue #377DBD · azure #0F4C85
+            bluelight #8FB9DF · muted #525252 · hairline #DCE4EA
+   ===================================================================== */
+
+:root {
+	--hp-ink: #00305B;
+	--hp-ink2: #22384D;
+	--hp-fog: #F4F7F9;
+	--hp-blue: #377DBD;
+	--hp-bluelight: #8FB9DF;
+	--hp-azure: #0F4C85;
+	--hp-mist: #EAF4F6;
+	--hp-muted: #525252;
+	--hp-hairline: #DCE4EA;
+	--hp-serif: 'Fraunces', Georgia, serif;
+	--hp-sans: 'Inter', system-ui, sans-serif;
+	--hp-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+body {
+	font-family: var(--hp-sans);
+	background: var(--hp-fog);
+	color: var(--hp-muted);
+}
+
+/* ---------------------------------------------------------------------
+   HEADER (fixed, translucent)
+   --------------------------------------------------------------------- */
+.hp-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 50;
+	background: rgba(0, 48, 91, 0.9); /* ink #00305B @ 90% — dark header, matches the brand mark */
+	backdrop-filter: saturate(180%) blur(10px);
+	-webkit-backdrop-filter: saturate(180%) blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hp-header__inner {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 32px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+}
+
+.hp-header__brand {
+	display: flex;
+	align-items: center;
+}
+.hp-header__brand img,
+.hp-header__brand .custom-logo {
+	height: 36px;
+	width: auto;
+	display: block;
+}
+/* "a Professional Corporation" tagline, divided from the logo. */
+.hp-header__tagline {
+	margin-left: 16px;
+	padding-left: 16px;
+	border-left: 1px solid rgba(255, 255, 255, 0.25);
+	font-family: var(--hp-sans);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #fff;
+	white-space: nowrap;
+}
+@media (max-width: 600px) {
+	.hp-header__tagline { display: none; }
+}
+
+.hp-wordmark {
+	font-family: var(--hp-serif);
+	font-size: 22px;
+	color: var(--hp-fog);
+	text-decoration: none;
+	font-weight: 500;
+}
+.hp-wordmark em { color: var(--hp-bluelight); font-style: italic; }
+
+.hp-nav {
+	display: flex;
+	align-items: center;
+	gap: 36px;
+	flex: 1;
+	justify-content: flex-end;
+}
+
+.hp-nav__list {
+	display: flex;
+	align-items: center;
+	gap: 36px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.hp-nav__list a {
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	text-decoration: none;
+	transition: color .2s ease;
+}
+.hp-nav__list a:hover { color: var(--hp-blue); }
+.hp-nav__list .current-menu-item > a,
+.hp-nav__list .current_page_item > a { color: #fff; }
+
+.hp-nav__actions {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.hp-phone {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color .2s ease;
+}
+.hp-phone:hover { color: var(--hp-blue); }
+.hp-phone svg { width: 16px; height: 16px; }
+
+.hp-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--hp-blue); /* blue CTA on the navy bar — matches the hero button */
+	color: #fff;
+	font-size: 14px;
+	font-weight: 500;
+	padding: 10px 20px;
+	border-radius: 999px;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: background .2s ease;
+}
+/* Keep the resting look on interaction — overrides the parent theme's
+   generic a:hover / a:active dark color so the CTA text stays white. */
+.hp-btn:hover,
+.hp-btn:focus,
+.hp-btn:active { background: var(--hp-blue); color: #fff; }
+
+/* Mobile toggle (CSS only) */
+.hp-nav-toggle,
+.hp-burger { display: none; }
+
+@media (max-width: 1024px) {
+	.hp-burger {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+		width: 44px;
+		height: 44px;
+		cursor: pointer;
+		color: var(--hp-fog);
+	}
+	.hp-burger span {
+		display: block;
+		height: 2px;
+		width: 22px;
+		background: currentColor;
+		border-radius: 2px;
+	}
+	.hp-nav {
+		position: absolute;
+		top: 80px;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		background: rgba(0, 48, 91, 0.97);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+		padding: 8px 24px 24px;
+		display: none;
+	}
+	.hp-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
+	.hp-nav__list a { display: block; padding: 10px 0; font-size: 16px; }
+	.hp-nav__actions {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+		margin-top: 12px;
+	}
+	.hp-btn { justify-content: center; padding: 12px 20px; }
+	.hp-nav-toggle:checked ~ .hp-nav { display: flex; }
+}
+
+/* ---------------------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------------------- */
+.hp-footer {
+	background: var(--hp-fog);
+	border-top: 1px solid var(--hp-hairline);
+	padding: 64px 0 32px;
+	font-family: var(--hp-sans);
+}
+.hp-footer__inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+.hp-footer__grid {
+	display: grid;
+	grid-template-columns: 1.4fr 1fr 1fr 1fr;
+	gap: 40px;
+	padding-bottom: 48px;
+}
+@media (max-width: 900px) {
+	.hp-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 560px) {
+	.hp-footer__grid { grid-template-columns: 1fr; }
+}
+
+.hp-footer__wordmark {
+	font-family: var(--hp-serif);
+	font-size: 20px;
+	color: var(--hp-ink);
+	margin: 0 0 12px;
+}
+.hp-footer__wordmark em { color: var(--hp-blue); font-style: italic; }
+
+.hp-footer__blurb {
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--hp-muted);
+	max-width: 20rem;
+	margin: 0 0 16px;
+}
+
+.hp-footer__social { display: flex; gap: 12px; }
+.hp-footer__social a {
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	border: 1px solid var(--hp-hairline);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--hp-muted);
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 600;
+	transition: color .2s ease, border-color .2s ease;
+}
+.hp-footer__social a:hover { color: var(--hp-blue); border-color: var(--hp-blue); }
+
+.hp-footer__heading {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--hp-muted);
+	margin: 0 0 16px;
+}
+.hp-footer__col ul { list-style: none; margin: 0; padding: 0; }
+.hp-footer__col li { margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
+.hp-footer__col a { color: rgba(0, 48, 91, 0.8); text-decoration: none; transition: color .2s ease; }
+.hp-footer__col a:hover { color: var(--hp-blue); }
+.hp-footer__contact li {
+	color: rgba(0, 48, 91, 0.8);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+/* The address wraps to two lines — pin its icon to the first line. */
+.hp-footer__contact li:first-child { align-items: flex-start; }
+.hp-footer__icon {
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+	color: var(--hp-muted);
+}
+.hp-footer__contact li:first-child .hp-footer__icon { margin-top: 2px; }
+
+.hp-footer__link {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-blue);
+	text-decoration: none;
+}
+.hp-footer__link:hover { color: var(--hp-ink); }
+
+.hp-footer__legal {
+	border-top: 1px solid var(--hp-hairline);
+	padding-top: 24px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: space-between;
+	font-size: 12px;
+	color: var(--hp-muted);
+}
+.hp-footer__legal p { margin: 0; max-width: 42rem; line-height: 1.6; }
+.hp-footer__copy { white-space: nowrap; }
+
+/* ---------------------------------------------------------------------
+   BACK TO TOP (floating button — homepage only)
+   --------------------------------------------------------------------- */
+.hp-totop {
+	position: fixed;
+	right: 24px;
+	bottom: 24px;
+	z-index: 60;
+	height: 48px;
+	padding: 0 14px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--hp-blue);
+	color: #fff;
+	border: 0;
+	border-radius: 999px;
+	cursor: pointer;
+	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.25);
+	/* match the "Book a free consultation" button: blue fill, white icon */
+	/* hidden until scrolled — fade + slide up on reveal */
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(12px);
+	transition: opacity .25s ease, transform .25s ease, background .2s ease, visibility .25s;
+}
+.hp-totop.is-visible {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+.hp-totop:hover { background: var(--hp-blue); }
+.hp-totop:focus-visible {
+	outline: 2px solid var(--hp-blue);
+	outline-offset: 3px;
+}
+/* press feedback on click */
+.hp-totop.is-visible:active { transform: translateY(0) scale(0.92); }
+.hp-totop svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* "Back to top" label — hidden until hover, then expands + fades in. */
+.hp-totop__label {
+	max-width: 0;
+	opacity: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1;
+	transition: max-width .75s ease, opacity .5s ease, margin-right .3s ease;
+}
+.hp-totop:hover .hp-totop__label,
+.hp-totop:focus-visible .hp-totop__label {
+	max-width: 150px;
+	opacity: 1;
+	margin-right: 8px;
+}
+
+@media (max-width: 640px) {
+	.hp-totop {
+		right: 16px;
+		bottom: 16px;
+		height: 44px;
+		padding: 0 12px;
+	}
+}
+
+/* ---------------------------------------------------------------------
+   ELEMENTOR PAGE HELPERS
+   --------------------------------------------------------------------- */
+/* Dotted grid backdrop for the hero band. */
+.hp-dotgrid {
+	background-image: radial-gradient(circle at 1px 1px, var(--hp-hairline) 1.2px, transparent 0) !important;
+	background-size: 28px 28px !important;
+}
+/* Two-column About layout (fixed 300px portrait rail + fluid bio). */
+.hp-about-row {
+	flex-wrap: nowrap !important;
+	align-items: flex-start !important;
+}
+.hp-col-left {
+	flex: 0 0 300px !important;
+	width: 300px !important;
+	max-width: 300px !important;
+}
+.hp-col-right {
+	flex: 1 1 auto !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+@media (max-width: 767px) {
+	.hp-about-row { flex-wrap: wrap !important; }
+	.hp-col-left,
+	.hp-col-right {
+		flex-basis: 100% !important;
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+}
+
+/* Stats row: keep the two metrics side by side, flush with the column's
+   left edge (drop Elementor's default 10px container padding so the first
+   metric lines up with the bio and the "More about Justin" link). */
+.hp-stats-row {
+	flex-wrap: nowrap !important;
+	align-items: flex-start !important;
+	padding-left: 0 !important;
+}
+.hp-stat {
+	flex: 1 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+	padding-left: 0 !important;
+}
+
+/* Circular attorney portrait. Override Elementor's default image rules. */
+.elementor .hp-avatar img,
+.hp-avatar img {
+	width: 224px !important;
+	height: 224px !important;
+	max-width: 224px !important;
+	border-radius: 50% !important;
+	object-fit: cover;
+	object-position: center top;
+	background: var(--hp-ink2);
+}
+
+/* ---------------------------------------------------------------------
+   BLOG LISTING (Essential Addons Post Grid, skin "one")
+   Mirrors blog.html: single-column list, hairline separators, mono date
+   eyebrow above a serif title, muted excerpt, arrow "Read more", pill
+   "Load more" button.
+   --------------------------------------------------------------------- */
+.hp-bloglist .eael-post-grid-container,
+.hp-bloglist .eael-post-grid {
+	background: transparent;
+}
+
+/* Force a plain vertical flow regardless of the isotope/masonry script. */
+.hp-bloglist .eael-post-grid {
+	display: block !important;
+	height: auto !important;
+}
+.hp-bloglist .eael-grid-post {
+	position: relative !important;
+	top: auto !important;
+	left: auto !important;
+	width: 100% !important;
+	float: none !important;
+	margin: 0 !important;
+	padding: 32px 0 0 !important;
+	border-top: 1px solid var(--hp-hairline);
+	background: transparent;
+	box-shadow: none;
+	border-radius: 0;
+}
+.hp-bloglist .eael-grid-post + .eael-grid-post {
+	margin-top: 40px !important;
+}
+.hp-bloglist .eael-grid-post-holder,
+.hp-bloglist .eael-grid-post-holder-inner {
+	background: transparent;
+	box-shadow: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+/* Order: date eyebrow above the title. */
+.hp-bloglist .eael-entry-wrapper {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}
+.hp-bloglist .eael-entry-header-after { order: -1; }
+.hp-bloglist .eael-entry-header { order: 0; }
+.hp-bloglist .eael-entry-content { order: 1; }
+
+/* Date eyebrow (mono, uppercase). */
+.hp-bloglist .eael-entry-header-after {
+	margin: 0 0 12px;
+}
+.hp-bloglist .eael-entry-meta,
+.hp-bloglist .eael-entry-meta .eael-posted-on,
+.hp-bloglist .eael-entry-meta time {
+	font-family: var(--hp-mono);
+	font-size: 12px;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--hp-muted);
+	margin: 0;
+}
+
+/* Title (serif, regular weight). */
+.hp-bloglist .eael-entry-title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 1.3;
+	color: var(--hp-ink);
+	margin: 0 0 12px;
+}
+.hp-bloglist .eael-entry-title a,
+.hp-bloglist .eael-grid-post-link {
+	color: var(--hp-ink);
+	text-decoration: none;
+	transition: color .2s ease;
+}
+.hp-bloglist .eael-entry-title a:hover,
+.hp-bloglist .eael-grid-post-link:hover {
+	color: var(--hp-blue);
+}
+@media (min-width: 1024px) {
+	.hp-bloglist .eael-entry-title { font-size: 30px; }
+}
+
+/* Excerpt. */
+.hp-bloglist .eael-grid-post-excerpt p {
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	line-height: 1.7;
+	color: var(--hp-muted);
+	margin: 0 0 16px;
+}
+
+/* Read more (text link with arrow). */
+.hp-bloglist .eael-post-elements-readmore-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-blue);
+	background: transparent;
+	padding: 0;
+	border: 0;
+	text-decoration: none;
+	transition: color .2s ease;
+}
+.hp-bloglist .eael-post-elements-readmore-btn::after {
+	content: "\2192";
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+.hp-bloglist .eael-post-elements-readmore-btn:hover {
+	color: var(--hp-ink);
+}
+.hp-bloglist .eael-post-elements-readmore-btn:hover::after {
+	transform: translateX(3px);
+}
+
+/* Load more button (brand pill). */
+.hp-bloglist .eael-load-more-button-wrap {
+	display: flex;
+	justify-content: center;
+	margin-top: 56px;
+	padding-top: 40px;
+	border-top: 1px solid var(--hp-hairline);
+}
+.hp-bloglist .eael-load-more-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.5rem;
+	height: 40px;
+	padding: 0 22px;
+	border-radius: 999px;
+	border: 1px solid var(--hp-ink);
+	background: var(--hp-ink); /* matches .hp-btn "Book a free consultation" */
+	color: var(--hp-fog);
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.hp-bloglist .eael-load-more-button:hover {
+	border-color: var(--hp-blue);
+	color: #fff;
+	background: var(--hp-blue);
+}
+
+.hp-bloglist .no-posts-found {
+	font-family: var(--hp-sans);
+	color: var(--hp-muted);
+	padding-top: 32px;
+	border-top: 1px solid var(--hp-hairline);
+}
+
+/* ---------------------------------------------------------------------
+   SINGLE POST (child template-parts/single.php)
+   Mirrors blog-post-1.html: dotted-grid article header, back link, mono
+   date eyebrow, serif title, prose body, prev/next cards, dark CTA band.
+   --------------------------------------------------------------------- */
+.hp-single { display: block; }
+
+/* Article header band. */
+.hp-article {
+	position: relative;
+	overflow: hidden;
+	background: var(--hp-fog);
+	padding: 160px 0 40px;
+}
+.hp-article__inner {
+	position: relative;
+	max-width: 768px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+.hp-article__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-muted);
+	text-decoration: none;
+	margin-bottom: 32px;
+	transition: color .2s ease;
+}
+.hp-article__back:hover { color: var(--hp-blue); }
+.hp-article__back svg { width: 16px; height: 16px; }
+
+.hp-article__eyebrow {
+	font-family: var(--hp-mono);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--hp-azure);
+	margin: 0 0 16px;
+}
+.hp-article__title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: clamp(34px, 5vw, 48px);
+	line-height: 1.12;
+	color: var(--hp-ink);
+	margin: 0;
+}
+
+/* Article body / prose. */
+.hp-prose {
+	background: var(--hp-fog);
+	padding: 0 0 64px;
+}
+.hp-prose__inner {
+	max-width: 768px;
+	margin: 0 auto;
+	padding: 0 24px;
+	font-family: var(--hp-sans);
+}
+.hp-prose__inner > p,
+.hp-prose__inner > ul,
+.hp-prose__inner > ol {
+	font-size: 16px;
+	line-height: 1.75;
+	color: var(--hp-muted);
+	margin: 0 0 24px;
+}
+.hp-prose__inner > p:first-of-type {
+	font-size: 18px;
+}
+.hp-prose__inner h2 {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 1.3;
+	color: var(--hp-ink);
+	margin: 40px 0 16px;
+}
+.hp-prose__inner h3 {
+	font-family: var(--hp-serif);
+	font-weight: 500;
+	font-size: 20px;
+	color: var(--hp-ink);
+	margin: 32px 0 12px;
+}
+.hp-prose__inner a {
+	color: var(--hp-blue);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.hp-prose__inner a:hover { color: var(--hp-ink); }
+.hp-prose__inner strong { color: var(--hp-ink); font-weight: 600; }
+
+/* Prev / next cards. */
+.hp-postnav {
+	background: var(--hp-fog);
+	padding: 0 0 96px;
+}
+.hp-postnav__inner {
+	max-width: 768px;
+	margin: 0 auto;
+	padding: 32px 24px 0;
+	border-top: 1px solid var(--hp-hairline);
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+}
+.hp-postnav__spacer { width: 48%; }
+.hp-postnav__card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 48%;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	padding: 16px 20px;
+	text-decoration: none;
+	transition: border-color .2s ease;
+}
+.hp-postnav__card:hover { border-color: var(--hp-blue); }
+.hp-postnav__card--next { align-items: flex-end; text-align: right; }
+.hp-postnav__card--prev { align-items: flex-start; text-align: left; }
+.hp-postnav__label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-mono);
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--hp-muted);
+}
+.hp-postnav__label svg { width: 14px; height: 14px; }
+.hp-postnav__title {
+	font-family: var(--hp-serif);
+	font-size: 16px;
+	line-height: 1.35;
+	color: var(--hp-ink);
+	transition: color .2s ease;
+}
+.hp-postnav__card:hover .hp-postnav__title { color: var(--hp-blue); }
+
+@media (max-width: 640px) {
+	.hp-postnav__inner { flex-direction: column; }
+	.hp-postnav__spacer { display: none; }
+	.hp-postnav__card { width: 100%; }
+	.hp-postnav__card--next { align-items: flex-start; text-align: left; }
+}
+
+/* Dark CTA band. */
+.hp-cta {
+	background: var(--hp-ink);
+	color: var(--hp-fog);
+	padding: 96px 0;
+}
+.hp-cta__inner {
+	max-width: 896px;
+	margin: 0 auto;
+	padding: 0 24px;
+	text-align: center;
+}
+.hp-cta__eyebrow {
+	font-family: var(--hp-mono);
+	font-size: 12px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--hp-bluelight);
+	margin: 0 0 20px;
+}
+.hp-cta__title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: clamp(32px, 5vw, 48px);
+	line-height: 1.12;
+	color: #fff;
+	margin: 0 0 24px;
+}
+.hp-cta__text {
+	font-family: var(--hp-sans);
+	font-size: 18px;
+	line-height: 1.6;
+	color: rgba(244, 247, 249, 0.7);
+	max-width: 36rem;
+	margin: 0 auto 40px;
+}
+.hp-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+.hp-cta__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	padding: 14px 28px;
+	border-radius: 999px;
+	text-decoration: none;
+	transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.hp-cta__btn svg { width: 16px; height: 16px; }
+.hp-cta__btn--primary {
+	background: var(--hp-blue);
+	color: #fff;
+}
+.hp-cta__btn--primary:hover { background: #fff; color: var(--hp-ink); }
+.hp-cta__btn--ghost {
+	border: 1px solid rgba(244, 247, 249, 0.3);
+	color: var(--hp-fog);
+}
+.hp-cta__btn--ghost:hover { border-color: var(--hp-fog); }
+
+/* =====================================================================
+   HOMEPAGE (front page built in Elementor — mirrors index.html)
+   ===================================================================== */
+
+/* ---- Hero: blurred photo backdrop + fog wash --------------------- */
+/* Elementor paints the hero photo as the container background image on
+   .hp-hero; the ::before layer (above the image, below the content)
+   blurs it via backdrop-filter and lays the fog gradient over it. */
+.hp-hero {
+	position: relative;
+	isolation: isolate;
+}
+/* Fog wash + blur over the hero photo. High specificity + !important so
+   Elementor's own .e-con::before rule can't suppress `content`. */
+.elementor-element.hp-hero::before {
+	content: "" !important;
+	display: block !important;
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(
+		to bottom,
+		rgba(244, 247, 249, 0.5),
+		rgba(244, 247, 249, 0.75) 55%,
+		rgba(244, 247, 249, 0.92)
+	);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+	pointer-events: none;
+}
+
+/* ---- Card rows (Services + Who we help) -------------------------- */
+/* Elementor forces flex children to width:100%; pin them to equal
+   columns (same technique as .hp-stat), stacking under 880px. */
+.hp-cards-row {
+	flex-wrap: nowrap !important;
+	align-items: stretch !important;
+}
+.hp-card {
+	flex: 1 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+	background: #fff;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	padding: 32px !important;
+	transition: border-color .2s ease, box-shadow .2s ease;
+}
+.hp-card:hover {
+	border-color: rgba(55, 125, 189, 0.5);
+	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.08);
+}
+/* Whole-card link (Who we help): tint the title on hover. */
+a.hp-card { text-decoration: none; }
+.hp-card:hover .elementor-heading-title { color: var(--hp-blue) !important; }
+
+/* Icon circle inside a service card. */
+.hp-card .elementor-icon {
+	background: var(--hp-mist) !important;
+	color: var(--hp-azure) !important;
+}
+
+/* "Learn more →" inline text link inside a card. */
+.hp-learn a,
+a.hp-learn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-ink);
+	text-decoration: none;
+	transition: color .2s ease;
+}
+.hp-learn a::after,
+a.hp-learn::after {
+	content: "\2192";
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s ease;
+}
+.hp-learn a:hover,
+a.hp-learn:hover { color: var(--hp-blue); }
+.hp-learn a:hover::after,
+a.hp-learn:hover::after { transform: translateX(3px); }
+
+@media (max-width: 880px) {
+	.hp-cards-row { flex-wrap: wrap !important; }
+	.hp-card {
+		flex-basis: 100% !important;
+		width: 100% !important;
+	}
+}
+
+/* ---- Testimonials slider (Elementor HTML widget) ----------------- */
+.hp-testi { text-align: center; }
+.hp-testi__track {
+	position: relative;
+	min-height: 280px;
+}
+.hp-testi__slide { transition: opacity 1.25s ease; }
+.hp-testi__slide[hidden] { display: none; }
+.hp-testi__stars {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
+	color: var(--hp-blue);
+	margin-bottom: 24px;
+}
+.hp-testi__stars svg { width: 16px; height: 16px; }
+.hp-testi__quote {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-style: italic;
+	font-size: 24px;
+	line-height: 1.35;
+	color: var(--hp-ink);
+	margin: 0 0 24px;
+}
+@media (min-width: 1024px) {
+	.hp-testi__quote { font-size: 30px; }
+}
+.hp-testi__name {
+	font-family: var(--hp-sans);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--hp-muted);
+}
+.hp-testi__dots {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 32px;
+}
+.hp-testi__dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: var(--hp-hairline);
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	transition: background .2s ease;
+}
+.hp-testi__dot.is-active { background: var(--hp-blue); }
+
+/* ---- FAQ (Elementor Accordion widget) ---------------------------- */
+.hp-faq .elementor-accordion { border: 0; }
+.hp-faq .elementor-accordion-item {
+	border: 1px solid var(--hp-hairline) !important;
+	border-radius: 16px;
+	background: #fff;
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+.hp-faq .elementor-tab-title {
+	border: 0 !important;
+	padding: 20px 24px;
+	font-family: var(--hp-sans);
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 1.4;
+	background: transparent !important;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+/* Chevron sits on the right of the question (matches the mockup). */
+.hp-faq .elementor-tab-title .elementor-accordion-title { order: 1; }
+.hp-faq .elementor-tab-title .elementor-accordion-icon { order: 2; margin: 0 !important; }
+.hp-faq .elementor-tab-title a,
+.hp-faq .elementor-tab-title .elementor-accordion-title { color: var(--hp-ink); }
+.hp-faq .elementor-tab-content {
+	border: 0 !important;
+	padding: 0 24px 20px !important;
+	background: transparent !important;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	line-height: 1.7;
+	color: var(--hp-muted);
+}
+.hp-faq .elementor-accordion-icon { color: var(--hp-muted); }
+
+/* =====================================================================
+   SERVICES page (built in Elementor — mirrors services.html)
+   ===================================================================== */
+
+/* Constrain the header-band intro (eyebrow + H1) like the mockup's
+   max-w-3xl so the headline wraps to two lines. */
+.hp-measure { max-width: 768px; }
+
+/* ---- Consultation checklist (Text Editor widget, ✅ list) -------- */
+.hp-checklist ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.hp-checklist li {
+	font-family: var(--hp-sans);
+	font-size: 18px; /* text-lg */
+	font-weight: 500;
+	color: var(--hp-ink);
+	line-height: 1.5;
+}
+.hp-checklist li + li { margin-top: 12px; }
+
+/* ---- Services list rows (media 1fr / body 2fr) ------------------- */
+/* Elementor forces flex children to width:100%; pin them to a 1:2 split
+   (same technique as .hp-about-row/.hp-stat), stacking under 768px. */
+.hp-svc-row {
+	flex-wrap: nowrap !important;
+	align-items: flex-start !important;
+}
+.hp-svc-media {
+	flex: 1 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+.hp-svc-body {
+	flex: 2 1 0 !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl). */
+.elementor .hp-svc-media img,
+.hp-svc-media img {
+	width: 100% !important;
+	height: 160px !important;
+	object-fit: cover;
+	border-radius: 16px;
+	display: block;
+}
+/* Fraunces service heading + muted relaxed body (safety net; widget
+   typography also carries the exact sizes). */
+.hp-svc-media .elementor-heading-title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	color: var(--hp-ink);
+}
+.hp-svc-body p {
+	font-family: var(--hp-sans);
+	color: var(--hp-muted);
+	line-height: 1.625; /* leading-relaxed */
+}
+.hp-svc-body p + p { margin-top: 16px; }
+/* Hairline divider above the 2nd and 3rd rows. */
+.hp-svc-row--divided { border-top: 1px solid var(--hp-hairline); }
+
+@media (max-width: 767px) {
+	.hp-svc-row { flex-wrap: wrap !important; }
+	.hp-svc-media,
+	.hp-svc-body {
+		flex-basis: 100% !important;
+		width: 100% !important;
+	}
+}
