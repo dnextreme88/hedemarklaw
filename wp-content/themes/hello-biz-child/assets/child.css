@@ -1171,6 +1171,18 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 }
 .hp-note strong { color: var(--hp-ink); }
 
+/* Inline text link inside body/intro copy. Scoped under .elementor to beat
+   Elementor's `.elementor a { text-decoration: none }` (specificity 0,0,1,1). */
+.elementor .hp-inlink,
+.hp-inlink {
+	color: var(--hp-blue);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	transition: color .2s ease;
+}
+.elementor .hp-inlink:hover,
+.hp-inlink:hover { color: var(--hp-ink); }
+
 /* ---- Probate statutory-fee calculator (HTML widget + inline JS) --- */
 /* Self-contained client-side widget; scoped like .hp-testi. */
 .hp-calc {
@@ -1195,40 +1207,39 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	margin: 0;
 	white-space: nowrap;
 }
-/* Input group: the $ sits inline inside the bordered field (no absolute
-   positioning), so it can never overlap the typed value. */
+/* The $ sits bare on a transparent background; only the input carries the
+   border and fill. */
 .hp-calc__field {
 	flex: 1 1 auto;
 	min-width: 180px;
 	display: flex;
 	align-items: center;
-	gap: 4px;
-	padding: 0 16px;
-	border: 1px solid var(--hp-hairline);
-	border-radius: 10px;
-	background: var(--hp-fog);
+	gap: 8px;
 }
 .hp-calc__prefix {
 	font-family: var(--hp-sans);
 	font-size: 18px;
 	color: var(--hp-muted);
 }
-.hp-calc__input {
+/* Scoped under .hp-calc so these beat the parent theme's
+   input[type="number"] rule (specificity 0,0,1,1). */
+.hp-calc .hp-calc__input {
 	flex: 1 1 auto;
 	width: 100%;
 	min-width: 0;
 	font-family: var(--hp-sans);
 	font-size: 18px;
 	color: var(--hp-ink);
-	padding: 14px 0;
-	border: none;
-	background: transparent;
+	padding: 14px 16px;
+	border: 1px solid var(--hp-hairline);
+	border-radius: 10px;
+	background: var(--hp-fog);
 	outline: none;
 	-moz-appearance: textfield;
 }
 .hp-calc__input::-webkit-outer-spin-button,
 .hp-calc__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.hp-calc__field:focus-within {
+.hp-calc .hp-calc__input:focus {
 	border-color: var(--hp-blue);
 	box-shadow: 0 0 0 3px rgba(55, 125, 189, 0.15);
 }
