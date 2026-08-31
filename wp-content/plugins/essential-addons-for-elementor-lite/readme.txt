@@ -2,9 +2,9 @@
 Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, rudlinkon, jakariaistauk, himadree
 Tags: elementor, elementor addons, elementor widgets, elementor templates, elementor woocommerce
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 6.7.3
+Stable tag: 6.8.1
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -332,6 +332,20 @@ Nothing is sent unless you explicitly opt in. If you do opt in, we send: your si
 
 
 == Changelog ==
+
+= 6.8.1 - 28/08/2026 =
+
+- Fixed: EA Gravity Forms | Submit and Next/Previous button styles stopped applying after the Gravity Forms 3.0 update
+- Improved: EA Login/Register Form | Strengthened nonce and CAPTCHA validation on login, registration and password reset - thanks to `Gaurav Popalghat` for the security research
+- Improved: EA Login/Register Form | Hardened Custom Profile Field handling during registration - thanks to `Jakub Herman` for the security research
+- Improved: EA Advanced Tabs | Strengthened URL fragment handling
+- Few minor bug fixes & improvements
+
+= 6.8.0 - 27/08/2026 =
+
+- Added: EA Theme Builder to create custom headers and footers, with 6 ready-to-use presets
+- Added: EA Mega Menu | Creating flexible and engaging mega menu layouts
+- Few minor bug fixes & improvements
 
 = 6.7.3 - 09/08/2026 =
 
