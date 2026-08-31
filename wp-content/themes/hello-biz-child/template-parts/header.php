@@ -11,6 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $site_name = get_bloginfo( 'name' );
 $has_menu  = has_nav_menu( 'menu-1' );
+
+// Highlight "Pricing" on the Pricing page and any of its subpages.
+$hp_pricing_page = get_page_by_path( 'pricing' );
+$hp_on_pricing   = false;
+if ( $hp_pricing_page ) {
+	$hp_on_pricing = is_page( $hp_pricing_page->ID )
+		|| ( is_page() && in_array( $hp_pricing_page->ID, get_post_ancestors( get_queried_object_id() ), true ) );
+}
 ?>
 <header id="site-header" class="hp-header">
 	<div class="hp-header__inner">
@@ -47,6 +55,9 @@ $has_menu  = has_nav_menu( 'menu-1' );
 				?>
 				<ul class="hp-nav__list">
 					<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Services</a></li>
+					<li class="<?php echo $hp_on_pricing ? 'current-menu-item' : ''; ?>">
+						<a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a>
+					</li>
 					<li class="<?php echo is_page( 'about' ) ? 'current-menu-item' : ''; ?>">
 						<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Your Attorney</a>
 					</li>
