@@ -1318,3 +1318,28 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	color: var(--hp-blue);
 	white-space: nowrap;
 }
+
+/* ---- Gravity Forms: half-width fields side by side ---------------- */
+/* Gravity Forms' own 12-column grid is inert inside the Elementor embed — its
+   .gform_fields track sizing collapses to 0. Lay the fields out with flexbox
+   instead: full-width by default, and the "gfield--width-half" fields (Email +
+   Contact number) share one row. */
+.gform_wrapper .gform_fields {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 16px;
+	width: 100%;
+}
+.gform_wrapper .gform_fields > .gfield {
+	flex: 1 1 100%;
+	min-width: 0;
+}
+.gform_wrapper .gform_fields > .gfield--width-half {
+	flex: 1 1 calc(50% - 8px);
+}
+/* On narrow screens, stack them full width again. */
+@media (max-width: 640px) {
+	.gform_wrapper .gform_fields > .gfield--width-half {
+		flex-basis: 100%;
+	}
+}
