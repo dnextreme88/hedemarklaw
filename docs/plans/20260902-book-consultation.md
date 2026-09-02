@@ -157,6 +157,15 @@ constructs the Elementor structure as arrays (the same `hp-*` bands and cards as
   Forms input in `mm/dd/yyyy`, so the stored value and Gravity Forms validation are
   unchanged. It re-applies on `gform_post_render` (after an AJAX validation reload).
 
+**Alignment fixes (2026-09-03), all in `child.css` (theme 1.3.11):**
+- **Header band alignment.** The eyebrow + H1 live in an inner Elementor container
+  (`.hp-measure`) that picked up Elementor's default 10px padding, so they sat 10px right
+  of the intro subtext. `.hp-dotgrid .hp-measure { padding: 0 }` aligns all three on the
+  same left edge (applies to every header band, book and pricing).
+- **Date input padding.** The native date input had lopsided horizontal padding (12px
+  left / 36px right). `.gform_wrapper input.gfield_date_native { padding: 12px both
+  sides !important }` makes it symmetric and consistent with the other inputs.
+
 **/book/ subpages (1450, 1451, 1452):**
 - The header-band intro under each service name stays **18px** (full size) — only the
   disclaimer is fine print.

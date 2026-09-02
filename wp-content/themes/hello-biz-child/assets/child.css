@@ -1343,3 +1343,19 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 		flex-basis: 100%;
 	}
 }
+
+/* Native date input (intake "target completion date"): match the other inputs'
+   symmetric horizontal padding. The browser gives date inputs an extra right
+   pad for the calendar icon, which left it lopsided (12px left / 36px right). */
+.gform_wrapper input.gfield_date_native {
+	padding-left: 12px !important;
+	padding-right: 12px !important;
+}
+
+/* ---- Header band: align the title block with its subtext ---------- */
+/* The eyebrow + H1 sit in an inner Elementor container (.hp-measure) that picks
+   up Elementor's default 10px container padding, pushing them 10px right of the
+   intro subtext below. Remove that padding so both align on the same left edge. */
+.hp-dotgrid .hp-measure {
+	padding: 0;
+}
