@@ -1359,3 +1359,119 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .hp-dotgrid .hp-measure {
 	padding: 0;
 }
+
+/* ---- Booking confirmation: the Calendly calendar ----------------- */
+/* Shown in place of the Stage 1 form after submit (see functions.php). */
+.hlc-booking-confirm .calendly-inline-widget {
+	width: 100%;
+}
+
+/* ---- Booking success modal --------------------------------------- */
+/* A green animated check + message, shown over the page after submit. It
+   closes on any click, on Escape, or after 5 seconds (see functions.php). */
+.hlc-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	/* Light gray overlay at ~0.8 opacity. */
+	background: rgba(128, 128, 128, 0.8);
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+.hlc-modal-overlay.is-visible {
+	opacity: 1;
+}
+.hlc-modal {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	max-width: 440px;
+	width: 100%;
+	padding: 28px 44px 28px 28px;
+	background: #fff;
+	border-radius: 14px;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+	transform: translateY(8px) scale(0.98);
+	transition: transform 0.25s ease;
+}
+.hlc-modal-overlay.is-visible .hlc-modal {
+	transform: translateY(0) scale(1);
+}
+.hlc-modal__text {
+	margin: 0;
+	font-family: var(--hp-sans);
+	font-weight: 600;
+	font-size: 19px;
+	line-height: 1.35;
+	color: var(--hp-blue);
+}
+.hlc-modal__close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	padding: 4px;
+	border: 0;
+	background: transparent;
+	font-size: 24px;
+	line-height: 1;
+	color: #94a3b8;
+	cursor: pointer;
+}
+.hlc-modal__close:hover {
+	color: #475569;
+}
+
+/* Green check: pop the badge in, draw the circle, then draw the tick. */
+.hlc-modal__check {
+	flex: 0 0 auto;
+	display: inline-flex;
+	animation: hlc-check-pop 0.3s ease-out both;
+}
+.hlc-modal__check svg {
+	width: 56px;
+	height: 56px;
+}
+.hlc-modal__check-circle {
+	fill: none;
+	stroke: #22c55e;
+	stroke-width: 3;
+	stroke-dasharray: 151;
+	stroke-dashoffset: 151;
+	animation: hlc-check-draw 0.5s ease-out forwards;
+}
+.hlc-modal__check-mark {
+	fill: none;
+	stroke: #22c55e;
+	stroke-width: 4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-dasharray: 48;
+	stroke-dashoffset: 48;
+	animation: hlc-check-draw 0.35s 0.45s ease-out forwards;
+}
+@keyframes hlc-check-pop {
+	0% { transform: scale(0.6); opacity: 0; }
+	100% { transform: scale(1); opacity: 1; }
+}
+@keyframes hlc-check-draw {
+	to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.hlc-modal-overlay,
+	.hlc-modal,
+	.hlc-modal__check,
+	.hlc-modal__check-circle,
+	.hlc-modal__check-mark {
+		animation: none;
+		transition: none;
+	}
+	.hlc-modal__check-circle,
+	.hlc-modal__check-mark {
+		stroke-dashoffset: 0;
+	}
+}
