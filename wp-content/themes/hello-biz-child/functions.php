@@ -231,9 +231,12 @@ add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax
 		hlc_calendly_url()
 	);
 
+	// Success message, shown in the popup modal beside the green check (see the footer
+	// script). Carried as a data attribute so the copy stays here, server-side.
+	$message = 'Thank you! Now book a date and time with Justin.';
+
 	$html  = '<div class="hlc-booking-confirm">';
-	$html .= '<p class="hlc-booking-confirm__lead">Thank you. Now pick a time with Justin.</p>';
-	$html .= '<div class="calendly-inline-widget" data-hlc-calendly="1" data-url="' . esc_url( $url ) . '" style="min-width:320px;height:700px;"></div>';
+	$html .= '<div class="calendly-inline-widget" data-hlc-calendly="1" data-hlc-message="' . esc_attr( $message ) . '" data-url="' . esc_url( $url ) . '" style="min-width:320px;height:700px;"></div>';
 	$html .= '</div>';
 
 	return $html;
@@ -260,12 +263,58 @@ add_action( 'wp_footer', function () {
 	?>
 	<script>
 		( function () {
+			// Success popup: green animated check + message. It covers the page, closes
+			// on any click, on Escape, or on its own after 5 seconds. The calendar sits
+			// behind it and is revealed when it closes.
+			function showModal( message ) {
+				if ( document.querySelector( '.hlc-modal-overlay' ) ) { return; }
+				var overlay = document.createElement( 'div' );
+				overlay.className = 'hlc-modal-overlay';
+				overlay.setAttribute( 'role', 'dialog' );
+				overlay.setAttribute( 'aria-modal', 'true' );
+				overlay.innerHTML =
+					'<div class="hlc-modal">' +
+						'<button type="button" class="hlc-modal__close" aria-label="Close">&times;</button>' +
+						'<span class="hlc-modal__check" aria-hidden="true">' +
+							'<svg viewBox="0 0 52 52">' +
+								'<circle class="hlc-modal__check-circle" cx="26" cy="26" r="24"/>' +
+								'<path class="hlc-modal__check-mark" d="M14 27 l8 8 l16 -18"/>' +
+							'</svg>' +
+						'</span>' +
+						'<p class="hlc-modal__text"></p>' +
+					'</div>';
+				overlay.querySelector( '.hlc-modal__text' ).textContent = message;
+				document.body.appendChild( overlay );
+				// Force a reflow, then reveal, so the fade-in transition plays.
+				// requestAnimationFrame is throttled when the tab is not visible, so do
+				// not depend on it here.
+				void overlay.offsetWidth;
+				overlay.classList.add( 'is-visible' );
+
+				var timer = window.setTimeout( close, 5000 );
+				function close() {
+					window.clearTimeout( timer );
+					document.removeEventListener( 'keydown', onKey );
+					overlay.classList.remove( 'is-visible' );
+					window.setTimeout( function () {
+						if ( overlay.parentNode ) { overlay.parentNode.removeChild( overlay ); }
+					}, 250 );
+				}
+				function onKey( e ) { if ( 'Escape' === e.key ) { close(); } }
+				// A click anywhere (overlay, card, or close button) closes it.
+				overlay.addEventListener( 'click', close );
+				document.addEventListener( 'keydown', onKey );
+				var btn = overlay.querySelector( '.hlc-modal__close' );
+				if ( btn ) { btn.focus(); }
+			}
+
 			function startOne( el ) {
 				if ( el.dataset.hlcStarted ) { return; }
-				// widget.js already started this one (non-AJAX path); leave it be.
-				if ( el.querySelector( 'iframe' ) ) { el.dataset.hlcStarted = '1'; return; }
-				if ( ! el.dataset.url ) { return; }
 				el.dataset.hlcStarted = '1';
+				if ( el.dataset.hlcMessage ) { showModal( el.dataset.hlcMessage ); }
+				// widget.js may already have started this one (non-AJAX path).
+				if ( el.querySelector( 'iframe' ) ) { return; }
+				if ( ! el.dataset.url ) { return; }
 				window.Calendly.initInlineWidget( { url: el.dataset.url, parentElement: el } );
 			}
 			function scan() {
