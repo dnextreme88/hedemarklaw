@@ -72,7 +72,7 @@ if ( $hp_pricing_page ) {
 					</svg>
 					415-692-1503
 				</a>
-				<a class="hp-btn" href="#">Book a free consultation</a>
+				<a class="hp-btn" href="<?php echo esc_url( home_url( '/book/' ) ); ?>">Book a free consultation</a>
 			</div>
 		</nav>
 

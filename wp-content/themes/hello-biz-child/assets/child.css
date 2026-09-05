@@ -1318,3 +1318,44 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	color: var(--hp-blue);
 	white-space: nowrap;
 }
+
+/* ---- Gravity Forms: half-width fields side by side ---------------- */
+/* Gravity Forms' own 12-column grid is inert inside the Elementor embed — its
+   .gform_fields track sizing collapses to 0. Lay the fields out with flexbox
+   instead: full-width by default, and the "gfield--width-half" fields (Email +
+   Contact number) share one row. */
+.gform_wrapper .gform_fields {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 16px;
+	width: 100%;
+}
+.gform_wrapper .gform_fields > .gfield {
+	flex: 1 1 100%;
+	min-width: 0;
+}
+.gform_wrapper .gform_fields > .gfield--width-half {
+	flex: 1 1 calc(50% - 8px);
+}
+/* On narrow screens, stack them full width again. */
+@media (max-width: 640px) {
+	.gform_wrapper .gform_fields > .gfield--width-half {
+		flex-basis: 100%;
+	}
+}
+
+/* Native date input (intake "target completion date"): match the other inputs'
+   symmetric horizontal padding. The browser gives date inputs an extra right
+   pad for the calendar icon, which left it lopsided (12px left / 36px right). */
+.gform_wrapper input.gfield_date_native {
+	padding-left: 12px !important;
+	padding-right: 12px !important;
+}
+
+/* ---- Header band: align the title block with its subtext ---------- */
+/* The eyebrow + H1 sit in an inner Elementor container (.hp-measure) that picks
+   up Elementor's default 10px container padding, pushing them 10px right of the
+   intro subtext below. Remove that padding so both align on the same left edge. */
+.hp-dotgrid .hp-measure {
+	padding: 0;
+}

@@ -64,7 +64,7 @@ $year = date( 'Y' );
 			<div class="hp-footer__col">
 				<p class="hp-footer__heading">Book online</p>
 				<p class="hp-footer__blurb">Free 20-minute consultations for estate planning, probate, and trust administration.</p>
-				<a class="hp-footer__link" href="#">Schedule now &rarr;</a>
+				<a class="hp-footer__link" href="<?php echo esc_url( home_url( '/book/' ) ); ?>">Schedule now &rarr;</a>
 			</div>
 
 		</div>
