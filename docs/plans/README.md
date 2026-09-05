@@ -5,6 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-09-05** | [Calendly calendar after a Stage 1 intake form submits](20260905-calendly-booking.md) |
 | **2026-09-02** | [Book a Free Consultation page + Stage 1 Gravity Forms](20260902-book-consultation.md) |
 | **2026-08-26** | [Elementor pricing pages for Hedemark Law](20260826-elementor-pricing-pages.md) |
 | **2026-08-22** | [Elementor "Services" page for Hedemark Law](20260822-elementor-services-page.md) |

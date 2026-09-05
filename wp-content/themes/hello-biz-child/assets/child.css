@@ -1359,3 +1359,17 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .hp-dotgrid .hp-measure {
 	padding: 0;
 }
+
+/* ---- Booking confirmation: the Calendly calendar ----------------- */
+/* Shown in place of the Stage 1 form after submit (see functions.php,
+   gform_confirmation). The lead line matches the page's serif headings. */
+.hlc-booking-confirm__lead {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: 24px;
+	color: var(--hp-blue);
+	margin: 0 0 16px;
+}
+.hlc-booking-confirm .calendly-inline-widget {
+	width: 100%;
+}
