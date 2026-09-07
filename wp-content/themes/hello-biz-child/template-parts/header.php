@@ -62,6 +62,7 @@ if ( $hp_pricing_page ) {
 						<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Your Attorney</a>
 					</li>
 					<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a></li>
+						<li><a href="<?php echo esc_url( home_url( '/faqs/' ) ); ?>">FAQs</a></li>
 				</ul>
 			<?php } ?>
 

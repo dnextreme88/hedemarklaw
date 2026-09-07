@@ -1009,6 +1009,18 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 }
 .hp-faq .elementor-accordion-icon { color: var(--hp-muted); }
 
+/* Shortcode FAQ accordion ([hlc_faqs]): reproduce the collapse behaviour without the
+   Elementor accordion JS. Scope every rule to .hp-faq-lite, so the homepage accordion
+   (plain .hp-faq, driven by Elementor's own JS) is not affected. The .hp-faq visual
+   rules above still apply to both. */
+.hp-faq-lite .elementor-tab-title { cursor: pointer; }
+.hp-faq-lite .elementor-tab-content { display: none; }
+.hp-faq-lite .elementor-accordion-item.is-open > .elementor-tab-content { display: block; }
+.hp-faq-lite .elementor-accordion-icon svg { width: 16px; height: 16px; display: block; transition: transform 0.2s ease; }
+.hp-faq-lite .elementor-accordion-item.is-open .elementor-accordion-icon svg { transform: rotate(180deg); }
+.hp-faq-lite .elementor-tab-content > :first-child { margin-top: 0; }
+.hp-faq-lite .elementor-tab-content > :last-child { margin-bottom: 0; }
+
 /* =====================================================================
    SERVICES page (built in Elementor — mirrors services.html)
    ===================================================================== */
