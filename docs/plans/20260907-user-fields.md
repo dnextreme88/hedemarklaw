@@ -1,4 +1,4 @@
-# User Fields settings panel for editable service rates
+# User Fields settings panel — service rates and FAQs
 
 **Executed:** 2026-09-07
 
@@ -11,6 +11,12 @@ To change a rate, a developer had to edit the markup by hand.
 The goal is a no-code path. An admin must change a rate from wp-admin. The new value
 must then show on the page. The value must be a single source of truth, so one edit
 updates every place that uses it.
+
+The same panel then gained a second use on the same day: the FAQ questions and answers.
+So the **initial User Fields settings are two things**:
+
+1. The Trust Administration rate schedule (Services Settings section).
+2. The homepage FAQ questions and answers (FAQs section).
 
 The three current rates:
 
@@ -28,6 +34,8 @@ The three current rates:
    is **Services Settings**.
 4. The Services Settings section holds only rate rows (a label and an amount). It has no
    service name and no service slug.
+5. A new **FAQs** page reuses the homepage FAQ accordion, but the questions and answers
+   come from a second **FAQs** section in the same panel. This mirrors the rate pattern.
 
 ## The ACF detour
 
@@ -66,6 +74,35 @@ behaviour stays in theme code, not in the database.
    does. The Elementor CSS cache and element cache for the page were cleared, so the page
    rebuilds.
 
+### FAQs — a second section and a new page
+
+The same file and panel gained a second group.
+
+4. **`inc/service-rates.php` (extended).**
+   - Option `hlc_faqs` stores the FAQ rows (an array of `question`/`answer`).
+   - `hlc_default_faqs()` returns the three homepage FAQs, so the FAQ page works before the
+     first save.
+   - The render page now has a second section, **FAQs**, with question and answer rows.
+     Both sections share the `hlc_user_fields` settings group, so one Save stores both. A
+     small generic script drives every `.hlc-repeater` (add and remove rows).
+   - `hlc_sanitize_faqs()` cleans each row. The answer keeps the safe post HTML set.
+   - The `[hlc_faqs]` shortcode outputs the branded FAQ accordion. It mirrors the homepage
+     accordion markup (the `hp-faq` classes), adds an `hp-faq-lite` class, a small collapse
+     script, and an FAQ structured-data block. One item is open at a time, like Elementor.
+
+5. **`assets/child.css`** — new rules for the accordion collapse, scoped to `.hp-faq-lite`.
+   This scope stops the rules from touching the homepage accordion (plain `.hp-faq`, driven
+   by Elementor's own script). `style.css` version 1.4.2 → **1.5.0** (a cache-buster).
+
+6. **New page `/faqs/`** (page id 1455) — an Elementor page that copies the homepage FAQ
+   section (the "Frequently Asked Questions" heading and the accordion). The accordion is a
+   Shortcode widget that holds `[hlc_faqs]`. The page was made with `wp_insert_post`, so
+   WordPress set the defaults. This page is site data in SQLite, not in git.
+
+7. **Header and footer** — a **FAQs** link was added after "Blog". The header menu
+   (menu-1, term 3) gained a "FAQs" item (site data). `footer.php` and the `header.php`
+   fallback list each gained a `/faqs/` link (theme code).
+
 ## Verification
 
 - `php -l` on `inc/service-rates.php` and `functions.php`: no syntax errors.
@@ -76,10 +113,16 @@ behaviour stays in theme code, not in the database.
   widget. The old `hp-rate-table` markup is gone.
 - Browser check on `/pricing/trust-administration/`: the page shows the three rates —
   Senior Attorneys $500 / hour, Paralegals $195 / hour, Law Clerks $145 / hour.
+- Browser check on `/faqs/`: the accordion shows the three FAQs. The first item is open. A
+  click opens one item and closes the other. An FAQ structured-data block is present.
+- The header menu and the footer both show a **FAQs** link.
+- Homepage check: the homepage FAQ accordion still opens and closes. The new CSS is scoped
+  to `.hp-faq-lite`, so it does not affect the homepage.
 
 ## Follow-ups / notes
 
 - To change a rate, open **User Fields → Services Settings**, edit the row, and save.
+- To change an FAQ, open **User Fields → FAQs**, edit the row, and save.
 - Deactivate ACF on the Plugins screen. The final solution does not use it.
 - To add another group later, add a section in `hlc_render_user_fields_page()` and
   register a new option under the `hlc_user_fields` settings group.
