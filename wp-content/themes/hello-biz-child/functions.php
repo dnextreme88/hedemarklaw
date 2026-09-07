@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Services Settings: ACF options page and the [hlc_service_rates] shortcode.
-require_once __DIR__ . '/inc/service-rates.php';
+// User Fields admin panel: service rates and FAQs, with the [hlc_service_rates] and [hlc_faqs] shortcodes.
+require_once __DIR__ . '/inc/user_fields_panel.php';
 
 /**
  * Is the current request a service subpage under /book/?
