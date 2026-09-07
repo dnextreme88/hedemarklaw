@@ -350,22 +350,38 @@ add_shortcode( 'hlc_service_rates', function () {
 /**
  * Shortcode: [hlc_faqs]
  *
- * Render the FAQ rows as the branded accordion. The markup mirrors the homepage
- * Elementor accordion (the `hp-faq` classes), so the visual style matches. A small
- * script drives the collapse. The extra `hp-faq-lite` class scopes the behavior CSS, so
- * this shortcode never affects the homepage accordion.
+ * Render the FAQ rows as the branded accordion. The markup is self-contained
+ * (`.hp-faqx`) and uses no Elementor accordion class, so Elementor's own accordion CSS
+ * and JS never interfere. Each head is a `<button>`, so the keyboard works natively. A
+ * small delegated script toggles one open item at a time; the panel slides with CSS.
  *
- * The method also prints an FAQ structured-data block (schema.org FAQPage), like the
- * homepage accordion. Return an empty string when there are no FAQ rows.
+ * The method also prints an FAQ structured-data block (schema.org FAQPage). Return an
+ * empty string when there are no FAQ rows.
  *
  * @return string The FAQ accordion HTML, or an empty string.
  */
-function hlc_render_faqs_shortcode() {
+function hlc_render_faqs_shortcode( $atts = array() ) {
 	static $script_done = false;
+
+	$atts = shortcode_atts(
+		array(
+			'limit'     => 0,
+			'more_url'  => '',
+			'more_text' => 'See all FAQs',
+		),
+		$atts,
+		'hlc_faqs'
+	);
 
 	$faqs = get_option( HLC_FAQS_OPTION, hlc_default_faqs() );
 	if ( ! is_array( $faqs ) || empty( $faqs ) ) {
 		return '';
+	}
+
+	// Show only the first N rows when a limit is set (a teaser on another page).
+	$limit = absint( $atts['limit'] );
+	if ( $limit > 0 ) {
+		$faqs = array_slice( $faqs, 0, $limit );
 	}
 
 	$chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
@@ -383,18 +399,18 @@ function hlc_render_faqs_shortcode() {
 			continue;
 		}
 
-		// The first row starts open, to match the Elementor accordion default.
-		$is_open   = ( 0 === $index );
-		$item_cls  = 'elementor-accordion-item' . ( $is_open ? ' is-open' : '' );
-		$expanded  = $is_open ? 'true' : 'false';
-		$content_id = 'hlc-faq-content-' . $index;
+		// The first row starts open.
+		$is_open    = ( 0 === $index );
+		$item_cls   = 'hp-faqx__item' . ( $is_open ? ' is-open' : '' );
+		$expanded   = $is_open ? 'true' : 'false';
+		$content_id = 'hlc-faq-panel-' . $index;
 
 		$items .= '<div class="' . esc_attr( $item_cls ) . '">';
-		$items .= '<div class="elementor-tab-title" role="button" tabindex="0" aria-expanded="' . $expanded . '" aria-controls="' . esc_attr( $content_id ) . '">';
-		$items .= '<span class="elementor-accordion-title">' . esc_html( $question ) . '</span>';
-		$items .= '<span class="elementor-accordion-icon" aria-hidden="true">' . $chevron . '</span>';
-		$items .= '</div>';
-		$items .= '<div class="elementor-tab-content" id="' . esc_attr( $content_id ) . '" role="region">' . wp_kses_post( $answer ) . '</div>';
+		$items .= '<button type="button" class="hp-faqx__head" aria-expanded="' . $expanded . '" aria-controls="' . esc_attr( $content_id ) . '">';
+		$items .= '<span class="hp-faqx__q">' . esc_html( $question ) . '</span>';
+		$items .= '<span class="hp-faqx__icon" aria-hidden="true">' . $chevron . '</span>';
+		$items .= '</button>';
+		$items .= '<div class="hp-faqx__panel" id="' . esc_attr( $content_id ) . '" role="region"><div class="hp-faqx__inner">' . wp_kses_post( $answer ) . '</div></div>';
 		$items .= '</div>';
 
 		$schema[] = array(
@@ -412,9 +428,17 @@ function hlc_render_faqs_shortcode() {
 		return '';
 	}
 
-	$html  = '<div class="hp-faq hp-faq-lite">';
-	$html .= '<div class="elementor-accordion" role="list">' . $items . '</div>';
-	$html .= '</div>';
+	$html = '<div class="hp-faqx">' . $items . '</div>';
+
+	// Optional "see all" link at the bottom, for a teaser that links to the FAQ page.
+	$more_url = trim( (string) $atts['more_url'] );
+	if ( '' !== $more_url ) {
+		$more_text = trim( (string) $atts['more_text'] );
+		if ( '' === $more_text ) {
+			$more_text = 'See all FAQs';
+		}
+		$html .= '<p class="hp-faq-more"><a href="' . esc_url( $more_url ) . '">' . esc_html( $more_text ) . ' <span aria-hidden="true">&rarr;</span></a></p>';
+	}
 
 	// FAQ structured data (schema.org FAQPage).
 	$ld = array(
@@ -432,32 +456,26 @@ function hlc_render_faqs_shortcode() {
 ( function () {
 	if ( window.hlcFaqBound ) { return; }
 	window.hlcFaqBound = true;
-	function toggle( title ) {
-		var item = title.closest( '.elementor-accordion-item' );
+	// The head is a <button>, so Enter and Space fire a click natively.
+	document.addEventListener( 'click', function ( e ) {
+		var head = e.target.closest( '.hp-faqx__head' );
+		if ( ! head ) { return; }
+		var item = head.closest( '.hp-faqx__item' );
 		if ( ! item ) { return; }
 		var willOpen = ! item.classList.contains( 'is-open' );
-		// Close the other open item, so only one item is open at a time.
-		var acc = title.closest( '.elementor-accordion' );
-		if ( acc ) {
-			acc.querySelectorAll( '.elementor-accordion-item.is-open' ).forEach( function ( other ) {
+		// Keep only one item open at a time.
+		var group = head.closest( '.hp-faqx' );
+		if ( group ) {
+			group.querySelectorAll( '.hp-faqx__item.is-open' ).forEach( function ( other ) {
 				if ( other !== item ) {
 					other.classList.remove( 'is-open' );
-					var t = other.querySelector( '.elementor-tab-title' );
-					if ( t ) { t.setAttribute( 'aria-expanded', 'false' ); }
+					var h = other.querySelector( '.hp-faqx__head' );
+					if ( h ) { h.setAttribute( 'aria-expanded', 'false' ); }
 				}
 			} );
 		}
 		item.classList.toggle( 'is-open', willOpen );
-		title.setAttribute( 'aria-expanded', willOpen ? 'true' : 'false' );
-	}
-	document.addEventListener( 'click', function ( e ) {
-		var title = e.target.closest( '.hp-faq-lite .elementor-tab-title' );
-		if ( title ) { toggle( title ); }
-	} );
-	document.addEventListener( 'keydown', function ( e ) {
-		if ( 'Enter' !== e.key && ' ' !== e.key ) { return; }
-		var title = e.target.closest( '.hp-faq-lite .elementor-tab-title' );
-		if ( title ) { e.preventDefault(); toggle( title ); }
+		head.setAttribute( 'aria-expanded', willOpen ? 'true' : 'false' );
 	} );
 } )();
 </script>
