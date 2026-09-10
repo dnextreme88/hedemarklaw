@@ -29,10 +29,14 @@ $year = date( 'Y' );
 				<p class="hp-footer__heading">Firm</p>
 				<ul>
 					<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Services</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/real-estate/' ) ); ?>">Real Estate</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/estate-law/' ) ); ?>">Estate Law</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/out-of-state-executors-heirs/' ) ); ?>">Out-of-State Executors &amp; Heirs</a></li>
+					<li><hr class="hp-footer__divider"></li>
 					<li><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a></li>
 					<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Your Attorney</a></li>
 					<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/faqs/' ) ); ?>">FAQs</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/faqs/' ) ); ?>">FAQs</a></li>
 				</ul>
 			</div>
 
