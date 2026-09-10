@@ -183,7 +183,7 @@ body {
 	white-space: nowrap;
 	transition: color .2s ease;
 }
-.hp-phone:hover { color: var(--hp-blue); }
+.hp-phone:hover { color: var(--hp-bluelight); }
 .hp-phone svg { width: 16px; height: 16px; }
 
 .hp-btn {
@@ -897,7 +897,9 @@ body {
 	border: 1px solid rgba(244, 247, 249, 0.3);
 	color: var(--hp-fog);
 }
-.hp-cta__btn--ghost:hover { border-color: var(--hp-fog); }
+/* Keep the light text on hover — overrides the parent theme's generic a:hover dark colour,
+   which would otherwise blend into the dark section background. */
+.hp-cta__btn--ghost:hover { border-color: var(--hp-fog); color: var(--hp-fog); }
 
 /* =====================================================================
    HOMEPAGE (front page built in Elementor — mirrors index.html)
@@ -1113,6 +1115,12 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	line-height: 1.4;
 	color: var(--hp-ink);
 }
+/* Override the parent theme's generic button hover/focus (pink #CC3366 + white text). */
+.hp-faqx__head:hover,
+.hp-faqx__head:focus { background: var(--hp-bluelight); }
+.hp-faqx__head:focus { color: var(--hp-ink); }
+.hp-faqx__head:hover .hp-faqx__icon { color: var(--hp-blue); }
+.hp-faqx__head:focus-visible { outline: 2px solid var(--hp-blue); outline-offset: -2px; }
 .hp-faqx__icon { flex-shrink: 0; color: var(--hp-muted); }
 .hp-faqx__icon svg { display: block; width: 16px; height: 16px; transition: transform 0.2s ease; }
 .hp-faqx__item.is-open .hp-faqx__icon svg { transform: rotate(180deg); }
