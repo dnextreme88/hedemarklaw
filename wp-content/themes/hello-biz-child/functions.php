@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+// User Fields admin panel: service rates and FAQs, with the [hlc_service_rates] and [hlc_faqs] shortcodes.
+require_once __DIR__ . '/inc/user_fields_panel.php';
+
 /**
  * Is the current request a service subpage under /book/?
  *

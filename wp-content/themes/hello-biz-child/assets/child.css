@@ -43,7 +43,6 @@ body {
 .hp-header__inner {
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 0 32px;
 	height: 80px;
 	display: flex;
 	align-items: center;
@@ -210,7 +209,10 @@ body {
 	padding: 64px 0 32px;
 	font-family: var(--hp-sans);
 }
-.hp-footer__inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.hp-footer__inner {
+	max-width: 1280px;
+	margin: 0 auto;
+}
 
 .hp-footer__grid {
 	display: grid;
@@ -1008,6 +1010,55 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	color: var(--hp-muted);
 }
 .hp-faq .elementor-accordion-icon { color: var(--hp-muted); }
+
+/* FAQ accordion ([hlc_faqs]) — self-contained markup (.hp-faqx). It does not use any
+   Elementor accordion class, so Elementor's own accordion CSS and JS never touch it. The
+   head is a <button>; the panel slides open and closed with a max-height transition. */
+.hp-faqx__item {
+	border: 1px solid var(--hp-hairline);
+	border-radius: 16px;
+	background: #fff;
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+.hp-faqx__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	width: 100%;
+	margin: 0;
+	padding: 20px 24px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	text-align: left;
+	font-family: var(--hp-sans);
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 1.4;
+	color: var(--hp-ink);
+}
+.hp-faqx__icon { flex-shrink: 0; color: var(--hp-muted); }
+.hp-faqx__icon svg { display: block; width: 16px; height: 16px; transition: transform 0.2s ease; }
+.hp-faqx__item.is-open .hp-faqx__icon svg { transform: rotate(180deg); }
+.hp-faqx__panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.hp-faqx__item.is-open .hp-faqx__panel { max-height: 1000px; }
+.hp-faqx__inner {
+	padding: 0 24px 20px;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	line-height: 1.7;
+	color: var(--hp-muted);
+}
+.hp-faqx__inner > :first-child { margin-top: 0; }
+.hp-faqx__inner > :last-child { margin-bottom: 0; }
+@media ( prefers-reduced-motion: reduce ) {
+	.hp-faqx__panel, .hp-faqx__icon svg { transition: none; }
+}
+.hp-faq-more { margin: 24px 0 0; font-family: var(--hp-sans); font-size: 16px; }
+.hp-faq-more a { color: #0F4C85; font-weight: 600; text-decoration: none; }
+.hp-faq-more a:hover { text-decoration: underline; }
 
 /* =====================================================================
    SERVICES page (built in Elementor — mirrors services.html)
