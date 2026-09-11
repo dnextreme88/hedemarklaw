@@ -524,10 +524,13 @@ body {
 	background: transparent;
 }
 
-/* Force a plain vertical flow regardless of the isotope/masonry script. */
+/* Force a plain vertical flow regardless of the isotope/masonry script. Drop the
+   skin's -10px gutter margin so the row aligns with the page's 1280 container
+   (the "Blog" heading and the header/footer), not 10px past it. */
 .hp-bloglist .eael-post-grid {
 	display: block !important;
 	height: auto !important;
+	margin: 0 !important;
 }
 .hp-bloglist .eael-grid-post {
 	position: relative !important;
@@ -554,11 +557,12 @@ body {
 	margin: 0;
 }
 
-/* Order: date eyebrow above the title. */
+/* Order: date eyebrow above the title. The skin adds an inner padding; clear it
+   so the date, title, excerpt, and link start at the container edge. */
 .hp-bloglist .eael-entry-wrapper {
 	display: flex;
 	flex-direction: column;
-	padding: 0;
+	padding: 0 !important;
 }
 .hp-bloglist .eael-entry-header-after { order: -1; }
 .hp-bloglist .eael-entry-header { order: 0; }
