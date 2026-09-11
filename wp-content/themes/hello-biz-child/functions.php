@@ -13,21 +13,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/inc/user_fields_panel.php';
 
 /**
- * Is the current request a service subpage under /book/?
+ * Is the current request the /book/ page or a service subpage under it?
  *
- * The /book/ service pages are children of the page with slug `book`. Their page IDs
- * live in the SQLite database and are not portable, so this checks the ancestor slug
- * instead. The /book/ main page carries no form, so it returns false.
+ * The Initial Intake form sits on the page with slug `book`. The Stage 1 forms sit on its
+ * /book/{service} children. Both need the Calendly assets and the confirmation flow. The
+ * page IDs live in the SQLite database and are not portable, so this checks the slug of
+ * the page itself and of its ancestors, not the IDs.
  *
- * @return bool True on a /book/{service} subpage.
+ * @return bool True on /book/ or a /book/{service} subpage.
  */
-function hlc_is_booking_subpage() {
+function hlc_is_booking_page() {
 	if ( ! is_page() ) {
 		return false;
 	}
 	$post = get_queried_object();
 	if ( ! $post instanceof WP_Post ) {
 		return false;
+	}
+	if ( 'book' === $post->post_name ) {
+		return true;
 	}
 	foreach ( get_post_ancestors( $post ) as $ancestor_id ) {
 		if ( 'book' === get_post_field( 'post_name', $ancestor_id ) ) {
@@ -69,8 +73,8 @@ add_action( 'wp_enqueue_scripts', function () {
 		wp_get_theme()->get( 'Version' )
 	);
 
-	// Calendly inline embed assets, only on the /book/ service subpages.
-	if ( hlc_is_booking_subpage() ) {
+	// Calendly inline embed assets, only on the /book/ page and its service subpages.
+	if ( hlc_is_booking_page() ) {
 		wp_enqueue_style(
 			'calendly-widget',
 			'https://assets.calendly.com/assets/external/widget.css',
@@ -188,11 +192,11 @@ add_action( 'wp_footer', function () {
 }, 99 );
 
 /**
- * Replace the Stage 1 intake confirmation with the Calendly calendar.
+ * Replace a booking form's confirmation with the Calendly calendar.
  *
- * After a Stage 1 form submits (Estate Planning 7, Probate 6, Trust Administration 5),
- * show the Calendly inline calendar in place of the form. The visitor's name and email
- * pass to Calendly as query parameters, so Calendly prefills them.
+ * After a booking form submits (Initial Intake 8, Estate Planning 7, Probate 6, Trust
+ * Administration 5), show the Calendly inline calendar in place of the form. The visitor's
+ * name and email pass to Calendly as query parameters, so Calendly prefills them.
  *
  * Return a string. A string forces a text confirmation, so it replaces any redirect or
  * default text stored in the form settings.
@@ -204,7 +208,7 @@ add_action( 'wp_footer', function () {
  * @return string|array The confirmation.
  */
 add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax ) {
-	$booking_forms = array( 5, 6, 7 );
+	$booking_forms = array( 5, 6, 7, 8 );
 	if ( ! in_array( (int) rgar( $form, 'id' ), $booking_forms, true ) ) {
 		return $confirmation;
 	}
@@ -260,7 +264,7 @@ add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax
  * skips it, so the widget never starts twice.
  */
 add_action( 'wp_footer', function () {
-	if ( ! hlc_is_booking_subpage() ) {
+	if ( ! hlc_is_booking_page() ) {
 		return;
 	}
 	?>
