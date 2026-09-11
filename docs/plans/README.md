@@ -5,6 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-09-11** | [Initial Intake — Gravity Forms triage form](20260911-initial-intake-gravity-form.md) |
 | **2026-09-10** | [Firm menu + placeholder service pages](20260910-firm-menu-service-pages.md) |
 | **2026-09-07** | [User Fields settings panel — service rates and FAQs](20260907-user-fields.md) |
 | **2026-09-05** | [Calendly calendar after a Stage 1 intake form submits](20260905-calendly-booking.md) |
