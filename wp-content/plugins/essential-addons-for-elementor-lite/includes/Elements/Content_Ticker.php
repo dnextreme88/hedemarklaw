@@ -797,7 +797,7 @@ class Content_Ticker extends Widget_Base
                             } else {
                                 echo '<div class="swiper-slide"><a href="#" class="ticker-content">' . esc_html__('No content found!', 'essential-addons-for-elementor-lite') . '</a></div>';
                             }
-                        } elseif ('custom' === $settings['eael_ticker_type'] && apply_filters('eael/is_plugin_active', 'essential-addons-elementor/essential_adons_elementor.php')) {
+                        } elseif ('custom' === $settings['eael_ticker_type'] && apply_filters('eael/pro_enabled', false)) {
                             if (\file_exists($this->get_template($settings['eael_dynamic_template_Layout']))) {
                                 foreach ($settings['eael_ticker_custom_contents'] as $content) {
                                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -836,7 +836,7 @@ class Content_Ticker extends Widget_Base
 
             $html .= '<div class="swiper-button-next swiper-button-next-' . esc_attr( $this->get_id() ) . '">';
             if (isset($arrow['url'])) {
-                $html .= '<img src="' . esc_url($arrow['url']) . '" alt="' . esc_attr(get_post_meta($arrow['id'], '_wp_attachment_image_alt', true)) . '" />';
+                $html .= '<img src="' . esc_url($arrow['url']) . '" alt="' . esc_attr(Helper::get_image_alt( $arrow )) . '" />';
             } else {
                 $html .= $arrow;
             }
@@ -844,7 +844,7 @@ class Content_Ticker extends Widget_Base
 
             $html .= '<div class="swiper-button-prev swiper-button-prev-' . esc_attr( $this->get_id() ) . '">';
             if (isset($settings['prev_arrow']['value']['url'])) {
-                $html .= '<img src="' . esc_url($settings['prev_arrow']['value']['url']) . '" alt="' . esc_attr(get_post_meta($settings['prev_arrow']['value']['id'], '_wp_attachment_image_alt', true)) . '" />';
+                $html .= '<img src="' . esc_url($settings['prev_arrow']['value']['url']) . '" alt="' . esc_attr(Helper::get_image_alt( $settings['prev_arrow']['value'] )) . '" />';
             } else {
                 $html .= Helper::get_render_icon( $settings['prev_arrow'] );
             }

@@ -7,6 +7,8 @@
 // loaders are pinned to the .min.js sibling.
 
 __( "Loading", "jetpack-videopress-pkg" );
+/* translators: %s: keyboard shortcut. */
+__( "Keyboard shortcut: %s", "jetpack-videopress-pkg" );
 __( "Close", "jetpack-videopress-pkg" );
 /* translators: accessibility text appended to link text */
 __( "(opens in a new tab)", "jetpack-videopress-pkg" );
@@ -52,6 +54,7 @@ __( "The video failed to load.", "jetpack-videopress-pkg" );
 _x( "Playback could not be started.", "chapters preview player error", "jetpack-videopress-pkg" );
 __( "This video has no playable source.", "jetpack-videopress-pkg" );
 __( "A connection check failed.", "jetpack-videopress-pkg" );
+__( "Sections", "jetpack-videopress-pkg" );
 __( "Jetpack Logo", "jetpack-videopress-pkg" );
 __( "An Automattic Airline", "jetpack-videopress-pkg" );
 /* translators: %1$s is button label 1 and %2$s is button label 2 */
@@ -87,6 +90,14 @@ __( "/month, billed yearly", "jetpack-videopress-pkg" );
 __( "Get VideoPress", "jetpack-videopress-pkg" );
 __( "Start for free", "jetpack-videopress-pkg" );
 __( "Upload one video", "jetpack-videopress-pkg" );
+__( "Dismiss", "jetpack-videopress-pkg" );
+/* translators: %s: the error. */
+__( "There was an error reconnecting Jetpack. Error: %s", "jetpack-videopress-pkg" );
+__( "Reconnecting Jetpack", "jetpack-videopress-pkg" );
+__( "Loading…", "jetpack-videopress-pkg" );
+__( "Restore Connection", "jetpack-videopress-pkg" );
+__( "Take Action", "jetpack-videopress-pkg" );
+__( "Reconnecting Jetpack…", "jetpack-videopress-pkg" );
 __( "Breadcrumbs", "jetpack-videopress-pkg" );
 __( "Details", "jetpack-videopress-pkg" );
 __( "Editor", "jetpack-videopress-pkg" );

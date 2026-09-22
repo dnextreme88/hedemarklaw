@@ -105,6 +105,10 @@ class Bootstrap
         // ThinkRank cross-promotion surfaces (admin-only; self-gates internally)
         new ThinkRank_Promotion();
 
+        // Keep the shared `wpdeveloper_xspeed_offer` record in step with xSpeed
+        // being activated or deleted by any route, WP-CLI included.
+        XSpeed_Setup::register_hooks();
+
         // before init hook
         do_action('eael/before_init');
 
@@ -142,6 +146,10 @@ class Bootstrap
 
         // Mega Menu — registers the editor-side nested element type.
         \Essential_Addons_Elementor\MegaMenu\Manager::instance()->init();
+        // Angie (Elementor AI Assistant) widget discovery; self-gates on ANGIE_VERSION
+        if ( $this->is_activate_elementor() ) {
+            new Angie_Integration( $this->registered_elements );
+        }
 
 		include_once(EAEL_PLUGIN_PATH . 'includes/bfcm-pointer.php');
 

@@ -23,6 +23,27 @@ __( "Work phone", "jetpack-forms" );
 __( "Cell phone", "jetpack-forms" );
 __( "Contact form", "jetpack-forms" );
 __( "Calendar", "jetpack-forms" );
+__( "Loading", "jetpack-forms" );
+/* translators: %s: keyboard shortcut. */
+__( "Keyboard shortcut: %s", "jetpack-forms" );
+/* translators: 1: Calendar type. 2: Current month and year. */
+__( "%1$s, %2$s", "jetpack-forms" );
+__( "Date calendar", "jetpack-forms" );
+__( "Date range calendar", "jetpack-forms" );
+__( "Navigation bar", "jetpack-forms" );
+/* translators: %s is the full date (e.g. "Monday, April 29, 2025") */
+__( "Today, %s", "jetpack-forms" );
+__( "Next month", "jetpack-forms" );
+__( "Previous month", "jetpack-forms" );
+/* translators: %s is the full date (e.g. "Monday, April 29, 2025") */
+__( "Today, %s, selected", "jetpack-forms" );
+/* translators: %s is the full date (e.g. "Monday, April 29, 2025") */
+__( "%s, selected", "jetpack-forms" );
+__( "Required", "jetpack-forms" );
+__( "Optional", "jetpack-forms" );
+__( "More details follow the field.", "jetpack-forms" );
+/* translators: accessibility text appended to link text */
+__( "(opens in a new tab)", "jetpack-forms" );
 __( "Sort ascending", "jetpack-forms" );
 __( "Sort descending", "jetpack-forms" );
 __( "(no title)", "jetpack-forms" );
@@ -61,6 +82,7 @@ __( "Density", "jetpack-forms" );
 _x( "Comfortable", "Density option for DataView layout", "jetpack-forms" );
 _x( "Balanced", "Density option for DataView layout", "jetpack-forms" );
 _x( "Compact", "Density option for DataView layout", "jetpack-forms" );
+__( "Original aspect ratio", "jetpack-forms" );
 __( "Preview size", "jetpack-forms" );
 __( "Table", "jetpack-forms" );
 __( "Grid", "jetpack-forms" );
@@ -177,8 +199,6 @@ __( "Weeks ago", "jetpack-forms" );
 __( "Months ago", "jetpack-forms" );
 __( "Years ago", "jetpack-forms" );
 __( "Unit", "jetpack-forms" );
-__( "Required", "jetpack-forms" );
-__( "Optional", "jetpack-forms" );
 __( "Date time", "jetpack-forms" );
 __( "Today", "jetpack-forms" );
 __( "Yesterday", "jetpack-forms" );
@@ -196,6 +216,7 @@ __( "To", "jetpack-forms" );
 __( "The max. value must be greater than the min. value.", "jetpack-forms" );
 __( "Min.", "jetpack-forms" );
 __( "Max.", "jetpack-forms" );
+__( "The end time must be later than the start time.", "jetpack-forms" );
 __( "Open color picker", "jetpack-forms" );
 __( "Hide password", "jetpack-forms" );
 __( "Show password", "jetpack-forms" );
@@ -208,9 +229,6 @@ __( "Value must be true, false, or undefined", "jetpack-forms" );
 __( "Value must be an array.", "jetpack-forms" );
 __( "Every value must be a string.", "jetpack-forms" );
 __( "Value must be a valid color.", "jetpack-forms" );
-__( "Loading", "jetpack-forms" );
-/* translators: accessibility text appended to link text */
-__( "(opens in a new tab)", "jetpack-forms" );
 __( "Dismiss", "jetpack-forms" );
 __( "Akismet icon", "jetpack-forms" );
 __( "Add one-click spam protection for your forms with <a>Akismet</a>. Simply install the plugin and you're set.", "jetpack-forms" );
@@ -556,6 +574,13 @@ __( "Wallis and Futuna", "jetpack-forms" );
 __( "Yemen", "jetpack-forms" );
 __( "Zambia", "jetpack-forms" );
 __( "Zimbabwe", "jetpack-forms" );
+__( "All", "jetpack-forms" );
+__( "Published", "jetpack-forms" );
+__( "Draft", "jetpack-forms" );
+__( "Pending review", "jetpack-forms" );
+__( "Scheduled", "jetpack-forms" );
+__( "Private", "jetpack-forms" );
+__( "Trash", "jetpack-forms" );
 /* translators: 1: rating value, 2: maximum rating (e.g. "4" and "5" for "4 out of 5") */
 __( "Rating %1$s out of %2$s", "jetpack-forms" );
 __( "No answer", "jetpack-forms" );
@@ -571,6 +596,7 @@ __( "Products", "jetpack-forms" );
 __( "Help", "jetpack-forms" );
 __( "Jetpack", "jetpack-forms" );
 __( "Breadcrumbs", "jetpack-forms" );
+__( "Sections", "jetpack-forms" );
 __( "Edit form", "jetpack-forms" );
 __( "Could not empty spam.", "jetpack-forms" );
 __( "Could not empty trash.", "jetpack-forms" );
@@ -607,13 +633,6 @@ __( "Export responses", "jetpack-forms" );
 /* translators: %d: number of selected test responses. */
 _n( "Your selection includes %d test response from form preview. It will be included in the export.", "Your selection includes %d test responses from form preview. They will be included in the export.", 1, "jetpack-forms" );
 __( "Nothing to export.", "jetpack-forms" );
-__( "All", "jetpack-forms" );
-__( "Published", "jetpack-forms" );
-__( "Draft", "jetpack-forms" );
-__( "Pending review", "jetpack-forms" );
-__( "Scheduled", "jetpack-forms" );
-__( "Private", "jetpack-forms" );
-__( "Trash", "jetpack-forms" );
 __( "Could not load the form to duplicate. Please try again.", "jetpack-forms" );
 /* translators: %s: original form title */
 __( "%s Copy", "jetpack-forms" );
@@ -731,8 +750,7 @@ __( "Add note", "jetpack-forms" );
 __( "Loading preview…", "jetpack-forms" );
 __( "Copied!", "jetpack-forms" );
 __( "Copy", "jetpack-forms" );
-/* translators: %1$s size of the file and %2$s is the file extension */
-__( "%1$s, %2$s", "jetpack-forms" );
+__( "No", "jetpack-forms" );
 __( "Date:", "jetpack-forms" );
 __( "Source:", "jetpack-forms" );
 __( "IP address:", "jetpack-forms" );

@@ -67,6 +67,10 @@ var route = {
     if (Number.isNaN(navigationId)) {
       throw notFound();
     }
+    const theme = await (0, import_data.resolveSelect)(import_core_data.store).getCurrentTheme();
+    if (!theme?.is_block_theme) {
+      throw notFound();
+    }
     try {
       const navigation = await (0, import_data.resolveSelect)(import_core_data.store).getEntityRecord(
         "postType",
@@ -92,6 +96,9 @@ var route = {
     if (navigation?.title?.rendered) {
       return (0, import_html_entities.decodeEntities)(navigation.title.rendered);
     }
+    if (navigation?.title?.raw) {
+      return navigation.title.raw;
+    }
     return (0, import_i18n.__)("Navigation");
   },
   canvas: async ({
@@ -101,8 +108,7 @@ var route = {
     return {
       postType: NAVIGATION_POST_TYPE,
       postId,
-      isPreview: true,
-      editLink: `/types/wp_navigation/edit/${postId}`
+      isPreview: true
     };
   },
   loader: async ({

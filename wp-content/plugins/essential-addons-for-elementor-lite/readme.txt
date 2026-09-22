@@ -4,11 +4,11 @@ Tags: elementor, elementor addons, elementor widgets, elementor templates, eleme
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 6.8.1
+Stable tag: 6.8.4
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-Elementor addon offering 120+ widgets and templates — Elementor Gallery, Slider, Form, Post Grid, Menu, Accordion, WooCommerce & more.
+Elementor addon: 120+ widgets & templates — Elementor Gallery, Mega Menu, Slider, Form, Post Grid, Accordion, Header Footer Builder & WooCommerce.
 
 == Description ==
 
@@ -26,6 +26,9 @@ No extra resources or messy code to slow down your website. Optimized for super 
 
 ### Elements Control option
 Enable and disable individual elements adding to make your page load faster and smoother. You can deactivate unnecessary widgets to keep the site light.
+
+### Angie AI Integration
+Build faster with Elementor's agentic AI — prompt Angie to create, customize, and fine-tune your Essential Addons widgets right inside the editor.
 
 
 ### 6,500+ Ready WordPress Templates & Blocks through **Templately**
@@ -112,6 +115,7 @@ We have designed more than 65+ useful widgets to enhance your Elementor Page Bui
 55. [Woo Add to Cart](https://essential-addons.com/woo-add-to-cart/)- Make shopping easier with an ‘Add to Cart’ button
 56. [Breadcrumbs](https://essential-addons.com/breadcrumbs/)- Improve navigation with breadcrumbs for easy exploration
 57. [Code Snippet](https://essential-addons.com/code-snippet)- Display beautifully formatted code on your Elementor website
+58. [Mega Menu](https://essential-addons.com/mega-menu/)- Build rich, multi-column navigation menus visually
 
 Extensions (Free):
 
@@ -127,6 +131,7 @@ Extensions (Free):
 8. [Liquid Glass Effects](https://essential-addons.com/liquid-glass-effects/) - Give your website a sleek, futuristic feel with stunning glass effects
 9. [Image Masking with Morphing](https://essential-addons.com/image-masking-with-morphing/) -  Create seamless transformations and interactive visual effects with smooth masking & morphing
 10. [Vertical Text Orientation](https://essential-addons.com/vertical-text-orientation/) - Bring style to pages with modern, eye-catching vertical text
+11. [Header & Footer Builder](https://essential-addons.com/header-footer-builder/) - Build custom Elementor headers and footers from presets
 
 ### More elements (50+) on [Premium Version](https://wpdeveloper.com/in/upgrade-essential-addons-elementor)
 
@@ -332,6 +337,37 @@ Nothing is sent unless you explicitly opt in. If you do opt in, we send: your si
 
 
 == Changelog ==
+
+= 6.8.4 - 15/09/2026 =
+
+- Added: EA Mega Menu | Ready-made presets for easier menu customization
+- Fixed: EA Gravity Forms | File uploads were duplicated on form submission
+- Fixed: EA Gravity Forms | `gform_post_render` fired twice and caused duplicate JavaScript bindings
+- Fixed: EA Fancy Text | HTML tags such as `<br>` and `&nbsp;` displayed as literal text during Fade, Zoom and Bounce animations
+- Fixed: EA Filterable Gallery | Items repeated after using the search box with Load More enabled
+- Fixed: EA Advanced Data Table | Unsupported Ninja Tables appeared in the source picker
+- Fixed: EA Advanced Data Table | Image-only and icon-only cells were removed from the editor
+- Fixed: EA Post Timeline | Layout issues when using the External CSS print method
+- Fixed: EA Simple Menu | Background flashed and layout broke during page load
+- Fixed: EA Advanced Tabs | Nested tab clicks reset the Elementor horizontal tab scroll
+- Fixed: EA Woo Checkout | WPML translations were not applied correctly on the frontend
+- Fixed: EA Woo Product Gallery | Infinite Scroll and Load More stopped after the first page on WooCommerce archives
+- Fixed: EA Woo Product Grid | PHP warnings on archive templates
+- Fixed: EA Login/Register Form | Account status incorrectly showed as Active when Admin Approval is disabled
+- Fixed: Alt text was not applied to images loaded from external URLs
+- Fixed: Duplicate WPML widget keys caused translatable fields to be dropped
+- Fixed: Large extension control defaults caused HTTP 413 errors when saving Elementor content
+- Few minor bug fixes & improvements
+
+= 6.8.3 - 01/09/2026 =
+
+- Fixed: A fatal error that could break the site or the Elementor editor when Essential Addons Pro was active alongside the latest Lite update
+- Few minor bug fixes & improvements
+
+= 6.8.2 - 31/08/2026 =
+
+- Added: Angie AI Integration | Elementor's agentic AI can now discover Essential Addons widgets and their control schemas, so you can prompt Angie to build and customize EA widgets right inside the editor
+- Few minor bug fixes & improvements
 
 = 6.8.1 - 28/08/2026 =
 
@@ -672,232 +708,6 @@ Nothing is sent unless you explicitly opt in. If you do opt in, we send: your si
 - Improved: EA Testimonial | New layout added
 - Improved: EA Post Grid | Text placed before image for accessibility
 - Improved: EA NFT Gallery | New source: Magic Eden
-- Few minor bug fixes & improvements
-
-= 6.3.1 - 01/09/2025 =
-
-- Improvement | EA Woo Product Carousel | Add option to exclude "On Sale" and "Out of Stock" products
-- Fixed: EA Login/Register Form | Auto login not working properly
-- Fixed: EA Advanced Data Table | Header background color doesn't work on the editor page when we import data from a CSV file
-- Few minor bug fixes & improvements
-
-= 6.3.0 - 24/08/2025 =
-
-- Added: New Extension | Liquid Glass Effects
-- Improved: Security Enhancement
-- Fixed: EA Login/Register Form | Password reset URL is always showing expired when MemberPress is used to change Login URL
-- Few minor bug fixes & improvements
-
-= 6.2.4 - 14/08/2025 =
-
-- Fixed: Fatal error on PHP 7.4 for some multisite setups
-
-= 6.2.3 - 13/08/2025 =
-
-- Fixed: EA Simple Menu | Dropdown not working on iPhone
-- Fixed: EA Filterable Gallery | Filters not updating in editor
-- Fixed: Homepage not loading after updating from v6.1.8
-- Fixed: Post Widgets | "Load More" button stays after full load
-- Fixed: EA Woo Checkout | Shipping selection issue
-- Fixed: EA Add to Cart | Spacing issue with variable products
-- Fixed: Migration error | File integrity check added
-- Fixed: EA Gravity Forms | List/File upload field color issue
-- Fixed: EA SVG Draw | Not triggering on scroll
-- Improved: EA Login/Register | Cloudflare Turnstile support
-- Improved: EA Tooltip | WPML Media Translation support
-- Improved: EA Flip Box | Auto height for all devices
-- Improved: EA Woo Product Image | Custom hook for thumbnail
-- Improved: EA Woo Product Image | Enhanced zoom effect
-- Improved: EA Breadcrumbs | Home icon now clickable
-- Improved: Performance | Reduced unnecessary queries
-- Security Enhancement
-- Few minor bug fixes & improvements
-
-= 6.2.2 - 28/07/2025 =
-
-- Few minor bug fixes & improvements
-
-= 6.2.1 - 20/07/2025 =
-
-- Improved: EA Call To Action | Added Multi-Color Title support
-- Improved: EA Login/Register Form | Added reCAPTCHA support in Password Reset Form
-- Fixed: EA Woo Product Carousel | Resolved add to cart button Duplication issue with Blocksy theme
-- Fixed: EA Woo Product Carousel | Resolved Badge color styling issue
-- Few minor bug fixes & improvements
-
-= 6.2.0 - 03/07/2025 =
-
-- Added: New Widget | EA Code Snippet
-- Improved: Security Enhancements
-- Improved: EA Event Calendar | Added label to search field for accessibility
-- Fixed: EA Woo Product Gallery | Resolved cropping and misalignment issues with custom image sizes
-- Few minor bug fixes & improvements
-
-
-= 6.1.20 - 26/06/2025 =
-
-- Improved: Security Enhancements
-- Fixed: EA Woo Product Gallery | Compatibility issue with WPML
-- Fixed: EA Filterable Gallery | Resolved layout issues
-- Fixed: EA Woo Product Carousel | Addressed accessibility issues
-- Fixed: EA Product Grid | Pricing now displays correctly in list layout
-- Fixed: Resolved compatibility issue with GiveWP
-- Few minor bug fixes & improvements
-
-= 6.1.19 - 20/06/2025 =
-
-- Few minor bug fixes & improvements
-
-= 6.1.18 - 04/06/2025 =
-
-- Fixed: EA Woo Product Gallery | category tab not working
-- Few minor bug fixes & improvements
-
-= 6.1.17 - 02/06/2025 =
-
-- Added: EA SVG Draw | New Fill Type (Always) Controller
-- Added: EA Filterable Gallery | Added Captions for Videos
-- Fixed: EA Advanced Data Table | Sorting Issue for non-English Languages
-- Fixed: EA Advanced Data Table | Sorting Icon Shows Console Error
-- Fixed: EA Woo Product Gallery |  Quick View Popup Styling Issue
-- Fixed: EA Woo Product Gallery |  "View Cart" Button Line Height Is Incorrect
-- Fixed: EA Simple Menu |  Undefined Array Key "eael_simple_menu_menu" Warning
-- Fixed: EA Woo Product Grid | "View More" Button Visible After Full Load in Elementor Tabs
-- Fixed: EA Woo Product Grid | Issues with Missing Products
-- Fixed: EA Woo Product Image | Image Scaling Issue
-- Fixed: EA Login/Register Form | Validation Message Not Showing
-- Fixed: EA Login/Register Form | Issue Submitting Forms With File Uploads
-- Fixed: EA SVG Draw  | Fill After Draw Issue
-- Fixed: EA Post Grid  | Excluding Pages Issue
-- Fixed: Compatibility Issue with Newer PHP Versions.
-- Improved: EA Fancy Text | Animation Delay Until Section Scrolls Into View.
-- Improved: EA Filterable Gallery | Revamped Controls & Layouts
-- Improved : Removed Unused Class “use” Declaration
-- Improved: EA Post Grid, Team Member, Testimonial, Woo Product Grid, Woo Product Gallery | Controls Reorganized in Elementor Panel
-- Few minor bug fixes & improvements
-
-= 6.1.15 - 25/05/2025 =
-
-- Improved: EA Filterable Gallery | Revamped Controls & Layouts
-- Improved: EA Dual Color Heading | Added Multiple Heading Option
-- Fixed: EA Login/Register Form | Google Social Login assigning "Subscriber" instead of "Editor" role after Signup
-- Few minor bug fixes & improvements
-
-= 6.1.14 - 21/05/2025 =
-
-- Few minor bug fixes & improvements
-
-= 6.1.13 - 19/05/2025 =
-
-- Improved: Security Enhancement
-- Few minor bug fixes & improvements
-
-= 6.1.12 - 13/05/2025 =
-
-- Fixed: 404 Page not found page not working when built with Elementor template
-- Fixed: EA Flip Box | Height Inconsistency and Scroll Not Working on iPhone
-- Fixed: EA Woo Product List | Popup style not working
-- Improved: EA Testimonial | Added Image Height Control
-- Improved: EA Testimonial | Removed default 10px padding
-- Few minor bug fixes & improvements
-
-= 6.1.11 - 22/04/2025 =
-
-- Improved: EA Info Box | Issues & Enhancements – Phase 2
-- Fixed: EA Quick Setup Wizard | Basic and Advanced settings not working
-- Fixed: EA Event Calendar | Language translation issue
-- Few minor bug fixes & improvements
-
-= 6.1.10 - 10/04/2025 =
-
-- Improved: Security Enhancement
-- Few minor bug fixes & improvements
-
-= 6.1.9 - 24/03/2025 =
-
-- Improved: EA Testimonial | Controller Mechanism
-- Improved: EA Creative Button | Controller Mechanism
-- Improved: EA Call To Action | Controller Mechanism
-- Fixed: Elementor editor Overlapping issue
-- Fixed: EA Filterable Gallery | Load more Button functionality issue
-- Fixed: EA Filterable Gallery | Lightbox Slide number discrepancy issue
-- Few minor bug fixes & improvements
-
-= 6.1.8 - 21/03/2025 =
-
-- Few minor bug fixes & improvements
-
-= 6.1.7 - 20/03/2025 =
-
-- Fixed: Compatibility issue causing a critical error with Elementor Pro versions below 3.24.0
-- Few minor bug fixes & improvements
-
-= 6.1.6 - 19/03/2025 =
-
-- Improved: Security Enhancement
-- Improved: EA Facebook Feed | Load More button now functions correctly
-- Improved: EA Info Box | Added Subtitle Option
-- Improved: EA Sticky Video | Video now plays when clicked
-- Improved: EA Woo Account Dashboard | Added additional controls inside tabs
-- Fixed: Added support for Elementor 3.28.0 compatibility
-- Fixed: EA SVG Draw | "Fill after draw" option now works correctly
-- Fixed: EA Woo Product Images | Navigation arrows are now properly aligned
-- Fixed: EA Filterable Gallery | Resolved masonry layout error
-- Fixed: Resolved conflict with Elementor’s 404 page template
-- Fixed: Woo Product Gallery | Now displays more than 4 products correctly
-- Fixed: EA Login Register Form | Custom phone number field now appears in both user and admin emails
-- Fixed: EA Team Member | Using an empty featured image from dynamic tags no longer causes a fatal error
-- Fixed: EA Pricing Table | Icon color issue resolved
-- Few minor bug fixes & improvements
-
-= 6.1.5 - 13/03/2025 =
-
-- Improved: Introduced Post Types selection mechanism for Widgets
-- Improved: EA Product Grid | Added Stock Out products exclusion option
-- Improved: EA Flip Box | Added option to control flip duration
-- Fixed: EA Advanced Data Table | Issues with non English Special Characters
-- Fixed: EA Woo Add to Cart | Multiple buttons double icon issue
-- Few minor bug fixes & improvements
-
-= 6.1.4 - 17/02/2025 =
-
-- Few minor bug fixes & improvements
-
-= 6.1.3 - 17/02/2025 =
-
-- Fixed: EA Creative Icon | SVG icon color not applying from settings
-- Fixed: EA Advanced Data Table | Large CSV file import causes unresponsive page during widget edit
-- Fixed: EA Filterable Gallery | Popup redirects to YouTube instead of opening modal
-- Fixed: EA Woo Product Images | Images do not change with product variations
-- Few minor bug fixes & improvements
-
-= 6.1.2 - 10/02/2025 =
-
-- Fixed: EA Woo Product Carousel | Regular price strikethrough color is not changing
-- Fixed: EA Woo Product Carousel | Not able to style the pop-up with the woo product carousel
-- Fixed: EA Woo Product Grid | Not able to style the pop-up with the woo product grid
-- Fixed: EA Woo Product Gallery | Product Gallery Display Issue on Chrome (Repeating Rows After Navigation)
-- Fixed: EA Fancy text | - & character can not be used
-- Fixed: EA Advanced Tabs | Editor not loading when Advanced Tabs element is enabled in some cases
-- Fixed: EA Fancy Text | Animation Not Working Except for "Typing Text"
-- Improved: EA Woo Product Images | Added responsive controls
-- Few minor bug fixes & improvements
-
-= 6.1.1 - 21/01/2025 =
-
-- Improved: Added Edit Template support right inside the page itself for the widgets which got Saved Template option
-- Fixed: EA Breadcrumbs | When used on the Container, the background image of the container doesn't show
-- Fixed: Compatibility issue | WooCommerce Product Bundles | With bundle product quick view add to cart not working
-- Fixed: EA Filterable Gallery | Accessibility issue with Filters
-- Fixed: EA Filterable Gallery | Several fields from Filterable Gallery cannot be translated with WPML.
-- Fixed: Advanced Data Table | open new tab does not work in link
-- Fixed: EA Advanced Accordion | FAQ Schema Issue with Item Count
-- Fixed: EA WPForms | Error text color is not being applied
-- Fixed: EA Filterable Gallery | Load more is not showing properly in some cases
-- Fixed: EA Event Calendar | Events overflowing the container if multiple events available on a day
-- Improved: EA Team Member | Change Team Member name tag from H2 to span
-- Fixed: EA Post timeline | Title font family can't be changed
-- Fixed: EA Gravity Forms | "Next" Button Issue with Ajax and Toggle Settings
 - Few minor bug fixes & improvements
 
 [See changelog for all versions](https://essential-addons.com/changelog).

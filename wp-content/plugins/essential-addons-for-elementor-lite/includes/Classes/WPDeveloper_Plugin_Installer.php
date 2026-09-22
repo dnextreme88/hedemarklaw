@@ -36,6 +36,32 @@ class WPDeveloper_Plugin_Installer
 		add_action( 'wp_ajax_wpdeveloper_deactivate_plugin', [ $this, 'ajax_deactivate_plugin' ] );
 	}
 
+	/**
+	 * Consume a freshly activated plugin's own "go to my setup wizard" flag.
+	 *
+	 * Plugins installed from an EA surface are activated in the background over
+	 * AJAX, and EA then sends the user where its own CTA promised — ThinkRank's
+	 * dashboard, for instance. ThinkRank's activator sets a 60-second transient
+	 * that redirects the NEXT admin page load to its Setup Wizard, so without
+	 * this the promised destination is hijacked on arrival.
+	 *
+	 * Called after every successful EA-driven activation, so the guarantee holds
+	 * for the admin banner, Quick Setup and the plain activate endpoint alike.
+	 * Harmless no-op for plugins with no such flag.
+	 *
+	 * @param string $slug wp.org slug of the plugin just activated.
+	 * @return void
+	 */
+	public static function suppress_activation_redirect( $slug ) {
+		$flags = [
+			'thinkrank' => 'thinkrank_setup_wizard_redirect',
+		];
+
+		if ( isset( $flags[ $slug ] ) ) {
+			delete_transient( $flags[ $slug ] );
+		}
+	}
+
     /**
      * get_local_plugin_data
      *
@@ -128,21 +154,27 @@ class WPDeveloper_Plugin_Installer
 				continue;
 			}
 
+			// The user just asked for xSpeed by name and its files are here:
+			// record `accepted` in the shared offer record, so a later removal
+			// reads as a removal to every WPDeveloper plugin. No-op otherwise.
+			XSpeed_Setup::after_install( $slug );
+
 			if ( ! $active || is_plugin_active( $installed_basename ) ) {
 				return true;
 			}
 
-			// xSpeed must be configured BEFORE activation — see XSpeed_Setup.
-			$prepared  = XSpeed_Setup::before_activation( $slug );
+			// xSpeed must be claimed immediately BEFORE activation — the option
+			// it writes is a one-shot trigger activation spends. See
+			// XSpeed_Setup. No-op for every other plugin.
+			XSpeed_Setup::before_activation( $slug );
+
 			$activated = activate_plugin( $installed_basename, '', false, false );
 
 			if ( is_wp_error( $activated ) ) {
-				XSpeed_Setup::activation_failed( $slug, $prepared );
-
 				return $activated;
 			}
 
-			XSpeed_Setup::after_activation( $slug );
+			self::suppress_activation_redirect( $slug );
 
 			return true;
 		}
@@ -166,12 +198,20 @@ class WPDeveloper_Plugin_Installer
             return $install;
         }
 
+        // xSpeed's `accepted` goes into the shared offer record only now that
+        // the files are on disk — see XSpeed_Setup::after_install(). No-op for
+        // every other plugin.
+        if ( true === $install ) {
+            XSpeed_Setup::after_install( $slug );
+        }
+
         // activate plugin
         if ($install === true && $active) {
-            // xSpeed reads its stored settings during activation instead of
-            // stamping over them, so the state it should come up in has to be
-            // written first — see XSpeed_Setup. No-op for every other plugin.
-            $prepared = XSpeed_Setup::before_activation( $slug );
+            // xSpeed decides how it comes up from an option EA writes here and
+            // activation spends, so it has to land immediately before the
+            // activate_plugin() below — see XSpeed_Setup. No-op for every other
+            // plugin.
+            XSpeed_Setup::before_activation( $slug );
 
             // Not silent: silent activation skips the "activate_{$plugin}" hook,
             // which is what register_activation_hook() binds to. Suppressing it
@@ -180,12 +220,10 @@ class WPDeveloper_Plugin_Installer
             $active = activate_plugin($upgrader->plugin_info(), '', false, false);
 
             if (is_wp_error($active)) {
-                XSpeed_Setup::activation_failed( $slug, $prepared );
-
                 return $active;
             }
 
-            XSpeed_Setup::after_activation( $slug );
+            self::suppress_activation_redirect( $slug );
 
             return $active === null;
         }
@@ -240,14 +278,6 @@ class WPDeveloper_Plugin_Installer
             if ( isset( $remote_urls[ $promotype ][ $slug ] ) ) {
                 wp_remote_get( $remote_urls[ $promotype ][ $slug ] );
             }
-
-			// ThinkRank schedules a one-time redirect to its own setup wizard on
-			// activation. When installed from Quick Setup the user must stay in
-			// EA's wizard, so consume that flag before it can hijack the next
-			// admin page load.
-			if ( 'quick-setup' === $promotype && 'thinkrank' === $slug && ! is_wp_error( $result ) ) {
-				delete_transient( 'thinkrank_setup_wizard_redirect' );
-			}
         }
 
 	    if ( is_wp_error( $result ) ) {
@@ -293,28 +323,24 @@ class WPDeveloper_Plugin_Installer
 	    $basename = isset( $_POST['basename'] ) ? sanitize_text_field( wp_unslash( $_POST['basename'] ) ) : '';
 
 	    // The Integrations toggle reaches an already-installed plugin here
-	    // rather than through install_plugin(), so xSpeed's settings-before-
+	    // rather than through install_plugin(), so xSpeed's claim-before-
 	    // activation ordering has to be honoured on this path too.
-	    $slug     = XSpeed_Setup::slug_for_basename( $basename );
-	    $prepared = XSpeed_Setup::before_activation( $slug );
+	    $slug = XSpeed_Setup::slug_for_basename( $basename );
+	    XSpeed_Setup::before_activation( $slug );
 
 	    // Not silent — see install_plugin(): a silent activation never fires the
 	    // plugin's own activation hook.
 	    $result   = activate_plugin( $basename, '', false, false );
 
 	    if ( is_wp_error( $result ) ) {
-		    XSpeed_Setup::activation_failed( $slug, $prepared );
-
 		    wp_send_json_error( $result->get_error_message() );
 	    }
 
         if ($result === false) {
-            XSpeed_Setup::activation_failed( $slug, $prepared );
-
             wp_send_json_error(__('Plugin couldn\'t be activated.', 'essential-addons-for-elementor-lite'));
         }
 
-        XSpeed_Setup::after_activation( $slug );
+        self::suppress_activation_redirect( $slug );
 
         wp_send_json_success(__('Plugin is activated successfully!', 'essential-addons-for-elementor-lite'));
     }

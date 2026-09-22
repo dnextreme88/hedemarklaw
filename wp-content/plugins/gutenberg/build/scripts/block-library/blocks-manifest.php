@@ -167,6 +167,7 @@ return array(
 			'lock' => false
 		),
 		'selectors' => array(
+			'spacing' => '.wp-block-accordion-heading .wp-block-accordion-heading__toggle',
 			'typography' => array(
 				'letterSpacing' => '.wp-block-accordion-heading .wp-block-accordion-heading__toggle-title',
 				'textDecoration' => '.wp-block-accordion-heading .wp-block-accordion-heading__toggle-title'
@@ -604,7 +605,8 @@ return array(
 			'interactivity' => array(
 				'clientNavigation' => true
 			),
-			'customCSS' => false
+			'customCSS' => false,
+			'visibility' => false
 		)
 	),
 	'breadcrumbs' => array(
@@ -2674,210 +2676,6 @@ return array(
 		),
 		'style' => 'wp-block-footnotes'
 	),
-	'form' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'__experimental' => true,
-		'name' => 'core/form',
-		'title' => 'Form',
-		'category' => 'widgets',
-		'allowedBlocks' => array(
-			'core/paragraph',
-			'core/heading',
-			'core/form-input',
-			'core/form-submit-button',
-			'core/form-submission-notification',
-			'core/group',
-			'core/columns'
-		),
-		'description' => 'A form.',
-		'keywords' => array(
-			'container',
-			'wrapper',
-			'row',
-			'section'
-		),
-		'textdomain' => 'default',
-		'attributes' => array(
-			'submissionMethod' => array(
-				'type' => 'string',
-				'default' => 'email'
-			),
-			'method' => array(
-				'type' => 'string',
-				'default' => 'post'
-			),
-			'action' => array(
-				'type' => 'string'
-			),
-			'email' => array(
-				'type' => 'string'
-			)
-		),
-		'supports' => array(
-			'anchor' => true,
-			'color' => array(
-				'gradients' => true,
-				'link' => true,
-				'__experimentalDefaultControls' => array(
-					'background' => true,
-					'text' => true,
-					'link' => true
-				)
-			),
-			'spacing' => array(
-				'margin' => true,
-				'padding' => true
-			),
-			'typography' => array(
-				'fontSize' => true,
-				'lineHeight' => true,
-				'__experimentalFontFamily' => true,
-				'__experimentalTextDecoration' => true,
-				'__experimentalFontStyle' => true,
-				'__experimentalFontWeight' => true,
-				'__experimentalLetterSpacing' => true,
-				'__experimentalTextTransform' => true,
-				'__experimentalDefaultControls' => array(
-					'fontSize' => true
-				)
-			)
-		)
-	),
-	'form-input' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'__experimental' => true,
-		'name' => 'core/form-input',
-		'title' => 'Input Field',
-		'category' => 'widgets',
-		'ancestor' => array(
-			'core/form'
-		),
-		'description' => 'The basic building block for forms.',
-		'keywords' => array(
-			'input',
-			'form'
-		),
-		'textdomain' => 'default',
-		'attributes' => array(
-			'type' => array(
-				'type' => 'string',
-				'default' => 'text'
-			),
-			'name' => array(
-				'type' => 'string'
-			),
-			'label' => array(
-				'type' => 'rich-text',
-				'default' => 'Label',
-				'selector' => '.wp-block-form-input__label-content',
-				'source' => 'rich-text',
-				'role' => 'content'
-			),
-			'inlineLabel' => array(
-				'type' => 'boolean',
-				'default' => false
-			),
-			'required' => array(
-				'type' => 'boolean',
-				'default' => false,
-				'selector' => '.wp-block-form-input__input',
-				'source' => 'attribute',
-				'attribute' => 'required'
-			),
-			'placeholder' => array(
-				'type' => 'string',
-				'selector' => '.wp-block-form-input__input',
-				'source' => 'attribute',
-				'attribute' => 'placeholder',
-				'role' => 'content'
-			),
-			'value' => array(
-				'type' => 'string',
-				'default' => '',
-				'selector' => 'input',
-				'source' => 'attribute',
-				'attribute' => 'value'
-			),
-			'visibilityPermissions' => array(
-				'type' => 'string',
-				'default' => 'all'
-			)
-		),
-		'supports' => array(
-			'anchor' => true,
-			'reusable' => false,
-			'spacing' => array(
-				'margin' => array(
-					'top',
-					'bottom'
-				)
-			),
-			'__experimentalBorder' => array(
-				'radius' => true,
-				'__experimentalSkipSerialization' => true,
-				'__experimentalDefaultControls' => array(
-					'radius' => true
-				)
-			)
-		),
-		'style' => array(
-			'wp-block-form-input'
-		)
-	),
-	'form-submission-notification' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'__experimental' => true,
-		'name' => 'core/form-submission-notification',
-		'title' => 'Form Submission Notification',
-		'category' => 'widgets',
-		'ancestor' => array(
-			'core/form'
-		),
-		'description' => 'Provide a notification message after the form has been submitted.',
-		'keywords' => array(
-			'form',
-			'feedback',
-			'notification',
-			'message'
-		),
-		'textdomain' => 'default',
-		'icon' => 'feedback',
-		'attributes' => array(
-			'type' => array(
-				'type' => 'string',
-				'default' => 'success'
-			)
-		)
-	),
-	'form-submit-button' => array(
-		'$schema' => 'https://schemas.wp.org/trunk/block.json',
-		'apiVersion' => 3,
-		'__experimental' => true,
-		'name' => 'core/form-submit-button',
-		'title' => 'Form Submit Button',
-		'category' => 'widgets',
-		'icon' => 'button',
-		'ancestor' => array(
-			'core/form'
-		),
-		'allowedBlocks' => array(
-			'core/buttons',
-			'core/button'
-		),
-		'description' => 'A submission button for forms.',
-		'keywords' => array(
-			'submit',
-			'button',
-			'form'
-		),
-		'textdomain' => 'default',
-		'style' => array(
-			'wp-block-form-submit-button'
-		)
-	),
 	'freeform' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -3093,7 +2891,12 @@ return array(
 			'layout' => array(
 				'allowSwitching' => false,
 				'allowInheriting' => false,
-				'allowEditing' => false,
+				'allowEditing' => true,
+				'allowOrientation' => false,
+				'allowJustification' => false,
+				'allowVerticalAlignment' => false,
+				'allowWrap' => false,
+				'allowSizingOnChildren' => true,
 				'default' => array(
 					'type' => 'flex'
 				)
@@ -3174,7 +2977,10 @@ return array(
 					'bottom'
 				),
 				'padding' => true,
-				'blockGap' => true,
+				'blockGap' => array(
+					'horizontal',
+					'vertical'
+				),
 				'__experimentalDefaultControls' => array(
 					'padding' => true,
 					'blockGap' => true
@@ -3919,6 +3725,10 @@ return array(
 		),
 		'supports' => array(
 			'anchor' => true,
+			'align' => array(
+				'wide',
+				'full'
+			),
 			'html' => false,
 			'__experimentalBorder' => array(
 				'color' => true,
@@ -4154,6 +3964,9 @@ return array(
 				'__experimentalDefaultControls' => array(
 					'fontSize' => true
 				)
+			),
+			'interactivity' => array(
+				'clientNavigation' => true
 			)
 		),
 		'attributes' => array(
@@ -4366,7 +4179,7 @@ return array(
 		'name' => 'core/more',
 		'title' => 'More',
 		'category' => 'design',
-		'description' => 'Content before this block will be shown in the excerpt on your archives page.',
+		'description' => 'Content before this block is shown in the excerpt on blog and archive pages. Where a theme shows the full content instead, visitors get a “Read more” link to the rest of the post.',
 		'keywords' => array(
 			'read more'
 		),
@@ -4579,7 +4392,7 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'core/navigation-link',
-		'title' => 'Custom Link',
+		'title' => 'Navigation Link',
 		'category' => 'design',
 		'parent' => array(
 			'core/navigation'
@@ -5204,7 +5017,6 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'align' => true,
-			'__experimentalExposeControlsToChildren' => true,
 			'color' => array(
 				'gradients' => true,
 				'link' => true,
@@ -5263,32 +5075,40 @@ return array(
 				'role' => 'local'
 			),
 			'id' => array(
-				'type' => 'number'
+				'type' => 'number',
+				'role' => 'content'
 			),
 			'src' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'type' => array(
 				'type' => 'string',
 				'default' => 'audio'
 			),
 			'album' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'artist' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'image' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'imageAlt' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'length' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			),
 			'title' => array(
-				'type' => 'string'
+				'type' => 'string',
+				'role' => 'content'
 			)
 		),
 		'supports' => array(
@@ -6738,6 +6558,9 @@ return array(
 			),
 			'html' => false,
 			'layout' => true,
+			'spacing' => array(
+				'blockGap' => true
+			),
 			'interactivity' => true
 		),
 		'editorStyle' => 'wp-block-query-editor'
@@ -6766,6 +6589,14 @@ return array(
 				'gradients' => true,
 				'link' => true
 			),
+			'spacing' => array(
+				'padding' => true,
+				'margin' => true,
+				'__experimentalDefaultControls' => array(
+					'margin' => false,
+					'padding' => false
+				)
+			),
 			'typography' => array(
 				'fontSize' => true,
 				'lineHeight' => true,
@@ -6781,8 +6612,15 @@ return array(
 			),
 			'interactivity' => array(
 				'clientNavigation' => true
+			),
+			'__experimentalBorder' => array(
+				'radius' => true,
+				'color' => true,
+				'width' => true,
+				'style' => true
 			)
-		)
+		),
+		'style' => 'wp-block-query-no-results'
 	),
 	'query-pagination' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
@@ -7884,6 +7722,7 @@ return array(
 				'__experimentalFontWeight' => true,
 				'__experimentalLetterSpacing' => true,
 				'__experimentalWritingMode' => true,
+				'fitText' => true,
 				'__experimentalDefaultControls' => array(
 					'fontSize' => true
 				)
@@ -8559,7 +8398,8 @@ return array(
 				),
 				'default' => array(
 					
-				)
+				),
+				'role' => 'local'
 			),
 			'onlyIncludeCurrentPage' => array(
 				'type' => 'boolean',

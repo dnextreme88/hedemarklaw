@@ -2984,7 +2984,111 @@ class GravityForms extends Widget_Base {
 		        $eael_form_title       = $settings['form_title'] === 'yes';
 		        $eael_form_description = $settings['form_description'] === 'yes';
 		        $eael_form_ajax        = $settings['form_ajax'] === 'yes';
+		        ?>
 
+            <script type="text/javascript">
+                /* EA Gravity Forms - fallback dispatch of GF's per-form post-render event.
+                 *
+                 * GF normally dispatches this itself from GFFormDisplay::footer_init_scripts().
+                 * In render contexts where that never runs, GF add-ons that bind to
+                 * `gform/post_render` - e.g. the reCAPTCHA Add-On v2.2.2+, which registers its
+                 * v3 token submission filter there - are never initialised.
+                 *
+                 * Dispatching unconditionally is not safe. GF's multi-file uploader calls
+                 * `new plupload.Uploader()` on every post_render with no idempotency guard
+                 * (gravityforms/js/gravityforms.js), so a second dispatch binds a second
+                 * uploader to the same field and every selected file is submitted twice. GF's
+                 * own guard is function-local to the script it prints and cannot be read from
+                 * here, so we watch for the event instead and only step in if it never comes.
+                 *
+                 * This is the single fallback for this widget. Tickets 84410 and 84529 each
+                 * added one independently and both were merged, leaving two mutually-blind
+                 * shims that raced (issue #894). Do not add another - extend this one, and
+                 * keep the `window.__eaelGfPostRender*` flags as the shared source of truth.
+                 *
+                 * Printed before the form markup so the listeners are in place ahead of any
+                 * GF init script for this form, whether printed inline or in the footer.
+                 */
+                ( function () {
+                    var formId    = <?php echo (int) $eael_form_id; ?>;
+                    var seenFlag  = '__eaelGfPostRenderSeen_'  + formId; // dispatched, by anyone
+                    var boundFlag = '__eaelGfPostRenderBound_' + formId; // this shim is installed
+
+                    if ( window[ boundFlag ] ) {
+                        return;
+                    }
+                    window[ boundFlag ] = true;
+
+                    function markSeen( id ) {
+                        if ( parseInt( id, 10 ) === formId ) {
+                            window[ seenFlag ] = true;
+                        }
+                    }
+
+                    // triggerPostRenderEvents() always fires the jQuery event first and the
+                    // gform.utils one after, whoever calls it - so between them these observe
+                    // GF core's own dispatch as well as any other caller's.
+                    if ( window.jQuery ) {
+                        window.jQuery( document ).on( 'gform_post_render', function ( event, id ) {
+                            markSeen( typeof id !== 'undefined' ? id : formId );
+                        } );
+                    }
+                    if ( window.gform && window.gform.utils
+                         && typeof window.gform.utils.addEventListener === 'function' ) {
+                        window.gform.utils.addEventListener( 'gform/post_render', function ( e ) {
+                            markSeen( e && e.detail && typeof e.detail.formId !== 'undefined'
+                                      ? e.detail.formId : formId );
+                        } );
+                    }
+
+                    function maybeDispatch() {
+                        if ( window[ seenFlag ] ) {
+                            return;
+                        }
+
+                        // GF leaves this marker beside a hidden form while it waits for the
+                        // form to become visible, and removes it once it dispatches. Still
+                        // present means GF's script did run and will dispatch on its own -
+                        // firing now is the double-dispatch that duplicates file uploads.
+                        if ( document.getElementById( 'gform_visibility_test_' + formId ) ) {
+                            return;
+                        }
+
+                        if ( ! window.gform || ! window.gform.core
+                             || typeof window.gform.core.triggerPostRenderEvents !== 'function' ) {
+                            return;
+                        }
+
+                        var pageInput   = document.getElementById( 'gform_source_page_number_' + formId );
+                        var currentPage = pageInput ? parseInt( pageInput.value, 10 ) : 1;
+
+                        window[ seenFlag ] = true;
+                        window.gform.core.triggerPostRenderEvents( formId, currentPage || 1 );
+                    }
+
+                    // Wait for the window load event and then for GF's own gate, which needs
+                    // DOMContentLoaded plus its main and theme script events. Registering the
+                    // callback this late puts it behind GF's in the queue, and the timeout
+                    // puts it in a later task again, so GF always gets to dispatch first.
+                    function schedule() {
+                        if ( window.gform && typeof window.gform.initializeOnLoaded === 'function' ) {
+                            window.gform.initializeOnLoaded( function () {
+                                setTimeout( maybeDispatch, 0 );
+                            } );
+                        } else {
+                            setTimeout( maybeDispatch, 0 );
+                        }
+                    }
+
+                    if ( document.readyState === 'complete' ) {
+                        schedule();
+                    } else {
+                        window.addEventListener( 'load', schedule );
+                    }
+                } )();
+            </script>
+
+            <?php
 		        gravity_form( $eael_form_id, $eael_form_title, $eael_form_description, $display_inactive = false, $field_values = null, $eael_form_ajax, '', $echo = true );
 		        ?>
 			</div>
@@ -2994,31 +3098,6 @@ class GravityForms extends Widget_Base {
 				<?php GFCommon::gf_vars() ?>
 			</script>
 
-            <script type="text/javascript">
-                /* EA Gravity Forms - ensure GF's per-form post-render event dispatches
-                 * even when the widget's render context prevents GF's standard
-                 * GFFormDisplay::footer_init_scripts() per-form trigger from executing.
-                 * Without this, third-party GF add-ons (e.g. Gravity Forms reCAPTCHA
-                 * Add-On v2.2.2+) that hook into `gform/post_render` to register
-                 * submission filters will never fire, breaking v3 token population.
-                 */
-                ( function () {
-                    var formId = <?php echo (int) $eael_form_id; ?>;
-                    if ( typeof window.gform === 'undefined'
-                         || typeof window.gform.initializeOnLoaded !== 'function' ) {
-                        return;
-                    }
-                    window.gform.initializeOnLoaded( function () {
-                        var flag = '__eaelGfPostRenderFired_' + formId;
-                        if ( window[ flag ] ) { return; }
-                        if ( window.gform && window.gform.core
-                             && typeof window.gform.core.triggerPostRenderEvents === 'function' ) {
-                            window[ flag ] = true;
-                            window.gform.core.triggerPostRenderEvents( formId, 1 );
-                        }
-                    } );
-                } )();
-            </script>
             <?php
         }
     }

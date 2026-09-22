@@ -125,6 +125,7 @@ __( "Paste transcript", "jetpack-videopress-pkg" );
 __( "No subtitle tracks have been added to this video yet.", "jetpack-videopress-pkg" );
 /* translators: accessibility text appended to link text */
 __( "(opens in a new tab)", "jetpack-videopress-pkg" );
+__( "Sections", "jetpack-videopress-pkg" );
 __( "Jetpack Logo", "jetpack-videopress-pkg" );
 __( "An Automattic Airline", "jetpack-videopress-pkg" );
 /* translators: %1$s is button label 1 and %2$s is button label 2 */
@@ -150,9 +151,19 @@ __( "Jetpack", "jetpack-videopress-pkg" );
 /* translators: %s: an error message. */
 __( "There was an error testing Jetpack. Error: %s", "jetpack-videopress-pkg" );
 __( "Loading", "jetpack-videopress-pkg" );
+/* translators: %s: keyboard shortcut. */
+__( "Keyboard shortcut: %s", "jetpack-videopress-pkg" );
+__( "Dismiss", "jetpack-videopress-pkg" );
+/* translators: %s: the error. */
+__( "There was an error reconnecting Jetpack. Error: %s", "jetpack-videopress-pkg" );
+__( "Reconnecting Jetpack", "jetpack-videopress-pkg" );
+__( "Loading…", "jetpack-videopress-pkg" );
+__( "Restore Connection", "jetpack-videopress-pkg" );
+__( "A connection check failed.", "jetpack-videopress-pkg" );
+__( "Take Action", "jetpack-videopress-pkg" );
+__( "Reconnecting Jetpack…", "jetpack-videopress-pkg" );
 __( "More details follow the field.", "jetpack-videopress-pkg" );
 __( "Breadcrumbs", "jetpack-videopress-pkg" );
-__( "A connection check failed.", "jetpack-videopress-pkg" );
 __( "Host, manage, customize, and track your videos — all in one place.", "jetpack-videopress-pkg" );
 __( "Connect to set up VideoPress", "jetpack-videopress-pkg" );
 __( "VideoPress needs a connection to WordPress.com before you can upload and manage your videos.", "jetpack-videopress-pkg" );
@@ -246,7 +257,6 @@ __( "Video chapters could not be updated.", "jetpack-videopress-pkg" );
 __( "Not found", "jetpack-videopress-pkg" );
 __( "We couldn't find that video.", "jetpack-videopress-pkg" );
 __( "Back to Library", "jetpack-videopress-pkg" );
-__( "Loading…", "jetpack-videopress-pkg" );
 __( "You have unsaved changes. Leave this page and discard them?", "jetpack-videopress-pkg" );
 __( "Untitled", "jetpack-videopress-pkg" );
 __( "Video settings", "jetpack-videopress-pkg" );
