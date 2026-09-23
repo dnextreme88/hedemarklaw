@@ -42,7 +42,7 @@ Four published pages, template `elementor_header_footer`, in a parent/child hier
    `.hp-cards-row` of `.hp-card`s, each with a Fraunces title, a `.hp-price` teaser, a short
    description, and a `.hp-cardmore` "View pricing →" cue. Closes with the shared `.hp-cta`
    ink band (HTML widget, reused verbatim). Price teasers: Estate Planning **$2,000–$7,000**;
-   Probate **Statutory fee — estimate yours**; Trust Administration **Hourly, from $145/hour**.
+   Probate **Statutory fee — estimate yours**; Trust Administration **Hourly, from $500/hour**.
 
 2. **Estate Planning subpage (id 98) — SOP 5.1.** Header band + a `.hp-bigprice`
    **$2,000–$7,000** figure with an azure "General range" label and descriptive text. The
