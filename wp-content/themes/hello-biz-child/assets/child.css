@@ -1497,9 +1497,15 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .gform_wrapper .gform_fields > .gfield--width-half {
 	flex: 1 1 calc(50% - 8px);
 }
+/* "gfield--width-third" fields (the intake's Spouse First / Middle / Last Name)
+   share one row of three, like the Full Name sub-fields. */
+.gform_wrapper .gform_fields > .gfield--width-third {
+	flex: 1 1 calc((100% - 32px) / 3);
+}
 /* On narrow screens, stack them full width again. */
 @media (max-width: 640px) {
-	.gform_wrapper .gform_fields > .gfield--width-half {
+	.gform_wrapper .gform_fields > .gfield--width-half,
+	.gform_wrapper .gform_fields > .gfield--width-third {
 		flex-basis: 100%;
 	}
 }
