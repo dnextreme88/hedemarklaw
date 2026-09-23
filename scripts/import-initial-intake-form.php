@@ -82,6 +82,11 @@ $ep = iif_logic( array( array( 'fieldId' => '6', 'operator' => 'is', 'value' => 
 $pr = iif_logic( array( array( 'fieldId' => '6', 'operator' => 'is', 'value' => 'Probate' ) ) );
 $ta = iif_logic( array( array( 'fieldId' => '6', 'operator' => 'is', 'value' => 'Trust Administration' ) ) );
 
+$ep_couple = iif_logic( array(
+	array( 'fieldId' => '6', 'operator' => 'is', 'value' => 'Estate Planning' ),
+	array( 'fieldId' => '8', 'operator' => 'is', 'value' => 'Couple' ),
+) );
+
 $counties = array(
 	'Alameda', 'Alpine', 'Amador', 'Butte', 'Calaveras', 'Colusa', 'Contra Costa',
 	'Del Norte', 'El Dorado', 'Fresno', 'Glenn', 'Humboldt', 'Imperial', 'Inyo',
@@ -145,6 +150,12 @@ $fields[] = array(
 // ---- Estate Planning section ----
 $fields[] = array( 'id' => 7, 'type' => 'section', 'label' => 'Estate Planning', 'displayOnly' => true, 'conditionalLogic' => $ep );
 $fields[] = array( 'id' => 8, 'type' => 'radio', 'label' => 'Is this for an individual, or for you and a spouse/partner?', 'choices' => iif_choices( array( 'Individual', 'Couple' ) ), 'conditionalLogic' => $ep );
+// Spouse name fields (added 2026-09-23 for the Zapier/Dropbox workflow). They
+// keep ids 35–37 but sit after field 8, and show only for an Estate Planning
+// couple. Each spans 4 of 12 grid columns, so they share one row like Full Name.
+$fields[] = array( 'id' => 35, 'type' => 'text', 'label' => 'Spouse First Name', 'adminLabel' => 'spouse_first_name', 'placeholder' => 'Jane', 'isRequired' => true, 'layoutGridColumnSpan' => 4, 'conditionalLogic' => $ep_couple );
+$fields[] = array( 'id' => 36, 'type' => 'text', 'label' => 'Spouse Middle Name', 'adminLabel' => 'spouse_middle_name', 'placeholder' => 'B', 'isRequired' => true, 'layoutGridColumnSpan' => 4, 'conditionalLogic' => $ep_couple );
+$fields[] = array( 'id' => 37, 'type' => 'text', 'label' => 'Spouse Last Name', 'adminLabel' => 'spouse_last_name', 'placeholder' => 'Doe', 'isRequired' => true, 'layoutGridColumnSpan' => 4, 'conditionalLogic' => $ep_couple );
 $fields[] = array( 'id' => 9, 'type' => 'radio', 'label' => 'Do you have any estate planning documents already?', 'choices' => iif_choices( array( 'Yes', 'No' ) ), 'conditionalLogic' => $ep );
 $fields[] = array( 'id' => 10, 'type' => 'radio', 'label' => 'Do you own real estate?', 'choices' => iif_choices( array( 'Yes', 'No' ) ), 'conditionalLogic' => $ep );
 $fields[] = array( 'id' => 11, 'type' => 'radio', 'label' => 'Do you have any children?', 'choices' => iif_choices( array( 'Yes', 'No' ) ), 'conditionalLogic' => $ep );
@@ -249,7 +260,7 @@ $form = array(
 	'button'               => array( 'type' => 'text', 'text' => 'Submit' ),
 	'fields'               => $fields,
 	'version'              => GFForms::$version,
-	'nextFieldId'          => 35,
+	'nextFieldId'          => 38,
 	// Two conditional notifications route each submission by matter_type
 	// (field 6), so the right inbox gets the full submission and no inbox gets
 	// a duplicate. Point each 'to' at its own inbox when routing is needed.
