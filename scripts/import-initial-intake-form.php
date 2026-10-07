@@ -238,6 +238,11 @@ $fields[] = array(
 	) ),
 );
 
+// ---- Consultation (always visible) ----
+// Added 2026-10-07. The fields keep ids 38–39 but sit before Conflict Check.
+$fields[] = array( 'id' => 38, 'type' => 'section', 'label' => 'Consultation', 'displayOnly' => true );
+$fields[] = array( 'id' => 39, 'type' => 'radio', 'label' => 'What kind of consultation would you like?', 'adminLabel' => 'consultation_type', 'isRequired' => true, 'choices' => iif_choices( array( 'Phone Call', 'Zoom Meeting' ) ) );
+
 // ---- Shared closing block (always visible) ----
 $fields[] = array( 'id' => 31, 'type' => 'section', 'label' => 'Conflict Check', 'displayOnly' => true );
 $fields[] = array( 'id' => 32, 'type' => 'textarea', 'label' => 'Please provide the full names of all people involved in this matter, so we can run a required conflict check', 'isRequired' => true );
@@ -260,7 +265,7 @@ $form = array(
 	'button'               => array( 'type' => 'text', 'text' => 'Submit' ),
 	'fields'               => $fields,
 	'version'              => GFForms::$version,
-	'nextFieldId'          => 38,
+	'nextFieldId'          => 40,
 	// Two conditional notifications route each submission by matter_type
 	// (field 6), so the right inbox gets the full submission and no inbox gets
 	// a duplicate. Point each 'to' at its own inbox when routing is needed.

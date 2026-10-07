@@ -103,3 +103,6 @@ so it needs no change.
   folder.
 - Per-service Calendly event types were not built (the firm chose one shared link). To add
   them later, key the URL off the form id inside `hlc_calendly_url()` or the filter.
+- On 2026-10-07, the one shared link became two: a Zoom event and a Phone event. The
+  answer to a new consultation type question picks the event; see
+  [20261007-initial-intake-consultation-type.md](20261007-initial-intake-consultation-type.md).
