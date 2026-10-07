@@ -42,15 +42,22 @@ function hlc_is_booking_page() {
 }
 
 /**
- * Justin's Calendly scheduling URL.
+ * Justin's Calendly scheduling URL for a consultation type.
  *
- * Set the real link here, or through the `hlc_calendly_url` filter. This is the only
- * value the booking flow cannot derive on its own.
+ * Each booking form asks "What kind of consultation would you like?" (Admin Label
+ * `consultation_type`). There is one Calendly event for each answer. "Zoom Meeting"
+ * gets the Zoom event. Any other answer, "Phone Call" included, gets the Phone event.
  *
+ * Change the links here, or through the `hlc_calendly_url` filter.
+ *
+ * @param string $consultation_type The submitted answer: "Phone Call" or "Zoom Meeting".
  * @return string The Calendly scheduling URL.
  */
-function hlc_calendly_url() {
-	return apply_filters( 'hlc_calendly_url', 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation' );
+function hlc_calendly_url( $consultation_type = '' ) {
+	$url = 'Zoom Meeting' === $consultation_type
+		? 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-zoom'
+		: 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-phone';
+	return apply_filters( 'hlc_calendly_url', $url, $consultation_type );
 }
 
 /**
@@ -195,8 +202,10 @@ add_action( 'wp_footer', function () {
  * Replace a booking form's confirmation with the Calendly calendar.
  *
  * After a booking form submits (Initial Intake 8, Estate Planning 7, Probate 6, Trust
- * Administration 5), show the Calendly inline calendar in place of the form. The visitor's
- * name and email pass to Calendly as query parameters, so Calendly prefills them.
+ * Administration 5), show the Calendly inline calendar in place of the form. The answer to
+ * "What kind of consultation would you like?" picks the Zoom or the Phone event (see
+ * hlc_calendly_url()). The visitor's name and email pass to Calendly as query parameters,
+ * so Calendly prefills them.
  *
  * Return a string. A string forces a text confirmation, so it replaces any redirect or
  * default text stored in the form settings.
@@ -213,10 +222,15 @@ add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax
 		return $confirmation;
 	}
 
-	// Read the visitor's name and email by field type, not by a hardcoded field id.
-	$name  = '';
-	$email = '';
+	// Read the visitor's name and email by field type, and the consultation type by its
+	// Admin Label, not by a hardcoded field id. The ids differ from form to form.
+	$name              = '';
+	$email             = '';
+	$consultation_type = '';
 	foreach ( $form['fields'] as $field ) {
+		if ( 'consultation_type' === $field->adminLabel ) {
+			$consultation_type = trim( (string) rgar( $entry, (string) $field->id ) );
+		}
 		if ( 'name' === $field->type && '' === $name ) {
 			$first = trim( (string) rgar( $entry, $field->id . '.3' ) );
 			$last  = trim( (string) rgar( $entry, $field->id . '.6' ) );
@@ -235,7 +249,7 @@ add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax
 				'email' => $email,
 			)
 		),
-		hlc_calendly_url()
+		hlc_calendly_url( $consultation_type )
 	);
 
 	// Success message, shown in the popup modal beside the green check (see the footer
