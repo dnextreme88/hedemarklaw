@@ -5,6 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-10-07** | [Initial Intake — consultation type question](20261007-initial-intake-consultation-type.md) |
 | **2026-09-23** | [Initial Intake — spouse name fields](20260923-initial-intake-spouse-name-fields.md) |
 | **2026-09-11** | [Initial Intake — Gravity Forms triage form](20260911-initial-intake-gravity-form.md) |
 | **2026-09-10** | [Firm menu + placeholder service pages](20260910-firm-menu-service-pages.md) |

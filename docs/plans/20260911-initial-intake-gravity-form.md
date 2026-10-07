@@ -17,7 +17,9 @@ different set of fields. The form asks contact details and the closing questions
 
 - **Gravity Forms form id 8, "Initial Intake"** — one page, 34 fields. (On
   2026-09-23, three spouse name fields raised this to 37; see
-  [20260923-initial-intake-spouse-name-fields.md](20260923-initial-intake-spouse-name-fields.md).)
+  [20260923-initial-intake-spouse-name-fields.md](20260923-initial-intake-spouse-name-fields.md).
+  On 2026-10-07, a consultation section and question raised it to 39; see
+  [20261007-initial-intake-consultation-type.md](20261007-initial-intake-consultation-type.md).)
 - **Page id 1473** — the page that shows the form. It began as a draft page and
   became the live `/book/` page (see "Page and URLs" below).
 
