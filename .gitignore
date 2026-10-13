@@ -22,6 +22,8 @@ wp-config.php
 /wp-content/db.php
 /wp-content/advanced-cache.php
 /wp-content/object-cache.php
+# Jetpack firewall runtime files (absolute local paths, regenerated per site)
+/wp-content/jetpack-waf/
 *.log
 /.htaccess
 

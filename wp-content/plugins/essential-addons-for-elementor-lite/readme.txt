@@ -1,12 +1,12 @@
 === Essential Addons for Elementor - Popular Elementor Templates & Widgets ===
-Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, rudlinkon, jakariaistauk, himadree
+Contributors: wpdevteam, Codetic, re_enter_rupok, Asif2BD, priyomukul, rudlinkon, hasandev
 Tags: elementor, elementor addons, elementor widgets, elementor templates, elementor woocommerce
-Requires at least: 5.0
+Requires at least: 5.3
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 6.8.4
+Stable tag: 6.8.5
 License: GPLv3
-License URI: https://opensource.org/licenses/GPL-3.0
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Elementor addon: 120+ widgets & templates — Elementor Gallery, Mega Menu, Slider, Form, Post Grid, Accordion, Header Footer Builder & WooCommerce.
 
@@ -336,7 +336,29 @@ Nothing is sent unless you explicitly opt in. If you do opt in, we send: your si
 17. Creative Buttons Widget
 
 
+== Development ==
+
+Essential Addons is developed in the open. The unminified source for every minified JavaScript and CSS file, the React admin apps and the build scripts are in the public GitHub repository: [WPDevelopers/essential-addons-for-elementor-lite](https://github.com/WPDevelopers/essential-addons-for-elementor-lite). Bug reports and pull requests are welcome there.
+
 == Changelog ==
+
+= 6.8.5 - 30/09/2026 =
+
+- Improved: EA Mega Menu | Clearer Apply Preset warning about which block will be replaced
+- Improved: EA Dashboard | Clearer wording on the license verification screen
+- Fixed: EA Login/Register Form | Login, registration and password reset failed when the form was saved as a Global Widget
+- Fixed: EA Login/Register Form | Form submissions could fail when another script on the page stopped the form script from running
+- Fixed: EA Mega Menu | Resources links in the SaaS preset were not clickable
+- Fixed: EA Fancy Text | A "|" inside a phrase split it into two phrases during animations
+- Fixed: EA Event Calendar | Month View weekday headers were shifted by one day in some time zones
+- Fixed: EA Gravity Forms | Submit button styles were applied to the Date field's calendar icon
+- Fixed: EA Advanced Accordion | Control conflict with Essential Addons Pro's ACF notice
+- Fixed: EA Dashboard | License messages displayed raw HTML tags
+- Fixed: EA Dashboard | License form switched to deactivated before the request finished, even when deactivation failed
+- Fixed: Editing a translated Elementor template with WPML or Polylang could save changes into the wrong language
+- Fixed: A PHP fatal error in Load More requests on sites without Essential Addons Pro
+- Improved: Security Enhancement
+- Few minor bug fixes & improvements
 
 = 6.8.4 - 15/09/2026 =
 
