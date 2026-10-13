@@ -12,6 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 // User Fields admin panel: service rates and FAQs, with the [hlc_service_rates] and [hlc_faqs] shortcodes.
 require_once __DIR__ . '/inc/user_fields_panel.php';
 
+// SEO additions on top of Rank Math (areaServed, and the attorney's Person schema).
+require_once __DIR__ . '/inc/seo.php';
+
 /**
  * Is the current request the /book/ page or a service subpage under it?
  *

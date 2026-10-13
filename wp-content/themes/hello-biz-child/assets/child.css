@@ -1101,6 +1101,8 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	margin-bottom: 12px;
 	overflow: hidden;
 }
+/* The H3 that wraps each head button. Reset it so the button keeps its own look. */
+.hp-faqx__title { margin: 0; padding: 0; font-size: inherit; line-height: inherit; }
 .hp-faqx__head {
 	display: flex;
 	align-items: center;

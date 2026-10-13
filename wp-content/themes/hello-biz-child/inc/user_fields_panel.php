@@ -406,10 +406,14 @@ function hlc_render_faqs_shortcode( $atts = array() ) {
 		$content_id = 'hlc-faq-panel-' . $index;
 
 		$items .= '<div class="' . esc_attr( $item_cls ) . '">';
+		// The heading wraps the button, so each question is an H3 for search engines and
+		// screen readers (the standard accessible accordion pattern).
+		$items .= '<h3 class="hp-faqx__title">';
 		$items .= '<button type="button" class="hp-faqx__head" aria-expanded="' . $expanded . '" aria-controls="' . esc_attr( $content_id ) . '">';
 		$items .= '<span class="hp-faqx__q">' . esc_html( $question ) . '</span>';
 		$items .= '<span class="hp-faqx__icon" aria-hidden="true">' . $chevron . '</span>';
 		$items .= '</button>';
+		$items .= '</h3>';
 		$items .= '<div class="hp-faqx__panel" id="' . esc_attr( $content_id ) . '" role="region"><div class="hp-faqx__inner">' . wp_kses_post( $answer ) . '</div></div>';
 		$items .= '</div>';
 
@@ -440,13 +444,16 @@ function hlc_render_faqs_shortcode( $atts = array() ) {
 		$html .= '<p class="hp-faq-more"><a href="' . esc_url( $more_url ) . '">' . esc_html( $more_text ) . ' <span aria-hidden="true">&rarr;</span></a></p>';
 	}
 
-	// FAQ structured data (schema.org FAQPage).
-	$ld = array(
-		'@context'   => 'https://schema.org',
-		'@type'      => 'FAQPage',
-		'mainEntity' => $schema,
-	);
-	$html .= '<script type="application/ld+json">' . wp_json_encode( $ld ) . '</script>';
+	// FAQ structured data (schema.org FAQPage). Only the full list prints it. A teaser
+	// (`limit` set) on another page does not, so only the FAQ page carries the markup.
+	if ( 0 === $limit ) {
+		$ld = array(
+			'@context'   => 'https://schema.org',
+			'@type'      => 'FAQPage',
+			'mainEntity' => $schema,
+		);
+		$html .= '<script type="application/ld+json">' . wp_json_encode( $ld ) . '</script>';
+	}
 
 	// One delegated collapse script for every accordion on the page.
 	if ( ! $script_done ) {
