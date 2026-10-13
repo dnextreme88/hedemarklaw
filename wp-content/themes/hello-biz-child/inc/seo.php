@@ -18,6 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Keep the global schema graph (WebSite, the organization, WebPage) on every page.
+ *
+ * The setup turns the default page schema off, so service pages do not claim to be
+ * an Article. Rank Math then also drops the global entities on those pages. This
+ * filter keeps them.
+ *
+ * @return bool
+ */
+add_filter( 'rank_math/schema/add_global_entities', '__return_true' );
+
+/**
  * The places the firm serves, for the schema.org `areaServed` property.
  *
  * @return array List of schema.org Place entities.
