@@ -187,7 +187,24 @@ and trust "situational" lists in SOP 7.2b, and SOP 7.4.
 
 ### Off-site (the firm)
 
-- Google Business Profile.
+- Google Business Profile. A profile for the firm already exists (it shows in a
+  search at business.google.com, 2026-10-13). Next steps:
+  1. Find out who controls it. If it is "managed by someone else", the firm adds the
+     developer as a **Manager** (Business Profile settings → People and access), or
+     uses "Request access". If it is unclaimed, the firm claims and verifies it.
+     The firm stays the **Owner**.
+  2. Correct the data: name exactly "Hedemark Law, P.C." (no keywords in the name);
+     primary category for estate planning, secondary categories for probate and
+     trusts (no real estate agent category); the same address, phone
+     (415-692-1503), and hours as the site; the 8 service-area counties; the website
+     and the `/book/` appointment link; the short description (Google allows 750
+     characters); the services list; logo and photos.
+  3. Keep it active: ask for reviews and answer them (confirm the firm's policy
+     first, because State Bar rules cover testimonials), and post new blog articles.
+  4. When the data is final, put the same values in Rank Math Local SEO, and add the
+     profile URL to the organization schema (`sameAs`).
+- Open question: does the current Wix site use the same domain as the new site? If
+  yes, add Rank Math redirects from the old Wix URLs to the new pages before launch.
 - Listings on Avvo, Justia, FindLaw, Martindale-Hubbell, and Nolo, with the same NAP.
 - After go-live: add the site to Google Search Console, submit `/sitemap_index.xml`, and
   turn on the Rank Math Analytics module.

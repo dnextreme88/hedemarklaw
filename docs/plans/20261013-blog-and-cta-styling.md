@@ -1,4 +1,4 @@
-# Blog list cards, blog post width, and CTA band headline
+# Blog list cards, posts per page, blog post width, and CTA band headline
 
 **Executed:** 2026-10-13
 
@@ -22,6 +22,18 @@ Three visual fixes requested on review:
   needs space from the card edges.
 - `.hp-bloglist .eael-entry-meta .eael-posted-on::before` is hidden. The post grid skin
   puts a Font Awesome circle there.
+
+### Blog list: 5 posts per page
+
+The `/blog/` Post Grid widget (class `hp-bloglist`) showed 2 posts. It now shows 5.
+The "Load more articles" button loads the same number, so it adds 5 each time.
+
+```bash
+studio wp eval-file scripts/update-blog-posts-per-page.php
+```
+
+The script finds the page by path, saves through Elementor, and changes nothing on a
+second run.
 
 ### Blog post width (`assets/child.css`)
 
@@ -67,3 +79,4 @@ centered 896px block.
 - Blog post at 1440px: header, title, body, post cards, and footer all span 73–1353px.
   At 375px: 24px gutters, no sideways scroll.
 - `/blog/` cards: 24px × 28px padding, no circle before the date.
+- `/blog/` shows 5 posts. One click on "Load more articles" shows 10.
