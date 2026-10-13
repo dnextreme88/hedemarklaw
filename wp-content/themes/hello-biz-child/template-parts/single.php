@@ -83,11 +83,10 @@ while ( have_posts() ) :
 
 	<section class="hp-cta">
 		<div class="hp-cta__inner">
-			<p class="hp-cta__eyebrow"><?php esc_html_e( 'Free 20-minute consultation', 'hello-biz-child' ); ?></p>
-			<h2 class="hp-cta__title"><?php esc_html_e( 'Your family shouldn\'t have to guess.', 'hello-biz-child' ); ?></h2>
+			<h2 class="hp-cta__title"><?php esc_html_e( 'Free 20-minute consultation', 'hello-biz-child' ); ?></h2>
 			<p class="hp-cta__text"><?php esc_html_e( 'Tell us what\'s going on, and we\'ll tell you plainly what your options are — no pressure, no obligation.', 'hello-biz-child' ); ?></p>
 			<div class="hp-cta__actions">
-				<a class="hp-cta__btn hp-cta__btn--primary" href="#">
+				<a class="hp-cta__btn hp-cta__btn--primary" href="<?php echo esc_url( home_url( '/book/' ) ); ?>">
 					<?php esc_html_e( 'Book online', 'hello-biz-child' ); ?>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 						<path d="M5 12h14" />

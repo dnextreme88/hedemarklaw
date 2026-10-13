@@ -556,6 +556,13 @@ body {
 	padding: 0;
 	margin: 0;
 }
+/* The widget setting makes the holder a white card. Keep the text off its edges. */
+.hp-bloglist .eael-grid-post-holder {
+	padding: 24px 28px;
+}
+@media (max-width: 767px) {
+	.hp-bloglist .eael-grid-post-holder { padding: 16px; }
+}
 
 /* Order: date eyebrow above the title. The skin adds an inner padding; clear it
    so the date, title, excerpt, and link start at the container edge. */
@@ -582,6 +589,11 @@ body {
 	letter-spacing: 0.06em;
 	color: var(--hp-muted);
 	margin: 0;
+}
+/* The skin puts a Font Awesome circle before the date. Hide it. */
+.hp-bloglist .eael-entry-meta .eael-posted-on::before {
+	content: none;
+	display: none;
 }
 
 /* Title (serif, regular weight). */
@@ -696,9 +708,11 @@ body {
 	background: var(--hp-fog);
 	padding: 160px 0 40px;
 }
+/* The article wrappers match the 1280px page container (header, footer, main pages).
+   The max-width adds the 24px side gutters, so the content is exactly 1280px wide. */
 .hp-article__inner {
 	position: relative;
-	max-width: 768px;
+	max-width: calc(1280px + 48px);
 	margin: 0 auto;
 	padding: 0 24px;
 }
@@ -741,7 +755,7 @@ body {
 	padding: 0 0 64px;
 }
 .hp-prose__inner {
-	max-width: 768px;
+	max-width: calc(1280px + 48px);
 	margin: 0 auto;
 	padding: 0 24px;
 	font-family: var(--hp-sans);
@@ -786,7 +800,7 @@ body {
 	padding: 0 0 96px;
 }
 .hp-postnav__inner {
-	max-width: 768px;
+	max-width: calc(1280px + 48px);
 	margin: 0 auto;
 	padding: 32px 24px 0;
 	border-top: 1px solid var(--hp-hairline);
@@ -848,16 +862,8 @@ body {
 	padding: 0 24px;
 	text-align: center;
 }
-.hp-cta__eyebrow {
-	font-family: var(--hp-mono);
-	font-size: 12px;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--hp-bluelight);
-	margin: 0 0 20px;
-}
 .hp-cta__title {
-	font-family: var(--hp-serif);
+	font-family: var(--hp-sans);
 	font-weight: 400;
 	font-size: clamp(32px, 5vw, 48px);
 	line-height: 1.12;

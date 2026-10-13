@@ -5,6 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-10-13** | [Blog list cards, blog post width, and CTA band headline](20261013-blog-and-cta-styling.md) |
 | **2026-10-13** | [SEO — Rank Math setup and keyword map from the onboarding SOP](20261013-seo-rank-math.md) |
 | **2026-10-07** | [Booking forms — consultation type question and Calendly routing](20261007-initial-intake-consultation-type.md) |
 | **2026-09-23** | [Initial Intake — spouse name fields](20260923-initial-intake-spouse-name-fields.md) |
