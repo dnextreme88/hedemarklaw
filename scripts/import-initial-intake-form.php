@@ -238,10 +238,8 @@ $fields[] = array(
 	) ),
 );
 
-// ---- Consultation (always visible) ----
-// Added 2026-10-07. The fields keep ids 38–39 but sit before Conflict Check.
-$fields[] = array( 'id' => 38, 'type' => 'section', 'label' => 'Consultation', 'displayOnly' => true );
-$fields[] = array( 'id' => 39, 'type' => 'radio', 'label' => 'What kind of consultation would you like?', 'adminLabel' => 'consultation_type', 'isRequired' => true, 'choices' => iif_choices( array( 'Phone Call', 'Zoom Meeting' ) ) );
+// Ids 38–39 (the "Consultation" section and question) were added on 2026-10-07 and
+// removed on 2026-11-07. Old entries still hold values under these ids.
 
 // ---- Shared closing block (always visible) ----
 $fields[] = array( 'id' => 31, 'type' => 'section', 'label' => 'Conflict Check', 'displayOnly' => true );

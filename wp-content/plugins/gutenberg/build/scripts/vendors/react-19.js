@@ -1,5 +1,5 @@
 var React = (() => {
-function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.warned = {});if (w[key]) return;w[key] = true;var messages = {"legacy-element":"A React element created by an older React runtime (React 17/18) was detected and is handled by a compatibility patch. This usually means a bundled package ships its own React; align it with React 19.","inert":"An empty-string `inert` attribute was used. React 19 treats `inert` as a boolean, so the value was coerced to `true` by a compatibility patch. Pass `inert={true}` instead."};if (typeof console !== "undefined" && console.warn) {console.warn("[wordpress-react-19] " + messages[key]);}}
+function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.warned = {});if (w[key]) return;w[key] = true;var messages = {"legacy-element":"A React element created by an older React runtime (React 17/18) was detected and is handled by a compatibility patch. This usually means a bundled package ships its own React; align it with React 19.","inert":"An empty-string `inert` attribute was used. React 19 treats `inert` as a boolean, so the value was coerced to `true` by a compatibility patch. Pass `inert={true}` instead.","memo-default-props":"`defaultProps` on a component wrapped in `memo()` was removed in React 19 and is restored by a compatibility patch. Use default parameters instead."};if (typeof console !== "undefined" && console.warn) {console.warn("[wordpress-react-19] " + messages[key]);}}
 
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -47,9 +47,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react/cjs/react.development.js
+  // ../../node_modules/.store/react@19.3.0-tJRCs5toIV1MwFohgXUjkg/node_modules/react/cjs/react.development.js
   var require_react_development = __commonJS({
-    "../react-19/node_modules/react/cjs/react.development.js"(exports, module) {
+    "../../node_modules/.store/react@19.3.0-tJRCs5toIV1MwFohgXUjkg/node_modules/react/cjs/react.development.js"(exports, module) {
       "use strict";
       (function() {
         function defineDeprecationWarning(methodName, info) {
@@ -1044,9 +1044,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react/index.js
+  // ../../node_modules/.store/react@19.3.0-tJRCs5toIV1MwFohgXUjkg/node_modules/react/index.js
   var require_react = __commonJS({
-    "../react-19/node_modules/react/index.js"(exports, module) {
+    "../../node_modules/.store/react@19.3.0-tJRCs5toIV1MwFohgXUjkg/node_modules/react/index.js"(exports, module) {
       "use strict";
       if (false) {
         module.exports = null;

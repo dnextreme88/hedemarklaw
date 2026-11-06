@@ -1,5 +1,6 @@
 var ReactDOM = (() => {
-function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.warned = {});if (w[key]) return;w[key] = true;var messages = {"legacy-element":"A React element created by an older React runtime (React 17/18) was detected and is handled by a compatibility patch. This usually means a bundled package ships its own React; align it with React 19.","inert":"An empty-string `inert` attribute was used. React 19 treats `inert` as a boolean, so the value was coerced to `true` by a compatibility patch. Pass `inert={true}` instead."};if (typeof console !== "undefined" && console.warn) {console.warn("[wordpress-react-19] " + messages[key]);}}
+function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.warned = {});if (w[key]) return;w[key] = true;var messages = {"legacy-element":"A React element created by an older React runtime (React 17/18) was detected and is handled by a compatibility patch. This usually means a bundled package ships its own React; align it with React 19.","inert":"An empty-string `inert` attribute was used. React 19 treats `inert` as a boolean, so the value was coerced to `true` by a compatibility patch. Pass `inert={true}` instead.","memo-default-props":"`defaultProps` on a component wrapped in `memo()` was removed in React 19 and is restored by a compatibility patch. Use default parameters instead."};if (typeof console !== "undefined" && console.warn) {console.warn("[wordpress-react-19] " + messages[key]);}}
+function __wpResolveMemoDefaultProps(type, props) {var defaultProps = type && type.defaultProps;if (!defaultProps) return props;__wpWarnCompat("memo-default-props");var resolved = Object.assign({}, props);for (var name in defaultProps) {if (resolved[name] === undefined) resolved[name] = defaultProps[name];}return resolved;}
 
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -64,9 +65,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react-dom/cjs/react-dom.development.js
+  // ../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/cjs/react-dom.development.js
   var require_react_dom_development = __commonJS({
-    "../react-19/node_modules/react-dom/cjs/react-dom.development.js"(exports) {
+    "../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/cjs/react-dom.development.js"(exports) {
       "use strict";
       (function() {
         function noop() {
@@ -319,9 +320,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react-dom/index.js
+  // ../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/index.js
   var require_react_dom = __commonJS({
-    "../react-19/node_modules/react-dom/index.js"(exports, module) {
+    "../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/index.js"(exports, module) {
       "use strict";
       if (false) {
         checkDCE();
@@ -332,9 +333,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/scheduler/cjs/scheduler.development.js
+  // ../../node_modules/.store/scheduler@0.28.0-gTIJ_pVVJq3bMj1IomW2Sw/node_modules/scheduler/cjs/scheduler.development.js
   var require_scheduler_development = __commonJS({
-    "../react-19/node_modules/scheduler/cjs/scheduler.development.js"(exports) {
+    "../../node_modules/.store/scheduler@0.28.0-gTIJ_pVVJq3bMj1IomW2Sw/node_modules/scheduler/cjs/scheduler.development.js"(exports) {
       "use strict";
       (function() {
         function performWorkUntilDeadline() {
@@ -591,9 +592,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/scheduler/index.js
+  // ../../node_modules/.store/scheduler@0.28.0-gTIJ_pVVJq3bMj1IomW2Sw/node_modules/scheduler/index.js
   var require_scheduler = __commonJS({
-    "../react-19/node_modules/scheduler/index.js"(exports, module) {
+    "../../node_modules/.store/scheduler@0.28.0-gTIJ_pVVJq3bMj1IomW2Sw/node_modules/scheduler/index.js"(exports, module) {
       "use strict";
       if (false) {
         module.exports = null;
@@ -603,9 +604,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react-dom/cjs/react-dom-client.development.js
+  // ../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/cjs/react-dom-client.development.js
   var require_react_dom_client_development = __commonJS({
-    "../react-19/node_modules/react-dom/cjs/react-dom-client.development.js"(exports) {
+    "../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/cjs/react-dom-client.development.js"(exports) {
       "use strict";
       (function() {
         function findHook(fiber, id) {
@@ -7821,7 +7822,7 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
           reconcileChildren(current2, workInProgress2, nextProps, renderLanes2);
           return workInProgress2.child;
         }
-        function updateMemoComponent(current2, workInProgress2, Component, nextProps, renderLanes2) {
+        function updateMemoComponent(current2, workInProgress2, Component, nextProps, renderLanes2) {nextProps = __wpResolveMemoDefaultProps(Component.type, nextProps);
           if (null === current2) {
             var type = Component.type;
             if ("function" === typeof type && !shouldConstruct(type) && void 0 === type.defaultProps && null === Component.compare)
@@ -22564,9 +22565,9 @@ function __wpWarnCompat(key) {var w = __wpWarnCompat.warned || (__wpWarnCompat.w
     }
   });
 
-  // ../react-19/node_modules/react-dom/client.js
+  // ../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/client.js
   var require_client = __commonJS({
-    "../react-19/node_modules/react-dom/client.js"(exports, module) {
+    "../../node_modules/.store/react-dom@19.3.0-NNb4pI9-pzhGhPvydBQc-A/node_modules/react-dom/client.js"(exports, module) {
       "use strict";
       if (false) {
         checkDCE();
