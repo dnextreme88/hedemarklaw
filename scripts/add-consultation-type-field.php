@@ -59,8 +59,10 @@ function hlc_consultation_type_field( $form_id, $field_id, array $choices ) {
 }
 
 // Form id => expected title.
+// Form 8 (Initial Intake) is not a target any more. On 2026-11-07 the question was
+// removed from form 8, because its Calendly event lets the invitee select phone or Zoom.
+// See scripts/remove-consultation-type-field-form-8.php.
 $targets = array(
-	8 => 'Initial Intake',
 	7 => 'Stage 1 Initial Intake - Estate Planning',
 	6 => 'Stage 1 Initial Intake - Probate',
 	5 => 'Stage 1 Initial Intake - Trust Administration',

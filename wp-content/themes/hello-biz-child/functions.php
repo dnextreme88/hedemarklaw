@@ -45,22 +45,31 @@ function hlc_is_booking_page() {
 }
 
 /**
- * Justin's Calendly scheduling URL for a consultation type.
+ * Justin's Calendly scheduling URL for a booking form submission.
  *
- * Each booking form asks "What kind of consultation would you like?" (Admin Label
- * `consultation_type`). There is one Calendly event for each answer. "Zoom Meeting"
- * gets the Zoom event. Any other answer, "Phone Call" included, gets the Phone event.
+ * Form 8 (Initial Intake) always gets the "phone and Zoom" event. On that event, the
+ * invitee selects a phone call or a Zoom meeting in Calendly, so form 8 does not ask.
+ *
+ * The Stage 1 forms (5, 6, 7) ask "What kind of consultation would you like?" (Admin
+ * Label `consultation_type`). There is one Calendly event for each answer. "Zoom
+ * Meeting" gets the Zoom event. Any other answer, "Phone Call" included, gets the
+ * Phone event.
  *
  * Change the links here, or through the `hlc_calendly_url` filter.
  *
  * @param string $consultation_type The submitted answer: "Phone Call" or "Zoom Meeting".
+ * @param int    $form_id           The submitted form id.
  * @return string The Calendly scheduling URL.
  */
-function hlc_calendly_url( $consultation_type = '' ) {
-	$url = 'Zoom Meeting' === $consultation_type
-		? 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-zoom'
-		: 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-phone';
-	return apply_filters( 'hlc_calendly_url', $url, $consultation_type );
+function hlc_calendly_url( $consultation_type = '', $form_id = 0 ) {
+	if ( 8 === (int) $form_id ) {
+		$url = 'https://calendly.com/justin-hedemarklaw/schedule-a-free-consultation-phone-and-zoom';
+	} elseif ( 'Zoom Meeting' === $consultation_type ) {
+		$url = 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-zoom';
+	} else {
+		$url = 'https://calendly.com/justin-hedemarklaw/wordpress-integration-book-consultation-phone';
+	}
+	return apply_filters( 'hlc_calendly_url', $url, $consultation_type, (int) $form_id );
 }
 
 /**
@@ -205,8 +214,9 @@ add_action( 'wp_footer', function () {
  * Replace a booking form's confirmation with the Calendly calendar.
  *
  * After a booking form submits (Initial Intake 8, Estate Planning 7, Probate 6, Trust
- * Administration 5), show the Calendly inline calendar in place of the form. The answer to
- * "What kind of consultation would you like?" picks the Zoom or the Phone event (see
+ * Administration 5), show the Calendly inline calendar in place of the form. Form 8 always
+ * opens the "phone and Zoom" event. On the Stage 1 forms, the answer to "What kind of
+ * consultation would you like?" picks the Zoom or the Phone event (see
  * hlc_calendly_url()). The visitor's name and email pass to Calendly as query parameters,
  * so Calendly prefills them.
  *
@@ -252,7 +262,7 @@ add_filter( 'gform_confirmation', function ( $confirmation, $form, $entry, $ajax
 				'email' => $email,
 			)
 		),
-		hlc_calendly_url( $consultation_type )
+		hlc_calendly_url( $consultation_type, (int) rgar( $form, 'id' ) )
 	);
 
 	// Success message, shown in the popup modal beside the green check (see the footer
