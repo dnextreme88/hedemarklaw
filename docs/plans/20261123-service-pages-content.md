@@ -73,3 +73,42 @@ run (outside git), and Elementor keeps a revision of each page.
   of three document cards, then one row of four family cards.
 - Browser at 375px wide, all three pages: every widget and card starts at 16px, the same as
   the logo. No horizontal scroll.
+
+## Schema — Service and breadcrumbs
+
+`wp-content/themes/hello-biz-child/inc/seo.php`, new `hlc_seo_add_service_schema()` on the
+`rank_math/json_ld` filter. On each of the three pages it adds:
+
+- A `Service` entity (`{page}#service`): the page title as `name`, a `serviceType`
+  ("Estate planning", "Probate administration", "Trust administration"), the Rank Math meta
+  description as `description`, the firm as `provider`, and the firm's `areaServed` (the
+  same nine places as the firm entity).
+- A `BreadcrumbList` (`{page}#breadcrumb`): Home › Services › the page.
+- On the page's `WebPage` entity: `about` → the service, `breadcrumb` → the trail.
+
+The breadcrumb exists in the schema only. Rank Math's visible breadcrumbs stay off.
+
+### Rank Math settings put back to the documented setup
+
+The service's `provider` pointed at `{home}/#organization`, but no entity had that `@id`.
+Two Rank Math settings no longer matched `scripts/setup-seo-rank-math.php` and the
+[SEO plan](20261013-seo-rank-math.md):
+
+| Setting | Found | Set to (as documented) |
+| --- | --- | --- |
+| Titles & Meta → knowledge graph type (`knowledgegraph_type`) | `person` (the firm was output as a `Person`) | `company` |
+| Modules → Local SEO (`local-seo`) | off | on |
+
+Both values were backed up before the change (outside git). Because of the drift, the
+existing `areaServed` and the About page's `worksFor` link had also pointed at nothing; both
+work again. The Role Manager module was also on, against the setup script. It does not
+affect the schema, so it stays as it is.
+
+### Verification
+
+- `/services/probate/` (and the other two): the graph is `Place`, `["LegalService",
+  "Organization"]` at `#organization` with 9 `areaServed` entries, `WebSite`, `WebPage`,
+  `Service`, and `BreadcrumbList`. The service's `provider` and the page's `about` and
+  `breadcrumb` all resolve to entities in the graph.
+- `/about/`: the `Person`'s `worksFor` resolves to the firm.
+- `/pricing/`: no `Service` or `BreadcrumbList` (the filter runs only on the service pages).
