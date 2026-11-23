@@ -5,6 +5,8 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-11-23** | [Service detail pages — content for Estate Planning, Probate, and Trust Administration](20261123-service-pages-content.md) |
+| **2026-11-23** | [Title-only heroes — the light blue band holds only the page title](20261123-title-only-heroes.md) |
 | **2026-11-23** | [Firm pages — content for Real Estate, Estate Law, and Out-of-State Executors & Heirs](20261123-firm-pages-content.md) |
 | **2026-11-23** | [Trust Administration price teaser as a User Field](20261123-trust-price-teaser-user-field.md) |
 | **2026-11-11** | [UI/UX restyle of all pages — states, loading feedback, contrast, responsive fixes](20261111-ui-ux-restyle.md) |
