@@ -1891,6 +1891,24 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	padding-left: max(var(--hp-gutter), var(--padding-left, 0px));
 	padding-right: max(var(--hp-gutter), var(--padding-right, 0px));
 }
+/* One left edge at every width (2026-11-23): the page gutter is the only side space, the
+   same as the header logo. A top-level section gets exactly the gutter, and the containers
+   inside it add no side padding of their own (Elementor's 10px default, or a 24px box
+   padding). Without this, the inner padding added to the gutter on a phone, so the content
+   sat 8–24px to the right of the logo and the page title. Surfaces with their own
+   background (cards) keep their inner padding. The homepage hero keeps the rule above. */
+.elementor > .e-con:not(:has(.hp-cta)):not(.hp-hero) {
+	--padding-left: var(--hp-gutter);
+	--padding-right: var(--hp-gutter);
+	padding-left: var(--hp-gutter);
+	padding-right: var(--hp-gutter);
+}
+.elementor > .e-con:not(.hp-hero) .e-con:not(.hp-card):not(.hp-helpitem) {
+	--padding-left: 0px;
+	--padding-right: 0px;
+	padding-left: 0;
+	padding-right: 0;
+}
 .elementor .e-con { max-width: 100%; }
 .hp-cta__inner { padding-left: var(--hp-gutter); padding-right: var(--hp-gutter); }
 .elementor .elementor-heading-title,

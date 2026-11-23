@@ -20,24 +20,29 @@ while ( have_posts() ) :
 
 <main id="content" <?php post_class( 'hp-single' ); ?>>
 
+	<?php // The light blue band holds only the page title. The date and the back link go below it. ?>
 	<section class="hp-article hp-dotgrid">
 		<div class="hp-article__inner">
-			<a class="hp-article__back" href="<?php echo esc_url( $blog_url ); ?>">
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-					<path d="M19 12H5" />
-					<path d="m12 19-7-7 7-7" />
-				</svg>
-				<?php esc_html_e( 'Blog', 'hello-biz-child' ); ?>
-			</a>
-			<p class="hp-article__eyebrow"><?php echo esc_html( get_the_date() ); ?></p>
 			<?php the_title( '<h1 class="hp-article__title">', '</h1>' ); ?>
 		</div>
 	</section>
 
 	<article class="hp-prose">
 		<div class="hp-prose__inner">
+			<div class="hp-article__eyebrow" style="padding-top: 40px;">
+				<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+			</div>
 			<?php the_content(); ?>
 			<?php wp_link_pages(); ?>
+			<div>
+				<a class="hp-article__back" href="<?php echo esc_url( $blog_url ); ?>">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M19 12H5" />
+						<path d="m12 19-7-7 7-7" />
+					</svg>
+					<?php esc_html_e( 'All blog posts', 'hello-biz-child' ); ?>
+				</a>
+			</div>
 		</div>
 	</article>
 
