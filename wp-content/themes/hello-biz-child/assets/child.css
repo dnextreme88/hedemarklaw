@@ -1566,7 +1566,9 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	background: #fff;
 	border-radius: var(--hp-radius);
 	padding: clamp(24px, 3vw, 40px);
-	max-width: 560px;
+	/* Wide enough on a large screen for the longest result row, "Executor / representative
+	   fee (identical, §10800)", to stay on one line next to a seven-figure fee. */
+	max-width: 720px;
 }
 /* Label on the left, input on the right, gap no wider than 1em. */
 .hp-calc__inputrow {
