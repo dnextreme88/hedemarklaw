@@ -206,9 +206,10 @@ $robots = array(
 	'services/estate-planning'          => array( 'noindex' ),
 	'services/probate'                  => array( 'noindex' ),
 	'services/trust-administration'     => array( 'noindex' ),
-	'real-estate'                       => array( 'noindex' ),
-	'estate-law'                        => array( 'noindex' ),
-	'out-of-state-executors-heirs'      => array( 'noindex' ),
+	// Live since 2026-11-23 (scripts/fill-firm-pages-20261123.php): indexed.
+	'real-estate'                       => array( 'index' ),
+	'estate-law'                        => array( 'index' ),
+	'out-of-state-executors-heirs'      => array( 'index' ),
 );
 foreach ( $robots as $path => $value ) {
 	$page = hlc_seo_page( $path );
