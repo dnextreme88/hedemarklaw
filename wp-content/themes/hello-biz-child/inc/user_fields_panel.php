@@ -7,11 +7,14 @@
  *
  *   1. "Services Settings" — service rate rows (a label and an amount per row), stored
  *      in the option `hlc_service_rates`. The `[hlc_service_rates]` shortcode renders
- *      them as the branded rate table.
+ *      them as the branded rate table. The same section holds the Trust Administration
+ *      price teaser (one text line), stored in the option `hlc_trust_price_teaser`. The
+ *      `[hlc_trust_price_teaser]` shortcode renders it as the `.hp-price` line on the
+ *      Pricing page card.
  *   2. "FAQs" — question and answer rows, stored in the option `hlc_faqs`. The
  *      `[hlc_faqs]` shortcode renders them as the branded FAQ accordion.
  *
- * Both shortcodes reuse the existing brand CSS classes, so the output matches the rest
+ * All shortcodes reuse the existing brand CSS classes, so the output matches the rest
  * of the site. Place a shortcode on a page in an Elementor Shortcode widget.
  *
  * To add another group later, add a section in the render function and register a new
@@ -33,6 +36,20 @@ const HLC_SERVICE_RATES_OPTION = 'hlc_service_rates';
  * The option name that stores the FAQ rows.
  */
 const HLC_FAQS_OPTION = 'hlc_faqs';
+
+/**
+ * The option name that stores the Trust Administration price teaser (one text line).
+ */
+const HLC_TRUST_PRICE_TEASER_OPTION = 'hlc_trust_price_teaser';
+
+/**
+ * The default Trust Administration price teaser, used until an admin saves the panel.
+ *
+ * @return string The default price teaser.
+ */
+function hlc_default_trust_price_teaser() {
+	return 'Hourly, from $500/hour';
+}
 
 /**
  * The default rate rows, used until an admin saves the panel for the first time.
@@ -90,9 +107,17 @@ add_action( 'admin_menu', function () {
 /**
  * Register the options and their sanitize callbacks with the Settings API.
  *
- * Both options share the `hlc_user_fields` group, so one Save stores every section.
+ * All options share the `hlc_user_fields` group, so one Save stores every section.
  */
 add_action( 'admin_init', function () {
+	register_setting(
+		'hlc_user_fields',
+		HLC_TRUST_PRICE_TEASER_OPTION,
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
 	register_setting(
 		'hlc_user_fields',
 		HLC_SERVICE_RATES_OPTION,
@@ -225,6 +250,7 @@ function hlc_render_user_fields_page() {
 	if ( ! is_array( $faqs ) ) {
 		$faqs = array();
 	}
+	$trust_teaser = (string) get_option( HLC_TRUST_PRICE_TEASER_OPTION, hlc_default_trust_price_teaser() );
 	?>
 	<div class="wrap hlc-user-fields-wrap">
 		<h1>User Fields</h1>
@@ -234,6 +260,14 @@ function hlc_render_user_fields_page() {
 
 			<div class="hlc-section">
 				<h2 class="title">Services Settings</h2>
+
+				<div class="hlc-field">
+					<label for="hlc-trust-price-teaser"><strong>Trust Administration price teaser (Pricing page card)</strong></label>
+					<input type="text" id="hlc-trust-price-teaser" class="large-text" name="<?php echo esc_attr( HLC_TRUST_PRICE_TEASER_OPTION ); ?>" value="<?php echo esc_attr( $trust_teaser ); ?>" placeholder="For example Hourly, from $500/hour" />
+					<p class="description">The full price line on the Trust Administration card. To show it on a page, add the shortcode <code>[hlc_trust_price_teaser]</code> in an Elementor Shortcode widget.</p>
+				</div>
+
+				<h3>Rate schedule</h3>
 				<p class="description">Edit the label and value for each rate row. To show these rates on a page, add the shortcode <code>[hlc_service_rates]</code> in an Elementor Shortcode widget.</p>
 
 				<div class="hlc-repeater">
@@ -280,6 +314,8 @@ function hlc_render_user_fields_page() {
 		<style>
 			.hlc-section { margin-top: 8px; }
 			.hlc-section > h2.title { margin-top: 24px; padding-bottom: 8px; border-bottom: 1px solid #dcdcde; }
+			.hlc-field { margin: 12px 0 16px; }
+			.hlc-field label { display: block; margin-bottom: 4px; }
 			.hlc-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; }
 			.hlc-row input { margin: 0; }
 			.hlc-rate { flex-wrap: wrap; align-items: center; }
@@ -345,6 +381,22 @@ add_shortcode( 'hlc_service_rates', function () {
 	$html .= '</ul>';
 
 	return $html;
+} );
+
+/**
+ * Shortcode: [hlc_trust_price_teaser]
+ *
+ * Render the Trust Administration price teaser as the `.hp-price` line on the Pricing
+ * page card. Return an empty string when the value is empty.
+ *
+ * @return string The price teaser HTML, or an empty string.
+ */
+add_shortcode( 'hlc_trust_price_teaser', function () {
+	$teaser = trim( (string) get_option( HLC_TRUST_PRICE_TEASER_OPTION, hlc_default_trust_price_teaser() ) );
+	if ( '' === $teaser ) {
+		return '';
+	}
+	return '<p class="hp-price">' . esc_html( $teaser ) . '</p>';
 } );
 
 /**
