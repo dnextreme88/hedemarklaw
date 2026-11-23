@@ -300,8 +300,16 @@
 			return f;
 		}
 		function money( n ) { return '$' + Math.round( n ).toLocaleString( 'en-US' ); }
+		// At most 9 digits in whole dollars ($999,999,999). Above $25,000,000 the statutory
+		// fee stops growing (the rest is set by the court), so larger values add nothing.
+		var MAX_DIGITS = 9;
 		function update() {
 			var raw = input.value.replace( /[$,\s]/g, '' );
+			var whole = raw.split( '.' )[ 0 ];
+			if ( /^\d+$/.test( whole ) && whole.length > MAX_DIGITS ) {
+				raw = whole.slice( 0, MAX_DIGITS ) + raw.slice( whole.length );
+				input.value = raw;
+			}
 			var bad = '' !== raw && ! /^\d+(\.\d+)?$/.test( raw );
 			input.setAttribute( 'aria-invalid', bad ? 'true' : 'false' );
 			if ( error ) { error.hidden = ! bad; }

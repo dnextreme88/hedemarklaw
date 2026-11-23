@@ -201,14 +201,15 @@ $robots = array(
 	'book/estate-planning'              => array( 'noindex', 'nofollow' ),
 	'book/probate'                      => array( 'noindex', 'nofollow' ),
 	'book/trust-administration'         => array( 'noindex', 'nofollow' ),
-	// Stub pages ("Under construction..."): noindex until the content is published.
-	// Remove the entry (or set 'index' in the Rank Math panel) when a page goes live.
-	'services/estate-planning'          => array( 'noindex' ),
-	'services/probate'                  => array( 'noindex' ),
-	'services/trust-administration'     => array( 'noindex' ),
-	'real-estate'                       => array( 'noindex' ),
-	'estate-law'                        => array( 'noindex' ),
-	'out-of-state-executors-heirs'      => array( 'noindex' ),
+	// Former stub pages, live since 2026-11-23 (scripts/fill-service-pages-20261123.php and
+	// scripts/fill-firm-pages-20261123.php): indexed. A new stub page gets 'noindex' here
+	// until its content is published.
+	'services/estate-planning'          => array( 'index' ),
+	'services/probate'                  => array( 'index' ),
+	'services/trust-administration'     => array( 'index' ),
+	'real-estate'                       => array( 'index' ),
+	'estate-law'                        => array( 'index' ),
+	'out-of-state-executors-heirs'      => array( 'index' ),
 );
 foreach ( $robots as $path => $value ) {
 	$page = hlc_seo_page( $path );
