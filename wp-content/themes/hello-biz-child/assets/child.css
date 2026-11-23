@@ -1,32 +1,80 @@
 /* =====================================================================
    Hedemark Law — child theme styles (header, footer, Elementor helpers)
-   Palette: ink #00305B · fog #F4F7F9 · blue #377DBD · azure #0F4C85
+   Palette: ink #00305B · fog #F4F7F9 · blue #2D6CA8 · azure #0F4C85
             bluelight #8FB9DF · muted #525252 · hairline #DCE4EA
+   Brand blue #377DBD gives white text 4.3:1 (under WCAG AA 4.5:1), so text,
+   links and button fills use the action blue #2D6CA8 (5.5:1 on white).
    ===================================================================== */
 
 :root {
 	--hp-ink: #00305B;
 	--hp-ink2: #22384D;
 	--hp-fog: #F4F7F9;
-	--hp-blue: #377DBD;
+	--hp-blue: #2D6CA8;
+	--hp-blue-brand: #377DBD;
 	--hp-bluelight: #8FB9DF;
 	--hp-azure: #0F4C85;
 	--hp-mist: #EAF4F6;
 	--hp-muted: #525252;
 	--hp-hairline: #DCE4EA;
+	--hp-white: #FFFFFF;
+	--hp-error: #B42318;
 	--hp-serif: 'Fraunces', Georgia, serif;
 	--hp-sans: 'Inter', system-ui, sans-serif;
-	--hp-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+	/* Type steps: display, heading, lead, body, small. */
+	--hp-fs-display: clamp(36px, 4.6vw, 64px);
+	--hp-fs-h2: clamp(28px, 3vw, 40px);
+	--hp-fs-lead: clamp(18px, 1.4vw, 20px);
+	--hp-fs-body: 17px;
+	--hp-fs-small: 15px;
+
+	/* One corner for surfaces; buttons stay fully round. */
+	--hp-radius: 4px;
+	--hp-pill: 999px;
+
+	/* Page margin, the same at every width for header, content and footer. */
+	--hp-gutter: clamp(16px, 4vw, 32px);
+
+	--hp-focus: 0 0 0 2px var(--hp-fog), 0 0 0 4px var(--hp-blue);
+	--hp-ease: cubic-bezier(.2, .7, .2, 1);
 }
 
+html { scroll-padding-top: 96px; }
 body {
 	font-family: var(--hp-sans);
 	background: var(--hp-fog);
-	color: var(--hp-muted);
+	color: var(--hp-ink2);
+	-webkit-font-smoothing: antialiased;
+}
+html.hp-noscroll { overflow: hidden; }
+
+/* Skip link: hidden until it gets keyboard focus. */
+.hp-skip {
+	position: absolute;
+	left: var(--hp-gutter);
+	top: -100px;
+	z-index: 100;
+	padding: 12px 20px;
+	background: var(--hp-white);
+	color: var(--hp-ink);
+	font: 600 16px/1 var(--hp-sans);
+	border-radius: var(--hp-pill);
+	text-decoration: none;
+}
+.hp-skip:focus { top: 12px; outline: none; box-shadow: var(--hp-focus); } /* taste-skill-ignore: focus ring */
+
+/* One visible focus ring for every control. Mouse clicks do not show it. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 2px solid var(--hp-blue);
+	outline-offset: 2px;
+}
+:where(.hp-header, .hp-cta, .hp-footer--dark) :where(a, button):focus-visible {
+	outline-color: var(--hp-bluelight);
 }
 
 /* ---------------------------------------------------------------------
-   HEADER (fixed, translucent)
+   HEADER (fixed, solid ink bar)
    --------------------------------------------------------------------- */
 .hp-header {
 	position: fixed;
@@ -34,15 +82,13 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 50;
-	background: rgba(0, 48, 91, 0.9); /* ink #00305B @ 90% — dark header, matches the brand mark */
-	backdrop-filter: saturate(180%) blur(10px);
-	-webkit-backdrop-filter: saturate(180%) blur(10px);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+	background: var(--hp-ink);
 }
 
 .hp-header__inner {
-	max-width: 1280px;
+	max-width: calc(1280px + 2 * var(--hp-gutter));
 	margin: 0 auto;
+	padding: 0 var(--hp-gutter);
 	height: 80px;
 	display: flex;
 	align-items: center;
@@ -53,26 +99,26 @@ body {
 .hp-header__brand {
 	display: flex;
 	align-items: center;
+	min-width: 0;
 }
+.hp-header__brand a { display: block; border-radius: var(--hp-radius); }
 .hp-header__brand img,
 .hp-header__brand .custom-logo {
 	height: 36px;
 	width: auto;
 	display: block;
 }
-/* "a Professional Corporation" tagline, divided from the logo. */
+/* "a Professional Corporation" tagline, set apart by space and a softer white. */
 .hp-header__tagline {
-	margin-left: 16px;
-	padding-left: 16px;
-	border-left: 1px solid rgba(255, 255, 255, 0.25);
+	margin-left: 20px;
 	font-family: var(--hp-sans);
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
 	line-height: 1.2;
-	color: #fff;
+	color: rgba(255, 255, 255, 0.82);
 	white-space: nowrap;
 }
-@media (max-width: 600px) {
+@media (max-width: 1280px) {
 	.hp-header__tagline { display: none; }
 }
 
@@ -83,12 +129,11 @@ body {
 	text-decoration: none;
 	font-weight: 500;
 }
-.hp-wordmark em { color: var(--hp-bluelight); font-style: italic; }
 
 .hp-nav {
 	display: flex;
 	align-items: center;
-	gap: 36px;
+	gap: 32px;
 	flex: 1;
 	justify-content: flex-end;
 }
@@ -96,295 +141,372 @@ body {
 .hp-nav__list {
 	display: flex;
 	align-items: center;
-	gap: 36px;
+	gap: 4px;
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-.hp-nav__list a {
-	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	color: #fff;
-	text-decoration: none;
-	transition: color .2s ease;
-}
-.hp-nav__list a:hover { color: var(--hp-bluelight); }
-.hp-nav__list .current-menu-item > a,
-.hp-nav__list .current_page_item > a { color: var(--hp-bluelight); }
-
-/* "Firm" hover dropdown */
-.hp-has-submenu { position: relative; }
+.hp-nav__list a,
 .hp-nav__toplink {
+	position: relative;
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
+	min-height: 44px;
+	padding: 0 12px;
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 1.2;
+	color: #fff;
+	text-decoration: none;
+	background: transparent;
+	border: 0;
+	border-radius: var(--hp-radius);
 	cursor: pointer;
-	/* Fill the header height so the hover target is the whole "Firm" column and the
-	   dropdown sits flush at the header's bottom edge — no phantom strip below it. */
-	padding: 0.5em 0;
+	transition: color .15s ease, background-color .15s ease;
 }
+.hp-nav__list a:hover,
+.hp-nav__toplink:hover,
+.hp-nav__toplink:focus,
+.hp-nav__toplink[aria-expanded="true"] { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.hp-nav__list a:active,
+.hp-nav__toplink:active { background: rgba(255, 255, 255, 0.16); }
+
+/* Current page: a bar under the link, not only a colour change. */
+.hp-nav__list .current-menu-item > a,
+.hp-nav__list .current-menu-item > .hp-nav__toplink,
+.hp-nav__list [aria-current="page"] { color: var(--hp-bluelight); }
+.hp-nav__list > .current-menu-item > a::after,
+.hp-nav__list > .current-menu-item > .hp-nav__toplink::after {
+	content: "";
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: 4px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--hp-bluelight);
+}
+
+/* "Firm" disclosure menu */
+.hp-has-submenu { position: relative; }
 .hp-nav__chevron {
 	width: 14px;
 	height: 14px;
-	transition: transform .2s ease;
+	transition: transform .2s var(--hp-ease);
 }
-.hp-has-submenu:hover .hp-nav__chevron,
-.hp-has-submenu:focus-within .hp-nav__chevron { transform: rotate(180deg); }
+.hp-has-submenu.is-open .hp-nav__chevron { transform: rotate(180deg); }
 
 .hp-submenu {
 	list-style: none;
 	margin: 0;
-	padding: 8px 0;
+	padding: 8px;
 	position: absolute;
-	top: 100%;
+	top: calc(100% + 18px);
 	left: 0;
-	min-width: 220px;
-	background: rgba(0, 48, 91, 0.97); /* ink @ 97% — matches the header bar */
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 10px;
-	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+	min-width: 260px;
+	background: var(--hp-ink);
+	border-radius: var(--hp-radius);
+	box-shadow: 0 16px 40px rgba(0, 20, 40, 0.35); /* taste-skill-ignore: floating menu */
 	opacity: 0;
 	visibility: hidden;
-	transform: translateY(6px);
-	transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+	transform: translateY(-4px);
+	transition: opacity .18s ease, transform .18s var(--hp-ease), visibility .18s;
 	z-index: 60;
 }
-.hp-has-submenu:hover .hp-submenu,
-.hp-has-submenu:focus-within .hp-submenu {
+/* Bridge the gap between the button and the panel so the pointer can cross it. */
+.hp-submenu::before { content: ""; position: absolute; left: 0; right: 0; top: -18px; height: 18px; }
+/* Without JavaScript the menu opens on hover and on keyboard focus. */
+.hp-header:not(.is-js) .hp-has-submenu:hover .hp-submenu,
+.hp-header:not(.is-js) .hp-has-submenu:focus-within .hp-submenu,
+.hp-has-submenu.is-open .hp-submenu {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
 }
 .hp-submenu li { margin: 0; }
 .hp-submenu a {
-	display: block;
-	padding: 10px 18px;
+	display: flex;
+	width: 100%;
+	padding: 0 12px;
 	white-space: nowrap;
-	font-size: 14px;
+	font-size: 15px;
 }
-.hp-submenu a:hover { color: var(--hp-bluelight); }
-.hp-submenu .current-menu-item > a { color: var(--hp-bluelight); }
+.hp-submenu .current-menu-item > a { background: rgba(255, 255, 255, 0.08); }
 
 .hp-nav__actions {
 	display: flex;
 	align-items: center;
-	gap: 20px;
+	gap: 16px;
 }
 
 .hp-phone {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	font-size: 14px;
+	min-height: 44px;
+	padding: 0 8px;
+	font-size: 15px;
 	font-weight: 500;
 	color: #fff;
 	text-decoration: none;
 	white-space: nowrap;
-	transition: color .2s ease;
+	border-radius: var(--hp-radius);
+	transition: background-color .15s ease;
 }
-.hp-phone:hover { color: var(--hp-bluelight); }
+.hp-phone:hover,
+.hp-phone:focus { color: #fff; background: rgba(255, 255, 255, 0.1); }
 .hp-phone svg { width: 16px; height: 16px; }
 
+/* Primary button: one shape and one set of states across the site. */
 .hp-btn {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 8px;
-	background: var(--hp-blue); /* blue CTA on the navy bar — matches the hero button */
+	min-height: 44px;
+	background: var(--hp-blue);
 	color: #fff;
-	font-size: 14px;
-	font-weight: 500;
-	padding: 10px 20px;
-	border-radius: 999px;
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.2;
+	padding: 0 22px;
+	border: 0;
+	border-radius: var(--hp-pill);
 	text-decoration: none;
 	white-space: nowrap;
-	transition: background .2s ease;
+	cursor: pointer;
+	transition: background-color .15s ease, color .15s ease, transform .1s ease;
 }
-/* Keep the resting look on interaction — overrides the parent theme's
-   generic a:hover / a:active dark color so the CTA text stays white. */
-.hp-btn:hover,
-.hp-btn:focus,
-.hp-btn:active { background: var(--hp-blue); color: #fff; }
+.hp-btn:focus { color: #fff; }
+.hp-btn:hover { background: var(--hp-azure); color: #fff; }
+.hp-header .hp-btn:hover { background: #fff; color: var(--hp-ink); }
+.hp-btn:active { transform: translateY(1px); }
 
-/* Mobile toggle (CSS only) */
-.hp-nav-toggle,
+/* Phone-size actions: the booking button stays in the bar beside the menu button. */
+.hp-header__quick { display: none; }
 .hp-burger { display: none; }
 
+@media (max-width: 1180px) {
+	.hp-nav { gap: 16px; }
+	.hp-nav__list a, .hp-nav__toplink { padding: 0 9px; font-size: 14px; }
+	.hp-phone__number { display: none; }
+	.hp-phone { padding: 0 12px; }
+	.hp-phone svg { width: 18px; height: 18px; }
+}
+
 @media (max-width: 1024px) {
+	.hp-header__inner { height: 68px; gap: 12px; }
+	.hp-header__brand img,
+	.hp-header__brand .custom-logo { height: 30px; }
+	.hp-header__quick {
+		display: inline-flex;
+		margin-left: auto;
+		min-height: 40px;
+		padding: 0 16px;
+		font-size: 14px;
+	}
 	.hp-burger {
-		display: flex;
-		flex-direction: column;
+		display: inline-flex;
+		align-items: center;
 		justify-content: center;
-		gap: 5px;
 		width: 44px;
 		height: 44px;
+		padding: 0;
+		margin-right: -8px;
+		color: #fff;
+		background: transparent;
+		border: 0;
+		border-radius: var(--hp-radius);
 		cursor: pointer;
-		color: var(--hp-fog);
 	}
-	.hp-burger span {
-		display: block;
-		height: 2px;
-		width: 22px;
-		background: currentColor;
-		border-radius: 2px;
-	}
+	.hp-burger:hover, .hp-burger:focus { background: rgba(255, 255, 255, 0.1); color: #fff; }
+	.hp-burger svg { width: 24px; height: 24px; }
+	.hp-burger__close { display: none; }
+	.hp-header.is-open .hp-burger__open { display: none; }
+	.hp-header.is-open .hp-burger__close { display: block; }
+
 	.hp-nav {
 		position: absolute;
-		top: 80px;
+		top: 68px;
 		left: 0;
 		right: 0;
+		max-height: calc(100dvh - 68px);
+		overflow-y: auto;
 		flex-direction: column;
 		align-items: stretch;
 		gap: 0;
-		background: rgba(0, 48, 91, 0.97);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-		padding: 8px 24px 24px;
-		display: none;
+		background: var(--hp-ink);
+		padding: 8px var(--hp-gutter) 24px;
 	}
-	.hp-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
-	.hp-nav__list a { display: block; padding: 10px 0; font-size: 16px; }
+	/* With JavaScript the menu waits for the button; without it the menu stays open. */
+	.hp-header.is-js .hp-nav { display: none; }
+	.hp-header.is-js.is-open .hp-nav { display: flex; }
+	.hp-header:not(.is-js) { position: relative; }
+	.hp-header:not(.is-js) .hp-burger { display: none; }
+
+	.hp-nav__list { flex-direction: column; align-items: stretch; gap: 0; }
+	.hp-nav__list a,
+	.hp-nav__toplink { display: flex; width: 100%; min-height: 48px; padding: 0 12px; font-size: 17px; }
+	.hp-nav__chevron { display: none; }
+	.hp-nav__list > .current-menu-item > a::after,
+	.hp-nav__list > .current-menu-item > .hp-nav__toplink::after {
+		left: 0; right: auto; top: 12px; bottom: 12px; width: 3px; height: auto;
+	}
+	.hp-nav__toplink,
+	.hp-nav__toplink:hover,
+	.hp-nav__toplink:focus,
+	.hp-nav__toplink[aria-expanded="true"] { cursor: default; color: rgba(255, 255, 255, 0.75); background: transparent; font-size: 15px; }
 	.hp-nav__actions {
 		flex-direction: column;
 		align-items: stretch;
 		gap: 12px;
-		margin-top: 12px;
+		margin-top: 16px;
 	}
-	.hp-btn { justify-content: center; padding: 12px 20px; }
-	.hp-nav-toggle:checked ~ .hp-nav { display: flex; }
+	.hp-phone__number { display: inline; }
+	.hp-phone { justify-content: center; min-height: 48px; background: rgba(255, 255, 255, 0.1); border-radius: var(--hp-pill); }
+	.hp-nav .hp-btn { min-height: 48px; font-size: 16px; }
 
-	/* "Firm" group: no hover on touch — show the submenu expanded and indented. */
-	.hp-nav__toplink { padding: 10px 0; }
-	.hp-submenu {
+	/* The "Firm" group is always shown expanded on the phone menu. */
+	.hp-submenu,
+	.hp-header .hp-submenu {
 		position: static;
 		opacity: 1;
 		visibility: visible;
 		transform: none;
 		min-width: 0;
-		padding: 0 0 4px 12px;
+		padding: 0 0 4px 16px;
 		background: transparent;
-		border: 0;
-		box-shadow: none;
+		box-shadow: none; /* taste-skill-ignore: reset */
 	}
-	.hp-submenu a { padding: 8px 0; font-size: 15px; }
+	.hp-submenu::before { display: none; }
+	.hp-submenu a { min-height: 44px; font-size: 16px; }
+}
+@media (max-width: 380px) {
+	.hp-header__quick { padding: 0 12px; }
 }
 
 /* ---------------------------------------------------------------------
-   FOOTER
+   FOOTER (white field, one tone step from the fog page)
    --------------------------------------------------------------------- */
 .hp-footer {
-	background: var(--hp-fog);
-	border-top: 1px solid var(--hp-hairline);
-	padding: 64px 0 32px;
+	background: var(--hp-white);
+	padding: 72px 0 32px;
 	font-family: var(--hp-sans);
+	color: var(--hp-ink2);
 }
 .hp-footer__inner {
-	max-width: 1280px;
+	max-width: calc(1280px + 2 * var(--hp-gutter));
 	margin: 0 auto;
+	padding: 0 var(--hp-gutter);
 }
 
 .hp-footer__grid {
 	display: grid;
-	grid-template-columns: 1.4fr 1fr 1fr 1fr;
-	gap: 40px;
-	padding-bottom: 48px;
+	grid-template-columns: 1.4fr 1fr 1.2fr 1fr;
+	gap: 48px;
+	padding-bottom: 56px;
 }
-@media (max-width: 900px) {
-	.hp-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+@media (max-width: 960px) {
+	.hp-footer__grid { grid-template-columns: 1fr 1fr; gap: 40px 32px; }
 }
 @media (max-width: 560px) {
-	.hp-footer__grid { grid-template-columns: 1fr; }
+	.hp-footer { padding-top: 56px; }
+	.hp-footer__grid { grid-template-columns: 1fr; gap: 36px; }
 }
 
 .hp-footer__wordmark {
 	font-family: var(--hp-serif);
-	font-size: 20px;
+	font-size: 24px;
+	line-height: 1.2;
 	color: var(--hp-ink);
 	margin: 0 0 12px;
 }
-.hp-footer__wordmark em { color: var(--hp-blue); font-style: italic; }
 
 .hp-footer__blurb {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.6;
-	color: var(--hp-muted);
-	max-width: 20rem;
-	margin: 0 0 16px;
+	color: var(--hp-ink2);
+	max-width: 22rem;
+	margin: 0 0 20px;
 }
 
-.hp-footer__social { display: flex; gap: 12px; }
+.hp-footer__social { display: flex; gap: 8px; }
 .hp-footer__social a {
-	width: 36px;
-	height: 36px;
-	border-radius: 999px;
-	border: 1px solid var(--hp-hairline);
+	width: 44px;
+	height: 44px;
+	border-radius: var(--hp-pill);
+	background: var(--hp-mist);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--hp-muted);
+	color: var(--hp-ink);
 	text-decoration: none;
-	font-size: 13px;
-	font-weight: 600;
-	transition: color .2s ease, border-color .2s ease;
+	transition: background-color .15s ease, color .15s ease;
 }
-.hp-footer__social a:hover { color: var(--hp-blue); border-color: var(--hp-blue); }
+.hp-footer__social a:hover,
+.hp-footer__social a:focus { background: var(--hp-ink); color: #fff; }
+.hp-footer__social svg { width: 18px; height: 18px; }
 
 .hp-footer__heading {
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	color: var(--hp-muted);
-	margin: 0 0 16px;
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--hp-ink);
+	margin: 0 0 12px;
 }
 .hp-footer__col ul { list-style: none; margin: 0; padding: 0; }
-.hp-footer__col li { margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
-.hp-footer__col a { color: rgba(0, 48, 91, 0.8); text-decoration: none; transition: color .2s ease; }
-.hp-footer__col a:hover { color: var(--hp-blue); }
-/* Gray divider between the Firm service links and the rest of the footer links. */
-.hp-footer__divider {
-	border: 0;
-	border-top: 1px solid var(--hp-hairline);
-	margin: 6px 0;
+.hp-footer__col ul + ul { margin-top: 16px; }
+.hp-footer__col li { margin: 0; font-size: 16px; line-height: 1.5; }
+.hp-footer__col a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 36px;
+	color: var(--hp-ink2);
+	text-decoration: none;
+	text-underline-offset: 3px;
+	transition: color .15s ease;
 }
+.hp-footer__col a:hover,
+.hp-footer__col a:focus { color: var(--hp-blue); text-decoration: underline; }
+.hp-footer__col a[aria-current] { color: var(--hp-blue); font-weight: 600; }
 .hp-footer__contact li {
-	color: rgba(0, 48, 91, 0.8);
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
 }
-/* The address wraps to two lines — pin its icon to the first line. */
-.hp-footer__contact li:first-child { align-items: flex-start; }
+/* The address wraps to two lines: pin its icon to the first line. */
+.hp-footer__contact li:first-child { align-items: flex-start; padding: 6px 0; }
 .hp-footer__icon {
-	width: 16px;
-	height: 16px;
+	width: 18px;
+	height: 18px;
 	flex-shrink: 0;
-	color: var(--hp-muted);
+	color: var(--hp-blue);
 }
-.hp-footer__contact li:first-child .hp-footer__icon { margin-top: 2px; }
+.hp-footer__contact li:first-child .hp-footer__icon { margin-top: 3px; }
 
 .hp-footer__link {
-	display: inline-block;
-	font-size: 14px;
-	font-weight: 500;
-	color: var(--hp-blue);
-	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
 }
-.hp-footer__link:hover { color: var(--hp-ink); }
 
 .hp-footer__legal {
-	border-top: 1px solid var(--hp-hairline);
-	padding-top: 24px;
+	padding-top: 32px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
+	gap: 16px 48px;
 	justify-content: space-between;
-	font-size: 12px;
+	font-size: 14px;
+	line-height: 1.6;
 	color: var(--hp-muted);
 }
-.hp-footer__legal p { margin: 0; max-width: 42rem; line-height: 1.6; }
+.hp-footer__legal p { margin: 0; max-width: 46rem; }
 .hp-footer__copy { white-space: nowrap; }
 
 /* ---------------------------------------------------------------------
-   BACK TO TOP (floating button — homepage only)
+   BACK TO TOP (floating button: homepage only)
    --------------------------------------------------------------------- */
 .hp-totop {
 	position: fixed;
@@ -392,48 +514,43 @@ body {
 	bottom: 24px;
 	z-index: 60;
 	height: 48px;
+	min-width: 48px;
 	padding: 0 14px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--hp-blue);
+	background: var(--hp-ink);
 	color: #fff;
 	border: 0;
-	border-radius: 999px;
+	border-radius: var(--hp-pill);
 	cursor: pointer;
-	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.25);
-	/* match the "Book a free consultation" button: blue fill, white icon */
-	/* hidden until scrolled — fade + slide up on reveal */
+	box-shadow: 0 8px 24px rgba(0, 30, 60, 0.25); /* taste-skill-ignore: floating button */
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(12px);
-	transition: opacity .25s ease, transform .25s ease, background .2s ease, visibility .25s;
+	transition: opacity .25s ease, transform .25s var(--hp-ease), background-color .15s ease, visibility .25s;
 }
 .hp-totop.is-visible {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
 }
-.hp-totop:hover { background: var(--hp-blue); }
-.hp-totop:focus-visible {
-	outline: 2px solid var(--hp-blue);
-	outline-offset: 3px;
-}
-/* press feedback on click */
-.hp-totop.is-visible:active { transform: translateY(0) scale(0.92); }
+.hp-totop:hover,
+.hp-totop:focus { background: var(--hp-blue); color: #fff; }
+.hp-totop.is-visible:active { transform: scale(0.94); }
 .hp-totop svg { width: 20px; height: 20px; flex-shrink: 0; }
 
-/* "Back to top" label — hidden until hover, then expands + fades in. */
+/* "Back to top" label: shown on hover and keyboard focus. */
 .hp-totop__label {
 	max-width: 0;
 	opacity: 0;
 	overflow: hidden;
 	white-space: nowrap;
 	font-family: var(--hp-sans);
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 500;
 	line-height: 1;
-	transition: max-width .75s ease, opacity .5s ease, margin-right .3s ease;
+	transition: max-width .4s var(--hp-ease), opacity .3s ease, margin-right .3s ease;
 }
 .hp-totop:hover .hp-totop__label,
 .hp-totop:focus-visible .hp-totop__label {
@@ -444,11 +561,13 @@ body {
 
 @media (max-width: 640px) {
 	.hp-totop {
-		right: 16px;
-		bottom: 16px;
+		right: 12px;
+		bottom: 12px;
 		height: 44px;
-		padding: 0 12px;
+		min-width: 44px;
+		padding: 0;
 	}
+	.hp-totop__label { display: none; }
 }
 
 /* ---------------------------------------------------------------------
@@ -456,8 +575,8 @@ body {
    --------------------------------------------------------------------- */
 /* Dotted grid backdrop for the hero band. */
 .hp-dotgrid {
-	background-image: radial-gradient(circle at 1px 1px, var(--hp-hairline) 1.2px, transparent 0) !important;
-	background-size: 28px 28px !important;
+	background-image: none !important;
+	background-color: var(--hp-mist) !important;
 }
 /* Two-column About layout (fixed 300px portrait rail + fluid bio). */
 .hp-about-row {
@@ -504,10 +623,10 @@ body {
 /* Circular attorney portrait. Override Elementor's default image rules. */
 .elementor .hp-avatar img,
 .hp-avatar img {
-	width: 224px !important;
-	height: 224px !important;
-	max-width: 224px !important;
-	border-radius: 50% !important;
+	width: 240px !important;
+	height: 300px !important;
+	max-width: 100% !important;
+	border-radius: var(--hp-radius) !important;
 	object-fit: cover;
 	object-position: center top;
 	background: var(--hp-ink2);
@@ -539,27 +658,33 @@ body {
 	width: 100% !important;
 	float: none !important;
 	margin: 0 !important;
-	padding: 32px 0 0 !important;
-	border-top: 1px solid var(--hp-hairline);
+	padding: 0 !important;
 	background: transparent;
-	box-shadow: none;
+	box-shadow: none; /* taste-skill-ignore: reset */
 	border-radius: 0;
 }
 .hp-bloglist .eael-grid-post + .eael-grid-post {
-	margin-top: 40px !important;
+	margin-top: 16px !important;
 }
 .hp-bloglist .eael-grid-post-holder,
 .hp-bloglist .eael-grid-post-holder-inner {
 	background: transparent;
-	box-shadow: none;
+	box-shadow: none; /* taste-skill-ignore: reset */
 	border: 0;
 	padding: 0;
 	margin: 0;
 }
 /* The widget setting makes the holder a white card. Keep the text off its edges. */
 .hp-bloglist .eael-grid-post-holder {
-	padding: 24px 28px;
+	position: relative;
+	padding: 32px 36px;
+	border-radius: var(--hp-radius);
+	transition: background-color .15s ease;
 }
+.hp-bloglist .eael-grid-post-holder:hover { background-color: var(--hp-mist) !important; }
+/* The whole card is the target: the title link covers it. */
+.hp-bloglist .eael-entry-title a::after { content: ""; position: absolute; inset: 0; border-radius: var(--hp-radius); }
+.hp-bloglist .eael-post-elements-readmore-btn { position: relative; z-index: 1; }
 @media (max-width: 767px) {
 	.hp-bloglist .eael-grid-post-holder { padding: 16px; }
 }
@@ -582,11 +707,11 @@ body {
 .hp-bloglist .eael-entry-meta,
 .hp-bloglist .eael-entry-meta .eael-posted-on,
 .hp-bloglist .eael-entry-meta time {
-	font-family: var(--hp-mono);
-	font-size: 12px;
-	font-weight: 400;
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	font-weight: 500;
+	text-transform: none;
+	letter-spacing: 0;
 	color: var(--hp-muted);
 	margin: 0;
 }
@@ -622,9 +747,10 @@ body {
 /* Excerpt. */
 .hp-bloglist .eael-grid-post-excerpt p {
 	font-family: var(--hp-sans);
-	font-size: 16px;
-	line-height: 1.7;
-	color: var(--hp-muted);
+	font-size: 17px;
+	line-height: 1.65;
+	max-width: 70ch;
+	color: var(--hp-ink2);
 	margin: 0 0 16px;
 }
 
@@ -634,8 +760,9 @@ body {
 	align-items: center;
 	gap: 6px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
+	font-size: 16px;
+	font-weight: 600;
+	min-height: 44px;
 	color: var(--hp-blue);
 	background: transparent;
 	padding: 0;
@@ -660,38 +787,47 @@ body {
 .hp-bloglist .eael-load-more-button-wrap {
 	display: flex;
 	justify-content: center;
-	margin-top: 56px;
-	padding-top: 40px;
-	border-top: 1px solid var(--hp-hairline);
+	margin-top: 48px;
 }
 .hp-bloglist .eael-load-more-button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	gap: 10px;
 	min-width: 2.5rem;
-	height: 40px;
-	padding: 0 22px;
-	border-radius: 999px;
-	border: 1px solid var(--hp-ink);
-	background: var(--hp-ink); /* matches .hp-btn "Book a free consultation" */
-	color: var(--hp-fog);
+	min-height: 48px;
+	padding: 0 28px;
+	border-radius: var(--hp-pill);
+	border: 0;
+	background: var(--hp-ink);
+	color: #fff;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
+	font-size: 16px;
+	font-weight: 600;
 	cursor: pointer;
-	transition: color .2s ease, border-color .2s ease, background .2s ease;
+	transition: background-color .15s ease, transform .1s ease;
 }
-.hp-bloglist .eael-load-more-button:hover {
-	border-color: var(--hp-blue);
+.hp-bloglist .eael-load-more-button:hover,
+.hp-bloglist .eael-load-more-button:focus {
 	color: #fff;
 	background: var(--hp-blue);
+}
+.hp-bloglist .eael-load-more-button:active { transform: translateY(1px); }
+.hp-bloglist .eael-load-more-button.is-busy { cursor: progress; background: var(--hp-ink2); }
+.hp-bloglist .eael-load-more-button.is-busy::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
 }
 
 .hp-bloglist .no-posts-found {
 	font-family: var(--hp-sans);
 	color: var(--hp-muted);
 	padding-top: 32px;
-	border-top: 1px solid var(--hp-hairline);
 }
 
 /* ---------------------------------------------------------------------
@@ -721,31 +857,35 @@ body {
 	align-items: center;
 	gap: 6px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 500;
-	color: var(--hp-muted);
+	min-height: 44px;
+	color: var(--hp-blue);
 	text-decoration: none;
-	margin-bottom: 32px;
+	margin-bottom: 24px;
 	transition: color .2s ease;
 }
-.hp-article__back:hover { color: var(--hp-blue); }
+.hp-article__back:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
+.hp-article__back:hover svg { transform: translateX(-3px); }
+.hp-article__back svg { transition: transform .2s var(--hp-ease); }
 .hp-article__back svg { width: 16px; height: 16px; }
 
 .hp-article__eyebrow {
-	font-family: var(--hp-mono);
-	font-size: 12px;
-	font-weight: 600;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--hp-azure);
-	margin: 0 0 16px;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--hp-muted);
+	margin: 0 0 12px;
 }
 .hp-article__title {
 	font-family: var(--hp-serif);
 	font-weight: 400;
-	font-size: clamp(34px, 5vw, 48px);
-	line-height: 1.12;
+	font-size: var(--hp-fs-display);
+	line-height: 1.08;
+	letter-spacing: -0.01em;
 	color: var(--hp-ink);
+	max-width: 22ch;
+	text-wrap: balance;
 	margin: 0;
 }
 
@@ -760,24 +900,30 @@ body {
 	padding: 0 24px;
 	font-family: var(--hp-sans);
 }
+/* The container stays 1280px wide (it lines up with the header); the reading
+   column inside it is held to about 70 characters per line. */
+.hp-prose__inner > * { max-width: 70ch; }
+.hp-prose__inner > figure,
+.hp-prose__inner > .wp-block-image,
+.hp-prose__inner > img { max-width: 900px; }
 .hp-prose__inner > p,
 .hp-prose__inner > ul,
 .hp-prose__inner > ol {
-	font-size: 16px;
-	line-height: 1.75;
-	color: var(--hp-muted);
+	font-size: var(--hp-fs-body);
+	line-height: 1.7;
+	color: var(--hp-ink2);
 	margin: 0 0 24px;
 }
 .hp-prose__inner > p:first-of-type {
-	font-size: 18px;
+	font-size: var(--hp-fs-lead);
 }
 .hp-prose__inner h2 {
 	font-family: var(--hp-serif);
 	font-weight: 400;
-	font-size: 24px;
-	line-height: 1.3;
+	font-size: clamp(24px, 2.4vw, 30px);
+	line-height: 1.25;
 	color: var(--hp-ink);
-	margin: 40px 0 16px;
+	margin: 48px 0 16px;
 }
 .hp-prose__inner h3 {
 	font-family: var(--hp-serif);
@@ -802,8 +948,7 @@ body {
 .hp-postnav__inner {
 	max-width: calc(1280px + 48px);
 	margin: 0 auto;
-	padding: 32px 24px 0;
-	border-top: 1px solid var(--hp-hairline);
+	padding: 0 24px;
 	display: flex;
 	justify-content: space-between;
 	gap: 16px;
@@ -814,29 +959,28 @@ body {
 	flex-direction: column;
 	gap: 6px;
 	width: 48%;
-	border: 1px solid var(--hp-hairline);
-	border-radius: 16px;
-	padding: 16px 20px;
+	background: var(--hp-white);
+	border-radius: var(--hp-radius);
+	padding: 24px 28px;
 	text-decoration: none;
-	transition: border-color .2s ease;
+	transition: background-color .15s ease;
 }
-.hp-postnav__card:hover { border-color: var(--hp-blue); }
+.hp-postnav__card:hover { background: var(--hp-mist); }
 .hp-postnav__card--next { align-items: flex-end; text-align: right; }
 .hp-postnav__card--prev { align-items: flex-start; text-align: left; }
 .hp-postnav__label {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	font-family: var(--hp-mono);
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
+	font-family: var(--hp-sans);
+	font-size: 15px;
+	font-weight: 500;
 	color: var(--hp-muted);
 }
-.hp-postnav__label svg { width: 14px; height: 14px; }
+.hp-postnav__label svg { width: 16px; height: 16px; }
 .hp-postnav__title {
 	font-family: var(--hp-serif);
-	font-size: 16px;
+	font-size: 20px;
 	line-height: 1.35;
 	color: var(--hp-ink);
 	transition: color .2s ease;
@@ -872,9 +1016,9 @@ body {
 }
 .hp-cta__text {
 	font-family: var(--hp-sans);
-	font-size: 18px;
+	font-size: var(--hp-fs-lead);
 	line-height: 1.6;
-	color: rgba(244, 247, 249, 0.7);
+	color: rgba(244, 247, 249, 0.88);
 	max-width: 36rem;
 	margin: 0 auto 40px;
 }
@@ -890,26 +1034,38 @@ body {
 	align-items: center;
 	gap: 8px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	padding: 14px 28px;
-	border-radius: 999px;
+	justify-content: center;
+	min-height: 52px;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 0 28px;
+	border-radius: var(--hp-pill);
 	text-decoration: none;
-	transition: background .2s ease, color .2s ease, border-color .2s ease;
+	transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .1s ease;
 }
+.hp-cta__btn:active { transform: translateY(1px); }
+.hp-cta__btn:focus { color: inherit; }
 .hp-cta__btn svg { width: 16px; height: 16px; }
 .hp-cta__btn--primary {
 	background: var(--hp-blue);
 	color: #fff;
 }
-.hp-cta__btn--primary:hover { background: #fff; color: var(--hp-ink); }
+.hp-cta__btn--primary:hover,
+.hp-cta__btn--primary:focus { background: #fff; color: var(--hp-ink); }
+.hp-cta__btn--primary:focus:not(:hover):not(:focus-visible) { background: var(--hp-blue); color: #fff; }
 .hp-cta__btn--ghost {
-	border: 1px solid rgba(244, 247, 249, 0.3);
+	border: 1px solid rgba(244, 247, 249, 0.7); /* taste-skill-ignore: bordered secondary button */
 	color: var(--hp-fog);
 }
 /* Keep the light text on hover — overrides the parent theme's generic a:hover dark colour,
    which would otherwise blend into the dark section background. */
-.hp-cta__btn--ghost:hover { border-color: var(--hp-fog); color: var(--hp-fog); }
+.hp-cta__btn--ghost:hover,
+.hp-cta__btn--ghost:focus { border-color: var(--hp-fog); background: var(--hp-fog); color: var(--hp-ink); }
+.hp-cta__btn--ghost:focus:not(:hover):not(:focus-visible) { background: transparent; color: var(--hp-fog); }
+@media (max-width: 560px) {
+	.hp-cta { padding: 72px 0; }
+	.hp-cta__actions { flex-direction: column; align-items: stretch; }
+}
 
 /* =====================================================================
    HOMEPAGE (front page built in Elementor — mirrors index.html)
@@ -931,14 +1087,7 @@ body {
 	position: absolute;
 	inset: 0;
 	z-index: -1;
-	background: linear-gradient(
-		to bottom,
-		rgba(244, 247, 249, 0.5),
-		rgba(244, 247, 249, 0.75) 55%,
-		rgba(244, 247, 249, 0.92)
-	);
-	backdrop-filter: blur(3px);
-	-webkit-backdrop-filter: blur(3px);
+	background: rgba(244, 247, 249, 0.84);
 	pointer-events: none;
 }
 
@@ -954,25 +1103,17 @@ body {
 	width: auto !important;
 	max-width: none !important;
 	min-width: 0 !important;
-	background: #fff;
-	border: 1px solid var(--hp-hairline);
-	border-radius: 16px;
-	padding: 32px !important;
-	transition: border-color .2s ease, box-shadow .2s ease;
+	background: var(--hp-white);
+	border-radius: var(--hp-radius);
+	padding: 36px !important;
+	transition: background-color .15s ease;
 }
-.hp-card:hover {
-	border-color: rgba(55, 125, 189, 0.5);
-	box-shadow: 0 8px 30px rgba(0, 48, 91, 0.08);
-}
+.hp-card:has(.hp-card__link):hover,
+.hp-card:has(.hp-learn):hover { background: var(--hp-mist); }
 /* Whole-card link (Who we help): tint the title on hover. */
 a.hp-card { text-decoration: none; }
 .hp-card:hover .elementor-heading-title { color: var(--hp-blue) !important; }
 
-/* Icon circle inside a service card. */
-.hp-card .elementor-icon {
-	background: var(--hp-mist) !important;
-	color: var(--hp-azure) !important;
-}
 
 /* "Learn more →" inline text link inside a card. */
 .hp-learn a,
@@ -981,9 +1122,10 @@ a.hp-learn {
 	align-items: center;
 	gap: 6px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	color: var(--hp-ink);
+	font-size: 16px;
+	font-weight: 600;
+	min-height: 44px;
+	color: var(--hp-blue);
 	text-decoration: none;
 	transition: color .2s ease;
 }
@@ -995,7 +1137,7 @@ a.hp-learn::after {
 	transition: transform .2s ease;
 }
 .hp-learn a:hover,
-a.hp-learn:hover { color: var(--hp-blue); }
+a.hp-learn:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
 .hp-learn a:hover::after,
 a.hp-learn:hover::after { transform: translateX(3px); }
 
@@ -1013,8 +1155,9 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	position: relative;
 	min-height: 280px;
 }
-.hp-testi__slide { transition: opacity 1.25s ease; }
+.hp-testi__slide { margin: 0; animation: hp-fade .6s ease both; }
 .hp-testi__slide[hidden] { display: none; }
+.hp-testi__quote p { margin: 0; }
 .hp-testi__stars {
 	display: flex;
 	justify-content: center;
@@ -1026,44 +1169,89 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .hp-testi__quote {
 	font-family: var(--hp-serif);
 	font-weight: 400;
-	font-style: italic;
-	font-size: 24px;
+	font-style: normal;
+	font-size: clamp(22px, 2.2vw, 30px);
 	line-height: 1.35;
 	color: var(--hp-ink);
-	margin: 0 0 24px;
-}
-@media (min-width: 1024px) {
-	.hp-testi__quote { font-size: 30px; }
+	max-width: 36ch;
+	margin: 0 auto 24px;
+	padding: 0;
+	border: 0;
+	quotes: none;
 }
 .hp-testi__name {
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	color: var(--hp-muted);
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--hp-ink2);
 }
-.hp-testi__dots {
+.hp-testi__controls {
 	display: flex;
+	align-items: center;
 	justify-content: center;
-	gap: 8px;
-	margin-top: 32px;
+	gap: 4px;
+	margin-top: 24px;
 }
-.hp-testi__dot {
-	width: 8px;
-	height: 8px;
-	border-radius: 999px;
-	background: var(--hp-hairline);
+.hp-testi__dots { display: flex; justify-content: center; }
+/* Each dot is a 44px target with a small visible mark inside it. */
+.hp-testi .hp-testi__dot {
+	position: relative;
+	width: 32px;
+	height: 44px;
 	border: 0;
 	padding: 0;
+	background: transparent;
 	cursor: pointer;
-	transition: background .2s ease;
 }
-.hp-testi__dot.is-active { background: var(--hp-blue); }
+.hp-testi .hp-testi__dot::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 10px;
+	height: 10px;
+	margin: -5px 0 0 -5px;
+	border-radius: 50%;
+	background: var(--hp-hairline);
+	transition: background-color .15s ease, transform .15s ease;
+}
+.hp-testi .hp-testi__dot:hover::before { background: var(--hp-bluelight); transform: scale(1.2); }
+.hp-testi .hp-testi__dot.is-active::before { background: var(--hp-blue); }
+.hp-testi .hp-testi__prev,
+.hp-testi .hp-testi__next,
+.hp-testi .hp-testi__pause {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: var(--hp-pill);
+	background: transparent;
+	color: var(--hp-ink);
+	font: 600 15px/1 var(--hp-sans);
+	cursor: pointer;
+	transition: background-color .15s ease, color .15s ease;
+}
+.hp-testi .hp-testi__pause { padding: 0 16px; margin-left: 8px; background: var(--hp-fog); }
+.hp-testi .hp-testi__prev:hover,
+.hp-testi .hp-testi__next:hover,
+.hp-testi .hp-testi__pause:hover,
+.hp-testi .hp-testi__prev:focus,
+.hp-testi .hp-testi__next:focus,
+.hp-testi .hp-testi__pause:focus { background: var(--hp-mist); color: var(--hp-ink); }
+.hp-testi .hp-testi__prev:active,
+.hp-testi .hp-testi__next:active { transform: scale(0.94); }
+.hp-testi__prev svg, .hp-testi__next svg { width: 22px; height: 22px; }
+/* Without JavaScript only the first quote shows; the controls do nothing, so hide them. */
+.hp-testi:not([data-hp-init]) .hp-testi__controls { display: none; }
 
 /* ---- FAQ (Elementor Accordion widget) ---------------------------- */
 .hp-faq .elementor-accordion { border: 0; }
 .hp-faq .elementor-accordion-item {
-	border: 1px solid var(--hp-hairline) !important;
-	border-radius: 16px;
+	border: 0 !important;
+	border-radius: var(--hp-radius);
 	background: #fff;
 	margin-bottom: 12px;
 	overflow: hidden;
@@ -1101,10 +1289,9 @@ a.hp-learn:hover::after { transform: translateX(3px); }
    Elementor accordion class, so Elementor's own accordion CSS and JS never touch it. The
    head is a <button>; the panel slides open and closed with a max-height transition. */
 .hp-faqx__item {
-	border: 1px solid var(--hp-hairline);
-	border-radius: 16px;
+	border-radius: var(--hp-radius);
 	background: #fff;
-	margin-bottom: 12px;
+	margin-bottom: 8px;
 	overflow: hidden;
 }
 /* The H3 that wraps each head button. Reset it so the button keeps its own look. */
@@ -1116,34 +1303,38 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	gap: 16px;
 	width: 100%;
 	margin: 0;
+	min-height: 64px;
 	padding: 20px 24px;
 	border: 0;
 	background: transparent;
 	cursor: pointer;
 	text-align: left;
 	font-family: var(--hp-sans);
-	font-weight: 500;
-	font-size: 16px;
+	font-weight: 600;
+	font-size: var(--hp-fs-body);
+	transition: background-color .15s ease;
 	line-height: 1.4;
 	color: var(--hp-ink);
 }
 /* Override the parent theme's generic button hover/focus (pink #CC3366 + white text). */
 .hp-faqx__head:hover,
-.hp-faqx__head:focus { background: var(--hp-bluelight); }
-.hp-faqx__head:focus { color: var(--hp-ink); }
+.hp-faqx__head:focus { background: var(--hp-mist); color: var(--hp-ink); }
+.hp-faqx__head:focus:not(:hover):not(:focus-visible) { background: transparent; }
+.hp-faqx__item.is-open .hp-faqx__head { color: var(--hp-ink); }
 .hp-faqx__head:hover .hp-faqx__icon { color: var(--hp-blue); }
 .hp-faqx__head:focus-visible { outline: 2px solid var(--hp-blue); outline-offset: -2px; }
-.hp-faqx__icon { flex-shrink: 0; color: var(--hp-muted); }
-.hp-faqx__icon svg { display: block; width: 16px; height: 16px; transition: transform 0.2s ease; }
+.hp-faqx__icon { flex-shrink: 0; color: var(--hp-blue); }
+.hp-faqx__icon svg { display: block; width: 20px; height: 20px; transition: transform 0.2s ease; }
 .hp-faqx__item.is-open .hp-faqx__icon svg { transform: rotate(180deg); }
 .hp-faqx__panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
 .hp-faqx__item.is-open .hp-faqx__panel { max-height: 1000px; }
 .hp-faqx__inner {
-	padding: 0 24px 20px;
+	padding: 0 24px 24px;
+	max-width: 75ch;
 	font-family: var(--hp-sans);
-	font-size: 16px;
-	line-height: 1.7;
-	color: var(--hp-muted);
+	font-size: var(--hp-fs-body);
+	line-height: 1.65;
+	color: var(--hp-ink2);
 }
 .hp-faqx__inner > :first-child { margin-top: 0; }
 .hp-faqx__inner > :last-child { margin-bottom: 0; }
@@ -1151,8 +1342,8 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	.hp-faqx__panel, .hp-faqx__icon svg { transition: none; }
 }
 .hp-faq-more { margin: 24px 0 0; font-family: var(--hp-sans); font-size: 16px; }
-.hp-faq-more a { color: #0F4C85; font-weight: 600; text-decoration: none; }
-.hp-faq-more a:hover { text-decoration: underline; }
+.hp-faq-more a { display: inline-flex; align-items: center; min-height: 44px; color: var(--hp-blue); font-weight: 600; text-decoration: none; }
+.hp-faq-more a:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
 
 /* =====================================================================
    SERVICES page (built in Elementor — mirrors services.html)
@@ -1167,15 +1358,29 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	list-style: none;
 	margin: 0;
 	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 32px;
 }
 .hp-checklist li {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
 	font-family: var(--hp-sans);
-	font-size: 18px; /* text-lg */
+	font-size: var(--hp-fs-lead);
 	font-weight: 500;
 	color: var(--hp-ink);
 	line-height: 1.5;
 }
-.hp-checklist li + li { margin-top: 12px; }
+.hp-checklist li::before {
+	content: "";
+	flex: none;
+	width: 20px;
+	height: 20px;
+	background: var(--hp-blue);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 
 /* ---- Services list rows (media 1fr / body 2fr) ------------------- */
 /* Elementor forces flex children to width:100%; pin them to a 1:2 split
@@ -1200,9 +1405,10 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .elementor .hp-svc-media img,
 .hp-svc-media img {
 	width: 100% !important;
-	height: 160px !important;
+	height: auto !important;
+	aspect-ratio: 3 / 2;
 	object-fit: cover;
-	border-radius: 16px;
+	border-radius: var(--hp-radius);
 	display: block;
 }
 /* Fraunces service heading + muted relaxed body (safety net; widget
@@ -1214,8 +1420,10 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 }
 .hp-svc-body p {
 	font-family: var(--hp-sans);
-	color: var(--hp-muted);
-	line-height: 1.625; /* leading-relaxed */
+	font-size: var(--hp-fs-body);
+	color: var(--hp-ink2);
+	line-height: 1.65;
+	max-width: 70ch;
 }
 .hp-svc-body p + p { margin-top: 16px; }
 /* "Read more" link below each service description on /services/. It reuses the
@@ -1227,9 +1435,10 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	align-items: center;
 	gap: 6px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	color: var(--hp-ink);
+	font-size: 16px;
+	font-weight: 600;
+	min-height: 44px;
+	color: var(--hp-blue);
 	text-decoration: none;
 	transition: color .2s ease;
 }
@@ -1239,10 +1448,10 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	line-height: 1;
 	transition: transform .2s ease;
 }
-.hp-svc-body .hp-svc-more a:hover { color: var(--hp-blue); }
+.hp-svc-body .hp-svc-more a:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
 .hp-svc-body .hp-svc-more a:hover::after { transform: translateX(3px); }
-/* Hairline divider above the 2nd and 3rd rows. */
-.hp-svc-row--divided { border-top: 1px solid var(--hp-hairline); }
+/* Rows are separated by space alone. */
+.hp-svc-row--divided { border-top: 0; }
 
 @media (max-width: 767px) {
 	.hp-svc-row { flex-wrap: wrap !important; }
@@ -1274,7 +1483,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	position: absolute;
 	inset: 0;
 	display: block;
-	border-radius: 16px;
+	border-radius: var(--hp-radius);
 	text-indent: -9999px;
 	overflow: hidden;
 }
@@ -1301,9 +1510,9 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	align-items: center;
 	gap: 6px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
-	font-weight: 500;
-	color: var(--hp-ink);
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--hp-blue);
 	transition: color .2s ease;
 }
 .hp-cardmore::after {
@@ -1312,7 +1521,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	line-height: 1;
 	transition: transform .2s ease;
 }
-.hp-card:hover .hp-cardmore { color: var(--hp-blue); }
+.hp-card:hover .hp-cardmore { color: var(--hp-ink); }
 .hp-card:hover .hp-cardmore::after { transform: translateX(3px); }
 
 /* ---- Prominent price figure on the Estate Planning subpage ------- */
@@ -1329,11 +1538,11 @@ a.hp-learn:hover::after { transform: translateX(3px); }
    the SOP wants kept easy to update. Mist tint, hairline border. */
 .hp-note {
 	background: var(--hp-mist);
-	border: 1px solid var(--hp-hairline);
-	border-radius: 16px;
+	border-radius: var(--hp-radius);
 	padding: 24px 28px;
+	max-width: 75ch;
 	font-family: var(--hp-sans);
-	font-size: 16px;
+	font-size: var(--hp-fs-body);
 	line-height: 1.6;
 	color: var(--hp-ink2);
 }
@@ -1355,9 +1564,8 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 /* Self-contained client-side widget; scoped like .hp-testi. */
 .hp-calc {
 	background: #fff;
-	border: 1px solid var(--hp-hairline);
-	border-radius: 16px;
-	padding: 32px;
+	border-radius: var(--hp-radius);
+	padding: clamp(24px, 3vw, 40px);
 	max-width: 560px;
 }
 /* Label on the left, input on the right, gap no wider than 1em. */
@@ -1369,7 +1577,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 }
 .hp-calc__label {
 	font-family: var(--hp-sans);
-	font-size: 15px;
+	font-size: var(--hp-fs-body);
 	font-weight: 600;
 	color: var(--hp-ink);
 	margin: 0;
@@ -1396,25 +1604,38 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	width: 100%;
 	min-width: 0;
 	font-family: var(--hp-sans);
-	font-size: 18px;
+	font-size: 20px;
+	font-variant-numeric: tabular-nums;
 	color: var(--hp-ink);
-	padding: 14px 16px;
-	border: 1px solid var(--hp-hairline);
-	border-radius: 10px;
-	background: var(--hp-fog);
-	outline: none;
+	min-height: 52px;
+	padding: 12px 16px;
+	border: 1px solid #7F8FA0;
+	border-radius: var(--hp-radius);
+	background: var(--hp-white);
+	transition: border-color .15s ease, box-shadow .15s ease; /* taste-skill-ignore: focus transition */
 	-moz-appearance: textfield;
 }
 .hp-calc__input::-webkit-outer-spin-button,
 .hp-calc__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.hp-calc .hp-calc__input:hover { border-color: var(--hp-ink); }
 .hp-calc .hp-calc__input:focus {
+	outline: none;
 	border-color: var(--hp-blue);
-	box-shadow: 0 0 0 3px rgba(55, 125, 189, 0.15);
+	box-shadow: 0 0 0 3px rgba(45, 108, 168, 0.25); /* taste-skill-ignore: focus ring */
 }
+.hp-calc .hp-calc__input[aria-invalid="true"] { border-color: var(--hp-error); box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.15); } /* taste-skill-ignore: error ring */
+.hp-calc__error {
+	margin: 10px 0 0;
+	font: 500 15px/1.5 var(--hp-sans);
+	color: var(--hp-error);
+}
+.hp-calc__error::before { content: "! "; font-weight: 700; }
 .hp-calc__results {
 	margin-top: 24px;
-	border-top: 1px solid var(--hp-hairline);
-	padding-top: 24px;
+	padding: 16px 20px;
+	background: var(--hp-fog);
+	border-radius: var(--hp-radius);
+	animation: hp-fade .3s ease both;
 }
 .hp-calc__row {
 	display: flex;
@@ -1425,8 +1646,8 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 }
 .hp-calc__row-label {
 	font-family: var(--hp-sans);
-	font-size: 15px;
-	color: var(--hp-muted);
+	font-size: 16px;
+	color: var(--hp-ink2);
 }
 .hp-calc__row-value {
 	font-family: var(--hp-serif);
@@ -1436,22 +1657,21 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	white-space: nowrap;
 }
 .hp-calc__row--total {
-	border-top: 1px solid var(--hp-hairline);
 	margin-top: 8px;
 	padding-top: 16px;
 }
 .hp-calc__row--total .hp-calc__row-value { color: var(--hp-blue); font-size: 26px; }
 .hp-calc__note {
 	font-family: var(--hp-sans);
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 1.6;
-	color: var(--hp-muted);
+	color: var(--hp-ink2);
 	margin: 20px 0 0;
 }
 .hp-calc__disclaimer {
 	font-family: var(--hp-sans);
-	font-size: 13px;
-	font-style: italic;
+	font-size: 15px;
+	font-style: normal;
 	line-height: 1.55;
 	color: var(--hp-muted);
 	margin: 12px 0 0;
@@ -1468,11 +1688,13 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	display: flex;
 	align-items: baseline;
 	justify-content: space-between;
-	gap: 16px;
-	padding: 18px 0;
-	border-top: 1px solid var(--hp-hairline);
+	flex-wrap: wrap;
+	gap: 4px 16px;
+	padding: 18px 24px;
+	background: var(--hp-white);
+	border-radius: var(--hp-radius);
 }
-.hp-rate-table li:last-child { border-bottom: 1px solid var(--hp-hairline); }
+.hp-rate-table li + li { margin-top: 6px; }
 .hp-rate-table .hp-rate-role {
 	font-family: var(--hp-sans);
 	font-size: 18px;
@@ -1552,7 +1774,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	justify-content: center;
 	padding: 20px;
 	/* Light gray overlay at ~0.8 opacity. */
-	background: rgba(128, 128, 128, 0.8);
+	background: rgba(0, 30, 60, 0.55);
 	opacity: 0;
 	transition: opacity 0.25s ease;
 }
@@ -1568,8 +1790,8 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	width: 100%;
 	padding: 28px 44px 28px 28px;
 	background: #fff;
-	border-radius: 14px;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+	border-radius: var(--hp-radius);
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); /* taste-skill-ignore: dialog */
 	transform: translateY(8px) scale(0.98);
 	transition: transform 0.25s ease;
 }
@@ -1588,16 +1810,23 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	position: absolute;
 	top: 8px;
 	right: 12px;
-	padding: 4px;
+	width: 44px;
+	height: 44px;
+	top: 0;
+	right: 0;
+	padding: 0;
 	border: 0;
+	border-radius: var(--hp-radius);
 	background: transparent;
-	font-size: 24px;
+	font-size: 26px;
 	line-height: 1;
-	color: #94a3b8;
+	color: var(--hp-muted);
 	cursor: pointer;
 }
-.hlc-modal__close:hover {
-	color: #475569;
+.hlc-modal__close:hover,
+.hlc-modal__close:focus {
+	background: var(--hp-fog);
+	color: var(--hp-ink);
 }
 
 /* Green check: pop the badge in, draw the circle, then draw the tick. */
@@ -1649,3 +1878,372 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 		stroke-dashoffset: 0;
 	}
 }
+
+/* =====================================================================
+   UI/UX LAYER (2026-11-11)
+   Shared states, type steps for Elementor widgets, loading feedback and
+   section entrance. See docs/plans/20261111-ui-ux-restyle.md.
+   ===================================================================== */
+
+/* ---- Frame: every Elementor page uses the same side margin ---------- */
+/* The full-bleed CTA band carries its own inner margin, so it is left out. */
+.elementor > .e-con:not(:has(.hp-cta)) {
+	padding-left: max(var(--hp-gutter), var(--padding-left, 0px));
+	padding-right: max(var(--hp-gutter), var(--padding-right, 0px));
+}
+.elementor .e-con { max-width: 100%; }
+.hp-cta__inner { padding-left: var(--hp-gutter); padding-right: var(--hp-gutter); }
+.elementor .elementor-heading-title,
+.elementor .elementor-widget-text-editor { overflow-wrap: break-word; }
+
+/* ---- Type: headings stay within two lines where they can ------------- */
+.elementor h1.elementor-heading-title {
+	font-size: var(--hp-fs-display) !important;
+	line-height: 1.08 !important;
+	letter-spacing: -0.01em;
+	text-wrap: balance;
+}
+.elementor h2.elementor-heading-title,
+.hp-h2 .elementor-heading-title {
+	text-wrap: balance;
+}
+.hp-h2 .elementor-heading-title {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: var(--hp-fs-h2);
+	line-height: 1.15;
+	color: var(--hp-ink);
+	margin: 0;
+}
+.elementor .elementor-widget-text-editor { color: var(--hp-ink2); }
+/* Running text never under 16px, whatever a widget sets. */
+.elementor .elementor-widget-text-editor p,
+.elementor .elementor-widget-text-editor li { font-size: max(1em, 16px); }
+
+/* Stat labels under the large figures. */
+.hp-statlabel .elementor-heading-title {
+	font-family: var(--hp-sans) !important;
+	font-size: 15px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	color: var(--hp-ink2) !important;
+}
+
+/* Breadcrumb on the pricing subpages. */
+.hp-crumb a {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	font: 600 16px/1.2 var(--hp-sans);
+	color: var(--hp-blue);
+	text-decoration: none;
+}
+.hp-crumb a::before { content: "\2190"; transition: transform .2s var(--hp-ease); }
+.hp-crumb a:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
+.hp-crumb a:hover::before { transform: translateX(-3px); }
+.hp-crumb p { margin: 0; }
+
+/* The two parts of booking, said once above the form. */
+.hp-progress p {
+	margin: 0;
+	padding: 16px 20px;
+	background: var(--hp-mist);
+	border-radius: var(--hp-radius);
+	font: 500 var(--hp-fs-body)/1.5 var(--hp-sans);
+	color: var(--hp-ink);
+}
+
+/* ---- Elementor buttons (class added by the restyle script) ---------- */
+.elementor .hp-ebtn .elementor-button {
+	min-height: 48px;
+	display: inline-flex;
+	align-items: center;
+	font-weight: 600;
+	transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .1s ease;
+}
+.elementor .hp-ebtn .elementor-button:active { transform: translateY(1px); }
+.elementor .hp-ebtn .elementor-button-icon svg { transition: transform .2s var(--hp-ease); }
+.elementor .hp-ebtn--primary .elementor-button:hover .elementor-button-icon svg { transform: translateX(3px); }
+@media (max-width: 560px) {
+	.elementor .hp-ebtn,
+	.elementor .hp-ebtn .elementor-button { width: 100%; justify-content: center; }
+}
+
+/* Footer "Schedule now" is a button, not a list link. */
+.hp-footer .hp-footer__col a.hp-btn,
+.hp-footer .hp-footer__col a.hp-btn:hover,
+.hp-footer .hp-footer__col a.hp-btn:focus { color: #fff; text-decoration: none; min-height: 44px; }
+
+/* ---- Home: "Who we help" as a list, not a second card row ----------- */
+.hp-helplist {
+	flex-direction: column !important;
+	flex-wrap: nowrap !important;
+	gap: 6px !important;
+}
+.hp-helpitem {
+	position: relative;
+	display: grid !important;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr) 24px;
+	align-items: baseline;
+	gap: 8px 48px;
+	width: 100% !important;
+	max-width: none !important;
+	padding: 28px 32px !important;
+	background: var(--hp-white);
+	border-radius: var(--hp-radius);
+	text-decoration: none;
+	transition: background-color .15s ease;
+}
+.hp-helpitem::after {
+	content: "\2192";
+	grid-column: 3;
+	grid-row: 1;
+	align-self: center;
+	font-size: 22px;
+	color: var(--hp-blue);
+	transition: transform .2s var(--hp-ease);
+}
+a.hp-helpitem:hover,
+a.hp-helpitem:focus-visible { background: var(--hp-mist); }
+a.hp-helpitem:hover::after { transform: translateX(4px); }
+a.hp-helpitem:hover .elementor-heading-title { color: var(--hp-blue) !important; }
+.hp-helpitem > .elementor-element { width: auto !important; margin: 0 !important; }
+.hp-helpitem .elementor-widget-text-editor p { margin: 0; }
+@media (max-width: 767px) {
+	.hp-helpitem { grid-template-columns: minmax(0, 1fr) 24px; padding: 24px !important; }
+	.hp-helpitem > .elementor-element:nth-child(2) { grid-column: 1; }
+}
+
+/* ---- Gravity Forms (Orbital theme) ---------------------------------- */
+.gform-theme--orbital {
+	--gf-color-primary: #2D6CA8;
+	--gf-color-primary-rgb: 45, 108, 168;
+	--gf-color-primary-contrast: #FFFFFF;
+	--gf-color-primary-darker: #0F4C85;
+	--gf-color-primary-lighter: #8FB9DF;
+	--gf-color-in-ctrl: #FFFFFF;
+	--gf-color-in-ctrl-contrast: #22384D;
+	--gf-ctrl-border-color: #7F8FA0;
+	--gf-radius: 4px;
+	--gf-ctrl-size: 48px;
+	--gf-font-size-primary: 17px;
+	--gf-font-size-secondary: 16px;
+	--gf-font-size-tertiary: 15px;
+	--gf-ctrl-label-font-size-primary: 16px;
+	--gf-ctrl-label-font-weight-primary: 600;
+	--gf-ctrl-label-color-primary: #00305B;
+	--gf-ctrl-desc-color: #22384D;
+	--gf-ctrl-desc-font-size: 15px;
+	--gf-ctrl-btn-radius: 999px;
+	--gf-color-danger: #B42318;
+	--gf-field-gap-y: 28px;
+	font-family: var(--hp-sans);
+}
+/* 16px or more stops the phone from zooming into a field on focus. */
+.gform_wrapper input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]):not([type="button"]),
+.gform_wrapper select,
+.gform_wrapper textarea { font-size: max(16px, 1em) !important; }
+.gform_wrapper .gfield_required { color: var(--hp-error); }
+.gform_wrapper .gfield_required_text,
+.gform_wrapper .gfield_required_asterisk { font-weight: 600; }
+
+/* Radio choices are whole rows that react to the pointer. */
+.gform_wrapper .gchoice {
+	display: flex;
+	align-items: center;
+	min-height: 44px;
+	padding: 0 12px;
+	margin: 0 -12px;
+	border-radius: var(--hp-radius);
+	transition: background-color .12s ease;
+}
+.gform_wrapper .gchoice:hover { background: var(--hp-mist); }
+.gform_wrapper .gchoice label { cursor: pointer; flex: 1; padding: 10px 0; }
+
+/* Submit button: the site's primary button with a busy state. */
+.gform_wrapper .gform_footer .gform_button,
+.gform_wrapper .gform_page_footer .gform_button {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 52px !important;
+	padding: 0 32px !important;
+	background: var(--hp-blue) !important;
+	color: #fff !important;
+	border: 0 !important;
+	border-radius: var(--hp-pill) !important;
+	font: 600 17px/1 var(--hp-sans) !important;
+	cursor: pointer;
+	transition: background-color .15s ease, transform .1s ease;
+}
+.gform_wrapper .gform_footer .gform_button:hover { background: var(--hp-azure) !important; }
+.gform_wrapper .gform_footer .gform_button:active { transform: translateY(1px); }
+.gform_wrapper .gform_button.is-busy,
+.gform_wrapper .gform_button[aria-busy="true"] { background: var(--hp-ink2) !important; cursor: progress; }
+.gform_wrapper .gform_button.is-busy::before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}
+/* Gravity Forms' own spinner image beside the button is replaced by the button state. */
+.gform_wrapper .gform_ajax_spinner { display: none !important; }
+@media (max-width: 560px) {
+	.gform_wrapper .gform_footer .gform_button { width: 100%; }
+}
+
+/* Errors: a summary that takes focus, and a message under each field. */
+.gform_wrapper .gform_validation_errors {
+	border: 0 !important;
+	border-left: 4px solid var(--hp-error) !important;
+	border-radius: var(--hp-radius) !important;
+	background: #FEF3F2 !important;
+	box-shadow: none !important; /* taste-skill-ignore: reset */
+	padding: 16px 20px !important;
+}
+.gform_wrapper .gform_validation_errors:focus { outline: 2px solid var(--hp-error); outline-offset: 2px; }
+.gform_wrapper .gform_validation_errors h2,
+.gform_wrapper .gform_validation_errors .gform_submission_error {
+	font: 600 17px/1.4 var(--hp-sans) !important;
+	color: var(--hp-error) !important;
+}
+.gform_wrapper .gfield_error input,
+.gform_wrapper .gfield_error textarea,
+.gform_wrapper .gfield_error select { border-color: var(--hp-error) !important; }
+.gform_wrapper .gfield_validation_message,
+.gform_wrapper .validation_message {
+	font: 500 15px/1.4 var(--hp-sans) !important;
+	color: var(--hp-error) !important;
+	background: none !important;
+	border: 0 !important;
+	padding: 6px 0 0 !important;
+}
+.gform_wrapper .gfield_validation_message::before { content: "! "; font-weight: 700; }
+
+/* ---- Calendly: placeholder until the calendar arrives --------------- */
+.hlc-booking-confirm .calendly-inline-widget { position: relative; }
+.hp-calwait {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: 24px;
+	text-align: center;
+	background: var(--hp-white);
+	border-radius: var(--hp-radius);
+	font: 500 var(--hp-fs-body)/1.5 var(--hp-sans);
+	color: var(--hp-ink);
+}
+.hp-calwait a { color: var(--hp-blue); text-decoration: underline; text-underline-offset: 3px; }
+.hp-spinner {
+	width: 32px;
+	height: 32px;
+	border: 3px solid var(--hp-mist);
+	border-top-color: var(--hp-blue);
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}
+
+/* ---- Motion ----------------------------------------------------------- */
+@keyframes hp-spin { to { transform: rotate(360deg); } }
+@keyframes hp-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Section parts rise in once. The hidden start only exists when the script
+   added .hp-reveal-on, and never under reduced motion, so content always shows. */
+@media (prefers-reduced-motion: no-preference) {
+	.hp-reveal-on .hp-reveal {
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity .6s ease, transform .7s var(--hp-ease);
+	}
+	.hp-reveal-on .hp-reveal.is-in { opacity: 1; transform: none; }
+	/* Slow drift on the home hero photograph. */
+	.elementor-element.hp-hero { animation: hp-drift 24s ease-in-out infinite alternate; }
+}
+@keyframes hp-drift {
+	from { background-position: 50% 45%; }
+	to { background-position: 50% 60%; }
+}
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+	.hp-spinner, .hp-calwait .hp-spinner, .is-busy::before { animation: hp-spin 1.6s linear infinite !important; }
+}
+
+/* ---- Estate planning intake page (Elementor Canvas, no site header) ---- */
+.hp-intake {
+	max-width: calc(760px + 2 * var(--hp-gutter));
+	margin: 0 auto;
+	padding: 48px var(--hp-gutter) 96px;
+}
+.hp-intake__logo { display: inline-block; margin-bottom: 40px; border-radius: var(--hp-radius); }
+.hp-intake__logo img { display: block; width: 220px; height: auto; }
+.hp-intake h1 {
+	font-family: var(--hp-serif);
+	font-weight: 400;
+	font-size: var(--hp-fs-display);
+	line-height: 1.08;
+	color: var(--hp-ink);
+	margin: 0 0 16px;
+}
+.hp-intake > p { font-size: var(--hp-fs-lead); line-height: 1.6; color: var(--hp-ink2); margin: 0 0 40px; }
+
+/* ---- Links, measure, form surfaces (inspection fixes) ---------------- */
+/* The parent theme paints plain links pink (#CC3366). Plain links take the action blue. */
+body a { color: var(--hp-blue); }
+body a:hover { color: var(--hp-ink); }
+/* Links inside running text are underlined; standalone arrow links (.hp-learn, .hp-svc-more, .hp-crumb) are not. */
+.elementor-widget-text-editor :not(.hp-learn, .hp-svc-more, .hp-faq-more, nav) > a:not([class]) { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Reading measure: about 72 characters per line. Centred blocks stay centred. */
+.elementor .elementor-widget-text-editor p { max-width: 72ch; }
+.hp-hero .elementor-widget-text-editor p,
+.elementor-element-020426b .elementor-widget-text-editor p { margin-left: auto; margin-right: auto; }
+
+/* Top-level sections are separated by their fields, not by lines. */
+.elementor > .e-con { border-top-width: 0 !important; border-bottom-width: 0 !important; }
+
+/* Gravity Forms: flat fields at rest (the ring stays on focus), section titles without a rule. */
+.gform-theme--orbital { --gf-ctrl-shadow: none; }
+.gform_wrapper input:not(:focus), .gform_wrapper select:not(:focus), .gform_wrapper textarea:not(:focus), .gform_wrapper .gform_button { box-shadow: none !important; } /* taste-skill-ignore: reset */
+.gform_wrapper .gfield--type-section { border-bottom: 0 !important; padding-bottom: 0 !important; margin-top: 16px; }
+.gform_wrapper .gfield--type-section .gsection_title { font: 400 var(--hp-fs-h2)/1.2 var(--hp-serif); color: var(--hp-ink); }
+
+.hp-footer__legal { font-size: 15px; }
+
+/* Booking pages: the confidentiality notice had inline 14px grey text. */
+.hp-fineprint { max-width: 80ch; padding: 16px 20px; background: var(--hp-white); border-radius: var(--hp-radius); }
+.hp-fineprint p { font-size: 15px !important; color: var(--hp-ink2) !important; max-width: none; }
+.hp-fineprint p:last-child { margin-bottom: 0 !important; }
+
+/* Essential Addons sets the "Read more" colour in the widget; use the accessible blue. */
+.hp-bloglist .eael-post-elements-readmore-btn { color: var(--hp-blue) !important; }
+.hp-bloglist .eael-post-elements-readmore-btn:hover { color: var(--hp-ink) !important; }
+
+/* Text widgets without paragraphs keep the same reading measure. */
+.elementor .elementor-widget-text-editor:not(:has(p, ul, ol)) { max-width: 72ch; }
+
+/* Gravity Forms buttons (next, save) rest flat too. */
+.gform_wrapper button:not(:focus), .gform_wrapper .gform_next_button, .gform_wrapper .gform_previous_button { box-shadow: none !important; } /* taste-skill-ignore: reset */
+
+/* About: the statement had one phrase in blue italic; the line now reads in one voice. */
+.elementor-element-3964905 em, .elementor-element-3964905 i { font-style: normal; color: inherit; }
+.hp-bloglist .eael-load-more-button .eael-btn-loader { display: none !important; }
+
+/* "Who we help": on phones the arrow shares the title row, the text runs full width. */
+.hp-helpitem .elementor-heading-title { line-height: 1.25 !important; }
+@media (max-width: 767px) {
+	.hp-helpitem::after { grid-column: 2; }
+	.hp-helpitem > .elementor-element:nth-child(2) { grid-column: 1 / -1; }
+}
+
+/* FAQ questions wrap (the parent theme sets nowrap on buttons, which cut long questions off on phones). */
+.hp-faqx__head { white-space: normal; overflow-wrap: anywhere; }
+.hp-faqx__head > :first-child { min-width: 0; }
