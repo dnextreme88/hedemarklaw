@@ -79,7 +79,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	// Brand fonts (also loaded by Elementor, but header/footer are theme-rendered).
 	wp_enqueue_style(
 		'hedemark-fonts',
-		'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap',
+		'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap',
 		array(),
 		null
 	);
@@ -90,6 +90,18 @@ add_action( 'wp_enqueue_scripts', function () {
 		get_stylesheet_directory_uri() . '/assets/child.css',
 		array(),
 		wp_get_theme()->get( 'Version' )
+	);
+
+	// Interface behaviour: menus, states, loading feedback (see the file header).
+	wp_enqueue_script(
+		'hello-biz-child-ux',
+		get_stylesheet_directory_uri() . '/assets/ux.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
 	);
 
 	// Calendly inline embed assets, only on the /book/ page and its service subpages.

@@ -10,6 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $year = date( 'Y' );
+
+/**
+ * One footer link, marked when it is the current page.
+ *
+ * @param string $path  Path under the site root.
+ * @param string $label Link text.
+ */
+if ( ! function_exists( 'hlc_footer_link' ) ) :
+	function hlc_footer_link( $path, $label ) {
+		$page    = get_page_by_path( trim( $path, '/' ) );
+		$current = ( $page && is_page( $page->ID ) ) ? ' aria-current="page"' : '';
+		printf( '<li><a href="%s"%s>%s</a></li>', esc_url( home_url( $path ) ), $current, esc_html( $label ) );
+	}
+endif;
 ?>
 <footer id="site-footer" class="hp-footer">
 	<div class="hp-footer__inner">
@@ -20,23 +34,32 @@ $year = date( 'Y' );
 				<p class="hp-footer__wordmark">Hedemark Law, P.C.</p>
 				<p class="hp-footer__blurb">A professional corporation focused on estate planning, probate, and trust administration serving the San Francisco Bay Area.</p>
 				<div class="hp-footer__social">
-					<a href="https://www.facebook.com/Hedemarklaw" aria-label="Facebook">f</a>
-					<a href="https://www.linkedin.com/in/justin-hedemark-esq-a76085b8/" aria-label="LinkedIn">in</a>
+					<a href="https://www.facebook.com/Hedemarklaw" aria-label="Hedemark Law on Facebook" rel="noopener" target="_blank">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21h2.9z"/></svg>
+					</a>
+					<a href="https://www.linkedin.com/in/justin-hedemark-esq-a76085b8/" aria-label="Justin Hedemark on LinkedIn" rel="noopener" target="_blank">
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.9 8.7H3.7V20h3.2V8.7zM5.3 3.5a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8zM20.3 13.4c0-3-1.6-4.9-4.3-4.9-1.4 0-2.4.7-2.8 1.4V8.7H10V20h3.2v-5.9c0-1.5.6-2.6 2-2.6 1.3 0 1.9 1 1.9 2.6V20h3.2v-6.6z"/></svg>
+					</a>
 				</div>
 			</div>
 
 			<div class="hp-footer__col">
 				<p class="hp-footer__heading">Firm</p>
 				<ul>
-					<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Services</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/real-estate/' ) ); ?>">Real Estate</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/estate-law/' ) ); ?>">Estate Law</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/out-of-state-executors-heirs/' ) ); ?>">Out-of-State Executors &amp; Heirs</a></li>
-					<li><hr class="hp-footer__divider"></li>
-					<li><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About Your Attorney</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Blog</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/faqs/' ) ); ?>">FAQs</a></li>
+					<?php
+					hlc_footer_link( '/services/', 'Services' );
+					hlc_footer_link( '/real-estate/', 'Real Estate' );
+					hlc_footer_link( '/estate-law/', 'Estate Law' );
+					hlc_footer_link( '/out-of-state-executors-heirs/', 'Out-of-State Executors & Heirs' );
+					?>
+				</ul>
+				<ul>
+					<?php
+					hlc_footer_link( '/pricing/', 'Pricing' );
+					hlc_footer_link( '/about/', 'About Your Attorney' );
+					hlc_footer_link( '/blog/', 'Blog' );
+					hlc_footer_link( '/faqs/', 'FAQs' );
+					?>
 				</ul>
 			</div>
 
@@ -48,7 +71,7 @@ $year = date( 'Y' );
 							<path d="M12 22s7-7.58 7-12A7 7 0 0 0 5 10c0 4.42 7 12 7 12z" />
 							<circle cx="12" cy="10" r="2.5" />
 						</svg>
-						<span>220 Montgomery Street, Suite 1100, San Francisco, CA 94104</span>
+						<a href="https://maps.google.com/?q=220+Montgomery+Street+Suite+1100+San+Francisco+CA+94104" target="_blank" rel="noopener">220 Montgomery Street, Suite 1100, San Francisco, CA 94104</a>
 					</li>
 					<li>
 						<svg class="hp-footer__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -67,9 +90,9 @@ $year = date( 'Y' );
 			</div>
 
 			<div class="hp-footer__col">
-				<p class="hp-footer__heading">Book online</p>
+				<p class="hp-footer__heading">Book a consultation</p>
 				<p class="hp-footer__blurb">Free 20-minute consultations for estate planning, probate, and trust administration.</p>
-				<a class="hp-footer__link" href="<?php echo esc_url( home_url( '/book/' ) ); ?>">Schedule now &rarr;</a>
+				<a class="hp-btn hp-footer__link" href="<?php echo esc_url( home_url( '/book/' ) ); ?>">Schedule now</a>
 			</div>
 
 		</div>
