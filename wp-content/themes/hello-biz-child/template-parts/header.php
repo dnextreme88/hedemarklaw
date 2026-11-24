@@ -94,6 +94,7 @@ endif;
 				<li<?php echo is_page( 'about' ) ? ' class="current-menu-item"' : ''; ?>><?php hlc_nav_link( '/about/', 'About Your Attorney', is_page( 'about' ), true ); ?></li>
 				<li<?php echo $hp_on_blog ? ' class="current-menu-item"' : ''; ?>><?php hlc_nav_link( '/blog/', 'Blog', $hp_on_blog, is_page( 'blog' ) ); ?></li>
 				<li<?php echo is_page( 'faqs' ) ? ' class="current-menu-item"' : ''; ?>><?php hlc_nav_link( '/faqs/', 'FAQs', is_page( 'faqs' ), true ); ?></li>
+				<li<?php echo is_page( 'contact' ) ? ' class="current-menu-item"' : ''; ?>><?php hlc_nav_link( '/contact/', 'Contact', is_page( 'contact' ), true ); ?></li>
 			</ul>
 
 			<div class="hp-nav__actions">

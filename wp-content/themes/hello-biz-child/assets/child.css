@@ -86,7 +86,7 @@ html.hp-noscroll { overflow: hidden; }
 }
 
 .hp-header__inner {
-	max-width: calc(1280px + 2 * var(--hp-gutter));
+	max-width: calc(1600px + 2 * var(--hp-gutter));
 	margin: 0 auto;
 	padding: 0 var(--hp-gutter);
 	height: 80px;
@@ -107,12 +107,21 @@ html.hp-noscroll { overflow: hidden; }
 	height: 36px;
 	width: auto;
 	display: block;
+	object-fit: contain; /* If the bar squeezes the logo, it scales down, not out of shape. */
+	object-position: left center;
+}
+/* Desktop bar: the logo never shrinks. A full bar squeezed it out of shape (191px →
+   118px wide at 1281px). On phones it may still shrink to fit beside the buttons. */
+@media (min-width: 1025px) {
+	.hp-header__brand { flex-shrink: 0; }
+	.hp-header__brand img,
+	.hp-header__brand .custom-logo { max-width: none; }
 }
 /* "a Professional Corporation" tagline, set apart by space and a softer white. */
 .hp-header__tagline {
 	margin-left: 20px;
 	font-family: var(--hp-sans);
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 500;
 	line-height: 1.2;
 	color: rgba(255, 255, 255, 0.82);
@@ -289,12 +298,37 @@ html.hp-noscroll { overflow: hidden; }
 .hp-header__quick { display: none; }
 .hp-burger { display: none; }
 
-@media (max-width: 1180px) {
+/* Desktop bar: a top-level nav link never breaks onto two lines. */
+@media (min-width: 1025px) {
+	.hp-nav__list > li > a,
+	.hp-nav__toplink { white-space: nowrap; }
+}
+
+/* 1281–1400px: the tagline shows, so the nav uses the compact spacing of the ≤1280px
+   rule and the phone shows as an icon only. This keeps the full logo and every nav
+   link on one line. */
+@media (min-width: 1281px) and (max-width: 1400px) {
 	.hp-nav { gap: 16px; }
 	.hp-nav__list a, .hp-nav__toplink { padding: 0 9px; font-size: 14px; }
 	.hp-phone__number { display: none; }
 	.hp-phone { padding: 0 12px; }
 	.hp-phone svg { width: 18px; height: 18px; }
+}
+
+@media (max-width: 1280px) {
+	.hp-nav { gap: 16px; }
+	.hp-nav__list a, .hp-nav__toplink { padding: 0 9px; font-size: 14px; }
+	.hp-phone__number { display: none; }
+	.hp-phone { padding: 0 12px; }
+	.hp-phone svg { width: 18px; height: 18px; }
+}
+
+/* 1025–1100px: tighter nav spacing, so the full logo and the one-line links still fit
+   inside the bar. */
+@media (min-width: 1025px) and (max-width: 1100px) {
+	.hp-header__inner { gap: 16px; }
+	.hp-nav { gap: 12px; }
+	.hp-nav__list a, .hp-nav__toplink { padding: 0 6px; }
 }
 
 @media (max-width: 1024px) {
@@ -327,6 +361,9 @@ html.hp-noscroll { overflow: hidden; }
 	.hp-burger__close { display: none; }
 	.hp-header.is-open .hp-burger__open { display: none; }
 	.hp-header.is-open .hp-burger__close { display: block; }
+	/* The open menu has its own full-width booking button, so hide the bar's copy. */
+	.hp-header.is-open .hp-header__quick { display: none; }
+	.hp-header.is-open .hp-burger { margin-left: auto; }
 
 	.hp-nav {
 		position: absolute;
@@ -398,7 +435,7 @@ html.hp-noscroll { overflow: hidden; }
 	color: var(--hp-ink2);
 }
 .hp-footer__inner {
-	max-width: calc(1280px + 2 * var(--hp-gutter));
+	max-width: calc(1600px + 2 * var(--hp-gutter));
 	margin: 0 auto;
 	padding: 0 var(--hp-gutter);
 }
@@ -644,7 +681,7 @@ html.hp-noscroll { overflow: hidden; }
 }
 
 /* Force a plain vertical flow regardless of the isotope/masonry script. Drop the
-   skin's -10px gutter margin so the row aligns with the page's 1280 container
+   skin's -10px gutter margin so the row aligns with the page's 1600 container
    (the "Blog" heading and the header/footer), not 10px past it. */
 .hp-bloglist .eael-post-grid {
 	display: block !important;
@@ -844,11 +881,11 @@ html.hp-noscroll { overflow: hidden; }
 	background: var(--hp-fog);
 	padding: 160px 0 40px;
 }
-/* The article wrappers match the 1280px page container (header, footer, main pages).
-   The max-width adds the 24px side gutters, so the content is exactly 1280px wide. */
+/* The article wrappers match the 1600px page container (header, footer, main pages).
+   The max-width adds the 24px side gutters, so the content is exactly 1600px wide. */
 .hp-article__inner {
 	position: relative;
-	max-width: calc(1280px + 48px);
+	max-width: calc(1600px + 48px);
 	margin: 0 auto;
 	padding: 0 24px;
 }
@@ -895,12 +932,12 @@ html.hp-noscroll { overflow: hidden; }
 	padding: 0 0 64px;
 }
 .hp-prose__inner {
-	max-width: calc(1280px + 48px);
+	max-width: calc(1600px + 48px);
 	margin: 0 auto;
 	padding: 0 24px;
 	font-family: var(--hp-sans);
 }
-/* The container stays 1280px wide (it lines up with the header); the reading
+/* The container stays 1600px wide (it lines up with the header); the reading
    column inside it is held to about 70 characters per line. */
 .hp-prose__inner > * { max-width: 70ch; }
 .hp-prose__inner > figure,
@@ -946,7 +983,7 @@ html.hp-noscroll { overflow: hidden; }
 	padding: 0 0 96px;
 }
 .hp-postnav__inner {
-	max-width: calc(1280px + 48px);
+	max-width: calc(1600px + 48px);
 	margin: 0 auto;
 	padding: 0 24px;
 	display: flex;
