@@ -35,13 +35,8 @@ while ( have_posts() ) :
 			<?php the_content(); ?>
 			<?php wp_link_pages(); ?>
 			<div>
-				<a class="hp-article__back" href="<?php echo esc_url( $blog_url ); ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M19 12H5" />
-						<path d="m12 19-7-7 7-7" />
-					</svg>
-					<?php esc_html_e( 'All blog posts', 'hello-biz-child' ); ?>
-				</a>
+				<?php // The arrow comes from CSS (::before), so the hover underline covers the text only. ?>
+				<a class="hp-article__back" href="<?php echo esc_url( $blog_url ); ?>"><?php esc_html_e( 'All blog posts', 'hello-biz-child' ); ?></a>
 			</div>
 		</div>
 	</article>

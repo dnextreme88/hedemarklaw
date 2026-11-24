@@ -505,7 +505,7 @@ function hlc_render_faqs_shortcode( $atts = array() ) {
 		if ( '' === $more_text ) {
 			$more_text = 'See all FAQs';
 		}
-		$html .= '<p class="hp-faq-more"><a href="' . esc_url( $more_url ) . '">' . esc_html( $more_text ) . ' <span aria-hidden="true">&rarr;</span></a></p>';
+		$html .= '<p class="hp-faq-more"><a href="' . esc_url( $more_url ) . '">' . esc_html( $more_text ) . '</a></p>'; // The arrow comes from CSS (::after).
 	}
 
 	// FAQ structured data (schema.org FAQPage). Only the full list prints it. A teaser

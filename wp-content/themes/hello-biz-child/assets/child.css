@@ -13,6 +13,9 @@
 	--hp-blue: #2D6CA8;
 	--hp-blue-brand: #377DBD;
 	--hp-bluelight: #8FB9DF;
+	--hp-steel: #C3D4E3;       /* header: current-page text and bar (7.9:1 on ink2) */
+	--hp-steel-hover: #3A5670; /* header: hover fill on ink2 */
+	--hp-steel-press: #44637F; /* header: pressed fill on ink2 */
 	--hp-azure: #0F4C85;
 	--hp-mist: #EAF4F6;
 	--hp-muted: #525252;
@@ -82,7 +85,7 @@ html.hp-noscroll { overflow: hidden; }
 	left: 0;
 	right: 0;
 	z-index: 50;
-	background: var(--hp-ink);
+	background: var(--hp-ink2); /* #22384D slate (2026-11-24) */
 }
 
 .hp-header__inner {
@@ -178,14 +181,14 @@ html.hp-noscroll { overflow: hidden; }
 .hp-nav__list a:hover,
 .hp-nav__toplink:hover,
 .hp-nav__toplink:focus,
-.hp-nav__toplink[aria-expanded="true"] { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.hp-nav__toplink[aria-expanded="true"] { color: #fff; background: var(--hp-steel-hover); }
 .hp-nav__list a:active,
-.hp-nav__toplink:active { background: rgba(255, 255, 255, 0.16); }
+.hp-nav__toplink:active { background: var(--hp-steel-press); }
 
 /* Current page: a bar under the link, not only a colour change. */
 .hp-nav__list .current-menu-item > a,
 .hp-nav__list .current-menu-item > .hp-nav__toplink,
-.hp-nav__list [aria-current="page"] { color: var(--hp-bluelight); }
+.hp-nav__list [aria-current="page"] { color: var(--hp-steel); }
 .hp-nav__list > .current-menu-item > a::after,
 .hp-nav__list > .current-menu-item > .hp-nav__toplink::after {
 	content: "";
@@ -195,7 +198,7 @@ html.hp-noscroll { overflow: hidden; }
 	bottom: 4px;
 	height: 3px;
 	border-radius: 2px;
-	background: var(--hp-bluelight);
+	background: var(--hp-steel);
 }
 
 /* "Firm" disclosure menu */
@@ -215,7 +218,7 @@ html.hp-noscroll { overflow: hidden; }
 	top: calc(100% + 18px);
 	left: 0;
 	min-width: 260px;
-	background: var(--hp-ink);
+	background: var(--hp-ink2);
 	border-radius: var(--hp-radius);
 	box-shadow: 0 16px 40px rgba(0, 20, 40, 0.35); /* taste-skill-ignore: floating menu */
 	opacity: 0;
@@ -243,6 +246,12 @@ html.hp-noscroll { overflow: hidden; }
 	font-size: 15px;
 }
 .hp-submenu .current-menu-item > a { background: rgba(255, 255, 255, 0.08); }
+/* A link to the page the visitor is on gets no hover or press change: it is not a
+   destination. The Firm button keeps its hover, because it opens the menu. */
+.hp-nav__list > li > a[aria-current="page"]:hover,
+.hp-nav__list > li > a[aria-current="page"]:active { background: transparent; color: var(--hp-steel); }
+.hp-submenu a[aria-current="page"]:hover,
+.hp-submenu a[aria-current="page"]:active { background: rgba(255, 255, 255, 0.08); }
 
 .hp-nav__actions {
 	display: flex;
@@ -265,7 +274,7 @@ html.hp-noscroll { overflow: hidden; }
 	transition: background-color .15s ease;
 }
 .hp-phone:hover,
-.hp-phone:focus { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.hp-phone:focus { color: #fff; background: var(--hp-steel-hover); }
 .hp-phone svg { width: 16px; height: 16px; }
 
 /* Primary button: one shape and one set of states across the site. */
@@ -356,7 +365,7 @@ html.hp-noscroll { overflow: hidden; }
 		border-radius: var(--hp-radius);
 		cursor: pointer;
 	}
-	.hp-burger:hover, .hp-burger:focus { background: rgba(255, 255, 255, 0.1); color: #fff; }
+	.hp-burger:hover, .hp-burger:focus { background: var(--hp-steel-hover); color: #fff; }
 	.hp-burger svg { width: 24px; height: 24px; }
 	.hp-burger__close { display: none; }
 	.hp-header.is-open .hp-burger__open { display: none; }
@@ -375,7 +384,7 @@ html.hp-noscroll { overflow: hidden; }
 		flex-direction: column;
 		align-items: stretch;
 		gap: 0;
-		background: var(--hp-ink);
+		background: var(--hp-ink2);
 		padding: 8px var(--hp-gutter) 24px;
 	}
 	/* With JavaScript the menu waits for the button; without it the menu stays open. */
@@ -637,16 +646,45 @@ html.hp-noscroll { overflow: hidden; }
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
+/* Phones (2026-11-25): a compact band. The top padding clears the fixed 68px
+   header plus 2em, and 2em sits under the title. A one-line title band is about
+   68 + 32 + 39 + 32 = 171px tall, not 341px. Bands no longer share one phone
+   height: a title that wraps to more lines makes its band taller. */
 @media (max-width: 767px) {
 	.hp-dotgrid.e-con,
 	.hp-article.hp-dotgrid {
-		min-height: 341px !important;
+		min-height: 0 !important;
+		padding-top: calc(68px + 2em) !important;
+		padding-bottom: 2em !important;
 	}
 }
 /* Two-column About layout (fixed 300px portrait rail + fluid bio). */
 .hp-about-row {
 	flex-wrap: nowrap !important;
 	align-items: flex-start !important;
+}
+/* Left-align the About content with the page title above it (2026-11-24).
+   Elementor centers the row's 1140px inner box. The title sits in a 1600px box
+   that is centered on very wide screens, so the inner box starts at the left
+   edge of that same box, not at the page edge. */
+.hp-about-row > .e-con-inner {
+	margin-left: max(0px, calc((100% - 1600px) / 2)) !important;
+	margin-right: auto !important;
+}
+/* The portrait shares the left edge of the name under it. Phones keep it centered. */
+@media (min-width: 768px) {
+	.hp-col-left .elementor-widget-image { text-align: left !important; }
+}
+/* Phones (stacked columns): center the name, the job title, and the contact icons
+   under the centered portrait. Their Elementor settings pin them to the left edge
+   with align-self: flex-start. */
+@media (max-width: 767px) {
+	.hp-col-left > .elementor-widget,
+	.hp-col-left > .e-con-inner > .elementor-widget {
+		align-self: center !important;
+		text-align: center !important;
+	}
+	.hp-col-left .elementor-icon-list-items { justify-content: center !important; }
 }
 .hp-col-left {
 	flex: 0 0 300px !important;
@@ -814,9 +852,20 @@ html.hp-noscroll { overflow: hidden; }
 	font-family: var(--hp-sans);
 	font-size: 17px;
 	line-height: 1.65;
-	max-width: 70ch;
+	/* No line-length cap: the excerpt fills the card width (60 words, about two
+	   lines on desktop). On phones, show at most 4 lines. */
+	max-width: none;
 	color: var(--hp-ink2);
 	margin: 0 0 16px;
+}
+@media (max-width: 767px) {
+	.hp-bloglist .eael-grid-post-excerpt p {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 4;
+		line-clamp: 4;
+		overflow: hidden;
+	}
 }
 
 /* Read more (text link with arrow). */
@@ -896,6 +945,92 @@ html.hp-noscroll { overflow: hidden; }
 }
 
 /* ---------------------------------------------------------------------
+   BLOG SEARCH ([hlc_blog_search], inc/blog_search.php)
+   A search box above the list. With /blog/?q=term the results show in
+   the list style above, and the Post Grid widget hides.
+   --------------------------------------------------------------------- */
+.hp-blog-searching .elementor-widget-eael-post-grid { display: none !important; }
+
+.hp-blogsearch { font-family: var(--hp-sans); margin: 0 0 32px; }
+.hp-blogsearch__label {
+	display: block;
+	font-size: var(--hp-fs-small);
+	font-weight: 600;
+	color: var(--hp-ink);
+	margin: 0 0 8px;
+}
+.hp-blogsearch__row { display: flex; gap: 12px; }
+.hp-blogsearch__input {
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: 48px;
+	padding: 0 16px;
+	font-family: var(--hp-sans);
+	font-size: var(--hp-fs-body);
+	color: var(--hp-ink);
+	background: var(--hp-white);
+	border: 1px solid var(--hp-hairline);
+	border-radius: var(--hp-radius);
+	transition: border-color .15s ease;
+}
+.hp-blogsearch__input::placeholder { color: var(--hp-muted); opacity: 1; }
+.hp-blogsearch__input:hover { border-color: var(--hp-bluelight); }
+.hp-blogsearch__input:focus { outline: none; border-color: var(--hp-blue); box-shadow: var(--hp-focus); }
+.hp-blogsearch__btn {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 48px;
+	padding: 0 28px;
+	border: 0;
+	border-radius: var(--hp-pill);
+	background: var(--hp-ink);
+	color: #fff;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color .15s ease, transform .1s ease;
+}
+.hp-blogsearch__btn:hover,
+.hp-blogsearch__btn:focus { background: var(--hp-blue); color: #fff; }
+.hp-blogsearch__btn:active { transform: translateY(1px); }
+/* Busy state while the results page loads (ux.js, the same spinner as "Load more"). */
+.hp-blogsearch__btn.is-busy { cursor: progress; background: var(--hp-ink2); }
+.hp-blogsearch__btn.is-busy::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}
+
+.hp-blogsearch__status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px 24px;
+	margin: 24px 0 16px;
+}
+.hp-blogsearch__count { margin: 0; font-size: var(--hp-fs-body); color: var(--hp-ink2); }
+.hp-blogsearch__clear { font-size: 16px; font-weight: 600; color: var(--hp-blue); text-decoration: underline; text-underline-offset: 3px; }
+.hp-blogsearch__clear:hover { color: var(--hp-ink); }
+
+/* The Post Grid widget setting paints its cards white; the results list is outside
+   that widget, so paint them here. */
+.hp-blogsearch__results .eael-grid-post-holder { background-color: var(--hp-white); }
+
+@media (max-width: 480px) {
+	.hp-blogsearch__row { flex-direction: column; }
+	.hp-blogsearch__btn { width: 100%; }
+}
+
+/* ---------------------------------------------------------------------
    SINGLE POST (child template-parts/single.php)
    Mirrors blog-post-1.html: dotted-grid article header, back link, mono
    date eyebrow, serif title, prose body, prev/next cards, dark CTA band.
@@ -931,9 +1066,6 @@ html.hp-noscroll { overflow: hidden; }
 	transition: color .2s ease;
 }
 .hp-article__back:hover { color: var(--hp-ink); text-decoration: underline; text-underline-offset: 3px; }
-.hp-article__back:hover svg { transform: translateX(-3px); }
-.hp-article__back svg { transition: transform .2s var(--hp-ease); }
-.hp-article__back svg { width: 16px; height: 16px; }
 
 .hp-article__eyebrow {
 	font-family: var(--hp-sans);
@@ -1062,7 +1194,7 @@ html.hp-noscroll { overflow: hidden; }
 
 /* Dark CTA band. */
 .hp-cta {
-	background: var(--hp-ink);
+	background: var(--hp-ink2); /* #22384D slate, the same as the header (2026-11-24) */
 	color: var(--hp-fog);
 	padding: 96px 0;
 }
@@ -1072,8 +1204,10 @@ html.hp-noscroll { overflow: hidden; }
 	padding: 0 24px;
 	text-align: center;
 }
+/* CTA band only: Fraunces headline, Fraunces italic lead (2026-11-24). The buttons
+   stay in Inter. */
 .hp-cta__title {
-	font-family: var(--hp-sans);
+	font-family: var(--hp-serif);
 	font-weight: 400;
 	font-size: clamp(32px, 5vw, 48px);
 	line-height: 1.12;
@@ -1081,7 +1215,8 @@ html.hp-noscroll { overflow: hidden; }
 	margin: 0 0 24px;
 }
 .hp-cta__text {
-	font-family: var(--hp-sans);
+	font-family: var(--hp-serif);
+	font-style: italic;
 	font-size: var(--hp-fs-lead);
 	line-height: 1.6;
 	color: rgba(244, 247, 249, 0.88);
@@ -1396,7 +1531,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .hp-faqx__item.is-open .hp-faqx__panel { max-height: 1000px; }
 .hp-faqx__inner {
 	padding: 0 24px 24px;
-	max-width: 75ch;
+	max-width: none; /* the answer fills the card width, like the question (2026-11-24) */
 	font-family: var(--hp-sans);
 	font-size: var(--hp-fs-body);
 	line-height: 1.65;
@@ -1467,12 +1602,21 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	max-width: none !important;
 	min-width: 0 !important;
 }
-/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl). */
+/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl).
+   The 3:2 shape is on the image widget box, and the image fills it (2026-11-25).
+   With the ratio on the image only, the column flex layout sized the box from the
+   image's 290 x 194 file size, so on wide phones and small tablets the image grew
+   past its 193px box and covered the heading and the text under it. */
+.hp-svc-media > .elementor-widget-image {
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	border-radius: var(--hp-radius);
+}
 .elementor .hp-svc-media img,
 .hp-svc-media img {
 	width: 100% !important;
-	height: auto !important;
-	aspect-ratio: 3 / 2;
+	height: 100% !important;
 	object-fit: cover;
 	border-radius: var(--hp-radius);
 	display: block;
@@ -2336,3 +2480,118 @@ body a:hover { color: var(--hp-ink); }
 
 /* The skip link target gets focus by script only; no ring on the whole page. */
 .hp-main:focus { outline: none; }
+
+/* ---------------------------------------------------------------------
+   ARROW LINKS (2026-11-24): one style for every standalone text link with
+   an arrow. "Learn more" / "More about Justin" (.hp-learn), "See all FAQs"
+   (.hp-faq-more), "Read more" on /services/ (.hp-svc-more), the blog and
+   search "Read more", "All blog posts" (.hp-article__back), and "All
+   pricing" (.hp-crumb).
+
+   The link is an inline-block box, not inline-flex. In a flex box the text
+   and the arrow were separate flex items, so the hover underline broke into
+   two pieces, one under the arrow. Here the arrow is an inline-block, and a
+   text underline does not reach into an inline-block, so only the text gets
+   one continuous underline. The padding keeps a 44px tap target.
+   --------------------------------------------------------------------- */
+.hp-learn a,
+a.hp-learn,
+.hp-faq-more a,
+.hp-svc-body .hp-svc-more a,
+.hp-bloglist .eael-post-elements-readmore-btn,
+.hp-article__back,
+.hp-crumb a {
+	display: inline-block;
+	padding: 10px 0;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 24px;
+	min-height: 44px;
+	color: var(--hp-blue);
+	background: transparent;
+	text-decoration: none;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
+	transition: color .2s ease;
+}
+.hp-learn a::after,
+a.hp-learn::after,
+.hp-faq-more a::after,
+.hp-svc-body .hp-svc-more a::after,
+.hp-bloglist .eael-post-elements-readmore-btn::after {
+	content: "\2192";
+	display: inline-block;
+	margin-left: 6px;
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s var(--hp-ease);
+}
+.hp-article__back::before,
+.hp-crumb a::before {
+	content: "\2190";
+	display: inline-block;
+	margin-right: 6px;
+	font-size: 15px;
+	line-height: 1;
+	transition: transform .2s var(--hp-ease);
+}
+.hp-learn a:hover,
+a.hp-learn:hover,
+.hp-faq-more a:hover,
+.hp-svc-body .hp-svc-more a:hover,
+.hp-bloglist .eael-post-elements-readmore-btn:hover,
+.hp-article__back:hover,
+.hp-crumb a:hover {
+	color: var(--hp-ink) !important;
+	text-decoration: underline;
+}
+.hp-learn a:hover::after,
+a.hp-learn:hover::after,
+.hp-faq-more a:hover::after,
+.hp-svc-body .hp-svc-more a:hover::after,
+.hp-bloglist .eael-post-elements-readmore-btn:hover::after { transform: translateX(3px); }
+.hp-article__back:hover::before,
+.hp-crumb a:hover::before { transform: translateX(-3px); }
+/* Elementor's per-page Essential Addons CSS loads after this file and sets the
+   blog "Read more" to display: block. Win on specificity, not with !important. */
+.hp-bloglist .eael-grid-post-excerpt .eael-post-elements-readmore-btn { display: inline-block; }
+
+/* ---------------------------------------------------------------------
+   GRAVITY FORMS SUBMIT SPINNER (2026-11-25)
+   The Orbital theme puts its .gform-loader inside the submit button with
+   position: absolute and auto margins, so it sat on top of the label. Put it
+   back in the flex row as the first item, before the label. ux.js changes
+   the label to "Submitting…" while the class gform-has-spinner is on.
+   --------------------------------------------------------------------- */
+.gform_wrapper .gform_button.gform-has-spinner {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: progress;
+}
+.gform_wrapper .gform_button .gform-loader {
+	position: static !important;
+	inset: auto !important;
+	order: -1;
+	flex: none;
+	margin: 0 !important;
+}
+/* Fallback busy state (ux.js busy()) for a form without the Gravity Forms spinner. */
+.gform_wrapper .gform_button.is-busy {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: progress;
+}
+.gform_wrapper .gform_button.is-busy::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}

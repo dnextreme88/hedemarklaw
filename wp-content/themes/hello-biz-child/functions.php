@@ -15,6 +15,9 @@ require_once __DIR__ . '/inc/user_fields_panel.php';
 // SEO additions on top of Rank Math (areaServed, and the attorney's Person schema).
 require_once __DIR__ . '/inc/seo.php';
 
+// Blog search on /blog: the [hlc_blog_search] shortcode and its results list.
+require_once __DIR__ . '/inc/blog_search.php';
+
 /**
  * Is the current request the /book/ page or a service subpage under it?
  *
