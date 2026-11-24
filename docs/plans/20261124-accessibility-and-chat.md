@@ -79,6 +79,13 @@ Changes:
 Checked: Home, Contact, Pricing, Blog, a service page, a blog post, and a 404 page each have one skip link,
 one `<main>`, and one `#content`. On Home, the first Tab focuses the skip link, and Enter moves focus into the content.
 
+## WordPress core 7.1 → 7.1.5
+- Ran `studio config set --wp 7.1.5`. `studio wp core version` reports 7.1.5.
+- `studio wp core update-db`: the database was already at db version 61833, so no change.
+- Git ignores core (`/wp-admin/`, `/wp-includes/`, `/wp-*.php`), so this update changes no tracked files.
+  Staging and the live site need the same core update from their own dashboard or host.
+- The home page returns HTTP 200 after the update.
+
 ## Verification
 - `studio wp plugin list --status=active` lists the three plugins.
 - Home page: the toolbar opens at bottom-left, font size goes to 120%, and reset restores 100%.
