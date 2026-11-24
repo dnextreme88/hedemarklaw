@@ -2304,3 +2304,6 @@ body a:hover { color: var(--hp-ink); }
 /* FAQ questions wrap (the parent theme sets nowrap on buttons, which cut long questions off on phones). */
 .hp-faqx__head { white-space: normal; overflow-wrap: anywhere; }
 .hp-faqx__head > :first-child { min-width: 0; }
+
+/* The skip link target gets focus by script only; no ring on the whole page. */
+.hp-main:focus { outline: none; }

@@ -1,0 +1,998 @@
+# Copyright (C) 2026 CookieYes
+# This file is distributed under the GPLv3.
+msgid ""
+msgstr ""
+"Project-Id-Version: AccessiYes Accessibility Widget for ADA, EAA & WCAG Readiness 3.2.6\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/accessibility-widget-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-21T10:37:18+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: accessibility-widget\n"
+
+#. Plugin Name of the plugin
+#: accessibility-widget.php
+msgid "AccessiYes Accessibility Widget for ADA, EAA & WCAG Readiness"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: accessibility-widget.php
+msgid "https://www.cookieyes.com/accessibility-widget/"
+msgstr ""
+
+#. Description of the plugin
+#: accessibility-widget.php
+msgid "A simple way to make your website more accessible."
+msgstr ""
+
+#. Author of the plugin
+#: accessibility-widget.php
+msgid "CookieYes"
+msgstr ""
+
+#. Author URI of the plugin
+#: accessibility-widget.php
+msgid "https://www.cookieyes.com/"
+msgstr ""
+
+#: lite/admin/class-admin.php:229
+msgid "Accessibility Widget"
+msgstr ""
+
+#: lite/admin/class-admin.php:230
+#: lite/admin/class-admin.php:362
+msgid "AccessiYes"
+msgstr ""
+
+#: lite/admin/class-admin.php:297
+msgid "Support"
+msgstr ""
+
+#: lite/admin/class-admin.php:298
+#: lite/admin/app/dist/assets/index.js:28894
+msgid "Settings"
+msgstr ""
+
+#: lite/admin/class-admin.php:347
+#: lite/admin/app/dist/assets/index.js:21586
+msgid "Dismiss review banner"
+msgstr ""
+
+#: lite/admin/class-admin.php:362
+#: lite/admin/app/dist/assets/index.js:21601
+msgid "Hey, we at"
+msgstr ""
+
+#: lite/admin/class-admin.php:362
+#: lite/admin/app/dist/assets/index.js:21605
+msgid "would like to thank you for using our plugin. We would really appreciate if you could take a moment to drop a quick review that will inspire us to keep going."
+msgstr ""
+
+#: lite/admin/class-admin.php:367
+#: lite/admin/app/dist/assets/index.js:21614
+msgid "Review now"
+msgstr ""
+
+#: lite/admin/class-admin.php:370
+#: lite/admin/app/dist/assets/index.js:21624
+msgid "Never show again"
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:89
+msgid "Banner identifier."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:94
+msgid "Banner data to store (status, expiry, etc)."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:221
+msgid "Current page of the collection."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:229
+msgid "Maximum number of items to be returned in result set."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:238
+msgid "Limit results to those matching a string."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:245
+msgid "Force fetch data"
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:262
+msgid "Widget status."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:275
+msgid "Icon identifier."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:280
+msgid "Icon size in pixels."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:285
+msgid "Widget label."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:290
+msgid "Widget heading."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:295
+msgid "Widget position for different devices."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:308
+msgid "Widget language."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:324
+msgid "Widget margins in pixels."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:365
+msgid "Primary color in hex format."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:370
+msgid "Keyboard shortcut configuration."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:382
+msgid "List of dismissed banner IDs."
+msgstr ""
+
+#: lite/admin/modules/settings/api/class-api.php:391
+msgid "Widget modules configuration."
+msgstr ""
+
+#: lite/includes/class-rest-controller.php:51
+msgid "Sorry, you cannot list resources."
+msgstr ""
+
+#: lite/includes/class-rest-controller.php:65
+msgid "Sorry, you are not allowed to create resources."
+msgstr ""
+
+#: lite/includes/class-rest-controller.php:79
+msgid "Sorry, you cannot view this resource."
+msgstr ""
+
+#: lite/includes/class-rest-controller.php:93
+msgid "Sorry, you are not allowed to edit this resource."
+msgstr ""
+
+#: lite/includes/class-rest-controller.php:107
+msgid "Sorry, you are not allowed to delete this resource."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:65
+msgid "It was for testing only"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:67
+msgid "Test didn't go as planned? Tell us what features would make us a better fit."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:68
+msgid "Suggest a feature"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:74
+msgid "I couldn't figure out how to use it"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:78
+msgid "What was confusing or difficult?"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:79
+msgid "e.g. Navigation was difficult, settings were unclear..."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:83
+msgid "Need quick help? Our team can guide you step-by-step."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:84
+msgid "Connect with support"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:90
+msgid "It caused technical issues on my site"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:94
+msgid "What issue did you experience? (e.g., layout break, performance issue, plugin conflict)"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:95
+msgid "Describe the technical issue in detail..."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:99
+msgid "We can usually resolve compatibility issues quickly."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:100
+msgid "Contact support"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:106
+msgid "I'm concerned about compliance or legal coverage"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:110
+msgid "What concerns do you have?"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:111
+msgid "Share your legal or compliance questions..."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:117
+msgid "I need a feature that isn't available"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:121
+msgid "Which feature were you looking for?"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:122
+msgid "Describe the feature you need..."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:126
+msgid "We're actively improving AccessiYes and prioritizing feature requests."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:127
+msgid "Submit feature request"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:133
+msgid "I found another solution"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:137
+msgid "What made the other solution a better fit?"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:138
+msgid "Which alternative are you using and why?"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:142
+msgid "If there's something missing, let us know — we may already support it."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:143
+msgid "Tell us what’s missing"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:177
+msgid "Before you deactivate, help us improve"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:179
+msgid "Close dialog"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:182
+msgid "Your feedback helps us make AccessiYes better."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:184
+msgid "Why are you deactivating AccessiYes?"
+msgstr ""
+
+#. translators: %s: Privacy Policy
+#: lite/includes/class-uninstall-feedback.php:242
+msgid "We don’t collect personal data in this form. We only use your feedback to improve AccessiYes. %s"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:243
+msgid "Privacy Policy"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:251
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:255
+msgid "Go to support"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:259
+msgid "Skip & Deactivate"
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:613
+msgid "Invalid request."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:618
+msgid "Security check failed."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:624
+msgid "Permission denied."
+msgstr ""
+
+#: lite/includes/class-uninstall-feedback.php:630
+msgid "Missing required data."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21481
+#: lite/admin/app/dist/assets/index.js:21728
+msgid "Dismiss banner"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21486
+msgid "Sponsored recommendation"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21487
+msgid "Beyond Widgets. Continue Your Accessibility Journey."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21489
+msgid "You have taken the first step towards accessibility. Now level up with deeper audits, ongoing monitoring for accessibility issues, and detailed reporting with AI-assisted solutions."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21491
+msgid "Explore WebYes. One platform, better fixes."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21499
+msgid "Run a scan with WebYes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21696
+msgid "Accessibility Expert"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21702
+msgid "You've unlocked a free 45-min accessibility consultation!"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21704
+msgid "Get a live site review + a clear, prioritised plan for "
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21705
+msgid "WCAG 2.2, ADA & EAA."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21715
+msgid "Book a call"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:21716
+msgid "(opens in a new tab)"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22879
+msgid "Widget enabled successfully"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22879
+msgid "Widget disabled successfully"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22884
+msgid "Failed to save changes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22897
+msgid "Widget status"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22900
+msgid "Enabled"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22900
+msgid "Disabled"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:22930
+msgid "Help"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:23061
+msgid "Shape"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:23166
+msgid "Pick custom color"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:23178
+msgid "Color picker"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:23183
+msgid "Heads up: We recommend checking your colour choice against WCAG AA contrast guidelines to ensure accessibility."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:23191
+msgid "Check contrast here →"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25555
+msgid "Select Language"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25557
+msgid "Languages"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25563
+msgid "Small"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25564
+msgid "Medium"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25565
+msgid "Large"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25571
+msgid "Size"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25590
+msgid "Widget language"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25592
+msgid "Note: The widget will appear in the visitor's browser language. If it's not in our supported list, it will show in the language you've selected."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25595
+msgid "Widget colour"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:25599
+msgid "Widget icon"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26233
+#: lite/admin/app/dist/assets/index.js:26746
+msgid "Desktop"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26238
+#: lite/admin/app/dist/assets/index.js:26757
+msgid "Mobile"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26280
+msgid "Margin(px)"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26282
+msgid "Vertical"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26283
+msgid "Horizontal"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26289
+msgid "(Max 80px)"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26345
+msgid "Widget position"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26919
+msgid "Changes published successfully"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26924
+msgid "Failed to publish changes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26937
+msgid "Applying..."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26937
+msgid "Apply changes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26944
+msgid "Widget customisation"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:26945
+msgid "Set the look and feel of your accessibility widget to align with your website."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27144
+msgid "General settings"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27145
+msgid "Control your widget's visibility on desktop and mobile devices."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27153
+msgid "Enable widget on desktop"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27157
+msgid "Enable widget on mobile layouts"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27162
+msgid "Enable keyboard shortcut"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27221
+#: lite/admin/app/dist/assets/index.js:27679
+msgid "Conformance status"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27229
+#: lite/admin/app/dist/assets/index.js:27675
+#: lite/admin/app/dist/assets/index.js:27753
+#: lite/admin/app/dist/assets/index.js:28498
+msgid "Generate statement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27235
+msgid "Company Name"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27244
+msgid "Company Inc."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27251
+msgid "Business E-mail"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27261
+msgid "info@company.com"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27268
+msgid "Website"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27278
+msgid "https://company.com"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27285
+msgid "Next"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27593
+msgid "WCAG 2.2 Level AA"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27594
+msgid "WCAG 2.1 Level AA"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27595
+msgid "WCAG 2.0 Level AA"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27596
+msgid "Other"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27603
+msgid "Fully conformant"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27604
+msgid "The content fully conforms to the selected accessibility standard."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27608
+msgid "Partially conformant"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27609
+msgid "Some parts of the content do not fully conform to the selected accessibility standard."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27613
+msgid "Non conformant"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27614
+msgid "The content does not conform to the selected accessibility standard."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27618
+msgid "Not assessed"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27619
+msgid "The content has not been evaluated or results are not available."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27625
+msgid "Accessibility Commitment"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27626
+msgid "{{company_name}} is committed to improving the accessibility and usability of {{website_url}} for all users, including people with disabilities. We aim to provide an inclusive digital experience and continuously work toward enhancing accessibility across our website."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27627
+msgid "Accessibility Target Standard"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27628
+msgid "We aim to align our website with <strong>{{accessibility_standard}}</strong> accessibility standards."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27629
+msgid "This target standard guides our accessibility efforts and ongoing improvements."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27630
+msgid "Current Conformance Status"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27631
+msgid "Based on our internal review, this website is <strong>{{conformance_status}}</strong> with <strong>{{accessibility_standard}}</strong>."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27632
+msgid "This status reflects our evaluation at the time of publication and is based on our internal review and available information. Accessibility is an ongoing process, and conformance levels may evolve as updates are implemented."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27633
+msgid "Accessibility Features"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27634
+msgid "To support accessibility, this website includes the AccessiYes accessibility interface. This interface allows users to adjust certain visual and usability settings according to their individual needs, such as:"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27636
+msgid "Text size and spacing adjustments"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27637
+msgid "Contrast and color settings"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27638
+msgid "Highlighting tools"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27639
+msgid "Other assistive viewing options"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27641
+msgid "These tools are intended to improve user experience, but do not replace the need for accessible content and proper underlying website structure."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27642
+msgid "Limitations and Technical Considerations"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27643
+msgid "Please note the following:"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27644
+msgid "The availability and effectiveness of accessibility features depend on the website's configuration and ongoing maintenance."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27645
+msgid "While we strive to ensure accessibility across <strong>{{website_url}}</strong>, some content or features may not yet fully meet the selected accessibility standards. Some content may be provided by third parties or affected by technical constraints beyond our immediate control."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27646
+msgid "Additionally, there may be certain legacy content or integrations that may not yet fully align with the selected accessibility standard. We are actively working to identify and address accessibility barriers within our control."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27647
+msgid "Feedback and Contact"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27648
+msgid "If you experience any difficulty accessing content on this website or would like to report an accessibility issue, please contact us:"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27649
+msgid "Email:"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27650
+msgid "When contacting us, please include the specific page URL and a description of the issue so we can investigate and respond appropriately."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27651
+msgid "Continuous Improvement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27652
+msgid "Accessibility is an ongoing effort. We regularly review our website and evaluate opportunities to improve accessibility and usability."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27653
+msgid "Last updated: {{last_updated}}"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27682
+msgid "1. Select the accessibility standards you follow."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27707
+msgid "Please specify the standard"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27715
+msgid "2. Conformance status"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27740
+msgid "The statement will be generated based on the information you provide and your own assessment. Please ensure that the details entered accurately reflect your website's accessibility status and applicable requirements."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:27750
+msgid "Back"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28113
+msgid "Close"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28237
+msgid "Statement copied to clipboard."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28239
+msgid "Could not copy to clipboard."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28248
+msgid "Statement generated"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28250
+msgid "Last updated:"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28266
+#: lite/admin/app/dist/assets/index.js:28322
+msgid "Preview"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28279
+#: lite/admin/app/dist/assets/index.js:28333
+msgid "Copy statement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28292
+msgid "Edit"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28305
+msgid "Display in widget overlay"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28308
+msgid "Show this generated statement directly inside the AccessiYes widget."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28342
+msgid "Close preview"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28353
+msgid "Accessibility statement content"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28364
+msgid "Link your statement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28365
+msgid "Already have an accessibility statement page? Link it here to make it accessible through the widget."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28368
+msgid "Link statement on widget"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28384
+msgid "Accessibility statement URL"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28394
+msgid "E.g., yoursite.com/accessibility"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28444
+msgid "Changes saved successfully."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28446
+msgid "Failed to save changes."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28475
+msgid "Statement generated and saved."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28477
+msgid "Statement generated but could not be saved. Use Save changes."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28483
+msgid "Accessibility statement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28484
+msgid "Generate and manage your website's accessibility statement."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28491
+msgid "Saving..."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28491
+msgid "Save changes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28499
+msgid "Don't have an accessibility statement? Use our generator to create a professional statement."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28506
+msgid "Get started"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28558
+msgid "Generating statement..."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28649
+msgid "Modules section"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28650
+msgid "Enable or disable individual accessibility features for your users."
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28654
+#: lite/admin/app/dist/assets/index.js:28658
+msgid "Accessibility profile"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28664
+msgid "Text and Reading"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28669
+msgid "Adjust Font Sizing"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28679
+msgid "Highlight Title"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28689
+msgid "Highlight Links"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28699
+msgid "Dyslexia Friendly Font"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28709
+msgid "Font Weight"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28719
+msgid "Letter Spacing"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28729
+msgid "Line Height"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28739
+msgid "Text Align"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28746
+msgid "Color and Contrast"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28751
+msgid "Dark Contrast"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28761
+msgid "Light Contrast"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28771
+msgid "High Contrast"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28781
+msgid "High Saturation"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28791
+msgid "Low Saturation"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28801
+msgid "Monochrome"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28808
+msgid "Navigation and Interaction"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28813
+msgid "Reading Guide"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28823
+msgid "Pause Animations"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28833
+msgid "Big Cursor"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28843
+msgid "Page read"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28853
+msgid "Mute sounds"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28878
+msgid "Customise widget"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28886
+msgid "Statement"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28902
+msgid "Modules"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28918
+msgid "Please rate AccessiYes"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28931
+msgid "on"
+msgstr ""
+
+#: lite/admin/app/dist/assets/index.js:28944
+msgid "to help us spread the word. Thank you from the team AccessiYes!"
+msgstr ""

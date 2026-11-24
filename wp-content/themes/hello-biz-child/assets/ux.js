@@ -379,3 +379,23 @@
 		initReveal();
 	} );
 } )();
+
+/*
+ * Keep "Skip to content" first in the tab order.
+ * The AccessiYes toolbar script inserts its container at the top of <body>,
+ * before the skip link. Move the skip link back to the top when that happens.
+ */
+( function () {
+	'use strict';
+	var skip = document.querySelector( '.hp-skip' );
+	if ( ! skip || ! window.MutationObserver ) {
+		return;
+	}
+	function keepFirst() {
+		if ( document.body.firstElementChild !== skip ) {
+			document.body.insertBefore( skip, document.body.firstChild );
+		}
+	}
+	keepFirst();
+	new MutationObserver( keepFirst ).observe( document.body, { childList: true } );
+} )();

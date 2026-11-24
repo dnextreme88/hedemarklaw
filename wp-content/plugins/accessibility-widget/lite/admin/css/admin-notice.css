@@ -1,0 +1,105 @@
+/**
+ * AccessiYes Review Banner Admin CSS
+ *
+ * Anchor rules are scoped under `.cya11y-review-notice` so they win against
+ * WordPress core's `div.notice a` rule (specificity 0,1,2), which otherwise
+ * overrides the link colour and forces an underline on the buttons.
+ */
+.cya11y-review-notice-wrap {
+	margin: 15px 0;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+}
+.cya11y-review-notice {
+	position: relative;
+	border-radius: 5px;
+	border: 1px solid #d7e1f2;
+	background-color: #ffffff;
+	padding: 16px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.cya11y-review-notice .cya11y-review-close {
+	position: absolute;
+	right: 16px;
+	top: 16px;
+	display: flex;
+	height: 32px;
+	width: 32px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	color: #7e7e7e;
+	text-decoration: none;
+	transition: all 0.2s ease;
+}
+.cya11y-review-notice .cya11y-review-close:hover,
+.cya11y-review-notice .cya11y-review-close:focus {
+	background-color: rgba(0, 0, 0, 0.05);
+	color: #555d66;
+	text-decoration: none;
+}
+.cya11y-review-logo {
+	display: block;
+	height: 28px;
+	width: auto;
+	margin-bottom: 12px;
+}
+.cya11y-review-text {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	color: #000000;
+	padding-top: 4px;
+	padding-bottom: 12px;
+}
+.cya11y-review-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+.cya11y-review-notice .cya11y-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 32px;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px 14px;
+	text-decoration: none;
+	box-sizing: border-box;
+	line-height: 1;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+.cya11y-review-notice .cya11y-btn-primary {
+	min-width: 94px;
+	background-color: #1578f7;
+	color: #ffffff;
+	border: none;
+}
+.cya11y-review-notice .cya11y-btn-primary:active,
+.cya11y-review-notice .cya11y-btn-primary:focus,
+.cya11y-review-notice .cya11y-btn-primary:hover {
+	background-color: #1558c7;
+	color: #ffffff;
+	text-decoration: none;
+}
+.cya11y-review-notice .cya11y-btn-outline {
+	min-width: 124px;
+	border: 1px solid #baafaf;
+	background-color: transparent;
+	color: #797676;
+	font-weight: normal;
+}
+.cya11y-review-notice .cya11y-btn-outline:active,
+.cya11y-review-notice .cya11y-btn-outline:focus,
+.cya11y-review-notice .cya11y-btn-outline:hover {
+	background-color: #f6f7f7;
+	color: #797676;
+	text-decoration: none;
+}

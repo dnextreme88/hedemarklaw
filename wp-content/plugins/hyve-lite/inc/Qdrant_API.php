@@ -1,0 +1,589 @@
+<?php
+/**
+ * Qdrant_API class.
+ * 
+ * @package Codeinwp/HyveLite
+ */
+
+namespace ThemeIsle\HyveLite;
+
+use ThemeIsle\HyveLite\Main;
+use Qdrant\Qdrant;
+use Qdrant\Http\GuzzleClient;
+use Qdrant\Endpoints\Collections;
+use Qdrant\Models\PointsStruct;
+use Qdrant\Models\PointStruct;
+use Qdrant\Models\VectorStruct;
+use Qdrant\Models\Filter\Filter;
+use Qdrant\Models\Filter\Condition\MatchString;
+use Qdrant\Models\Request\CreateCollection;
+use Qdrant\Models\Request\CreateIndex;
+use Qdrant\Models\Request\SearchRequest;
+use Qdrant\Models\Request\VectorParams;
+
+/**
+ * Qdrant_API class.
+ */
+class Qdrant_API {
+	/**
+	 * Collection name.
+	 * 
+	 * @var string
+	 */
+	const COLLECTION_NAME = 'hyve';
+
+	/**
+	 * The service error option key for `wp_options`.
+	 * 
+	 * @var string
+	 */
+	public const ERROR_OPTION_KEY = 'hyve_qdrant_api_error';
+
+	/**
+	 * Qdrant Client. Unset when the stored credentials are incomplete.
+	 *
+	 * @var Qdrant|null
+	 */
+	public $client;
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var Qdrant_API
+	 */
+	private static $instance = null;
+
+	/**
+	 * Ensures only one instance of the class is loaded.
+	 *
+	 * @return Qdrant_API An instance of the class.
+	 */
+	public static function instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param string $api_key  API Key.
+	 * @param string $endpoint Endpoint.
+	 */
+	public function __construct( $api_key = '', $endpoint = '' ) {
+		$settings = Main::get_settings();
+		$api_key  = ! empty( $api_key ) ? $api_key : $settings['qdrant_api_key'];
+		$endpoint = ! empty( $endpoint ) ? $endpoint : $settings['qdrant_endpoint'];
+
+		if ( empty( $api_key ) || empty( $endpoint ) ) {
+			return;
+		}
+
+		$config = new \Qdrant\Config( $endpoint );
+		$config->setApiKey( $api_key );
+
+		$transport    = new GuzzleClient( $config );
+		$this->client = new Qdrant( $transport );
+
+		add_action( 'hyve_lite_migrate_data', [ $this, 'migrate_data' ] );
+	}
+
+	/**
+	 * Initialize Qdrant Integration.
+	 * 
+	 * @return bool|\WP_Error
+	 */
+	public function init() {
+		$collection_exists = $this->collection_exists();
+
+		if ( is_wp_error( $collection_exists ) ) {
+			return $collection_exists;
+		}
+
+		if ( ! $collection_exists ) {
+			$create_collection = $this->create_collection();
+
+			if ( is_wp_error( $create_collection ) ) {
+				return $create_collection;
+			}
+		}
+
+		// Ensure the payload index required to filter/delete by post_id exists,
+		// including on collections created before this index was introduced.
+		$payload_index = $this->ensure_payload_index();
+
+		if ( is_wp_error( $payload_index ) ) {
+			return $payload_index;
+		}
+
+		update_option( 'hyve_qdrant_status', 'active' );
+
+		$existing_chunks = DB_Table::instance()->get_count_by_storage( 'WordPress' );
+
+		if ( $existing_chunks > 0 ) {
+			update_option(
+				'hyve_qdrant_migration',
+				[
+					'total'       => (int) $existing_chunks,
+					'current'     => 0,
+					'in_progress' => true,
+				] 
+			);
+
+			wp_schedule_single_event( time(), 'hyve_lite_migrate_data' );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the configured client, or a WP_Error when it is not available.
+	 *
+	 * The constructor leaves the client unset when either credential is
+	 * missing, so every method that talks to Qdrant must fail gracefully
+	 * instead of passing null to the Qdrant library.
+	 *
+	 * @return Qdrant|\WP_Error
+	 */
+	private function ensure_client() {
+		if ( $this->client instanceof Qdrant ) {
+			return $this->client;
+		}
+
+		return new \WP_Error( 'qdrant_not_configured', __( 'Qdrant is not connected. Please check your API key and endpoint URL in the Integrations settings.', 'hyve-lite' ) );
+	}
+
+	/**
+	 * Check if collection exists.
+	 *
+	 * @return bool|\WP_Error
+	 */
+	public function collection_exists() {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+
+			$response = ( new Collections( $client ) )->list();
+			delete_option( self::ERROR_OPTION_KEY );
+			
+			if ( empty( $response['result'] ) || empty( $response['result']['collections'] ) || ! is_array( $response['result']['collections'] ) ) {
+				return false;
+			}
+
+			foreach ( $response['result']['collections'] as $collection ) {
+				if ( self::COLLECTION_NAME === $collection['name'] ) {
+					return true;
+				}
+			}
+
+			return false;
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Create collection.
+	 * 
+	 * @return bool|\WP_Error
+	 */
+	public function create_collection() {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$collection = new CreateCollection();
+			$collection->addVector( new VectorParams( 1536, VectorParams::DISTANCE_COSINE ), 'embeddings' );
+			$response = $client->collections( self::COLLECTION_NAME )->create( $collection );
+			delete_option( self::ERROR_OPTION_KEY );
+
+			return $response['result'];
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Ensure the payload index needed to filter and delete by post_id exists.
+	 *
+	 * Qdrant requires a keyword index on a payload field before it can be used in
+	 * a filter. Without it, deleting or updating points by post_id fails with a
+	 * 400 Bad Request and the vectors are left orphaned. Creating an index that
+	 * already exists is a no-op, so this is safe to run on every init.
+	 *
+	 * @since 1.4.2
+	 *
+	 * @return bool|\WP_Error
+	 */
+	public function ensure_payload_index() {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$client->collections( self::COLLECTION_NAME )->index()->create(
+				new CreateIndex( 'post_id', 'keyword' )
+			);
+			delete_option( self::ERROR_OPTION_KEY );
+
+			return true;
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Add point to collection.
+	 * 
+	 * @param array<float>         $embeddings Embeddings.
+	 * @param array<string, mixed> $data Data.
+	 * 
+	 * @return bool|\WP_Error
+	 */
+	public function add_point( $embeddings, $data ) {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$points = new PointsStruct();
+
+			$points->addPoint(
+				new PointStruct(
+					self::random_hash(),
+					new VectorStruct( $embeddings, 'embeddings' ),
+					$data
+				)
+			);
+
+			$response = $client->collections( self::COLLECTION_NAME )->points()->upsert( $points, [ 'wait' => 'true' ] );
+
+			delete_option( self::ERROR_OPTION_KEY );
+
+			return 'completed' === $response['result']['status'];
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+
+	/**
+	 * Add point to collection.
+	 * 
+	 * @param array<array<string, mixed>> $points Points.
+	 * 
+	 * @return bool|\WP_Error
+	 */
+	public function add_points( $points ) {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$points_struct = new PointsStruct();
+
+			foreach ( $points as $point ) {
+				$points_struct->addPoint(
+					new PointStruct(
+						self::random_hash(),
+						new VectorStruct( $point['embeddings'], 'embeddings' ),
+						$point['data']
+					)
+				);
+			}
+
+			$response = $client->collections( self::COLLECTION_NAME )->points()->upsert( $points_struct, [ 'wait' => 'true' ] );
+
+			delete_option( self::ERROR_OPTION_KEY );
+
+			return 'completed' === $response['result']['status'];
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Delete point from collection.
+	 * 
+	 * @param int $id ID.
+	 * 
+	 * @return bool|\WP_Error
+	 */
+	public function delete_point( $id ) {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$response = $client->collections( self::COLLECTION_NAME )->points()->deleteByFilter(
+				( new Filter() )->addMust(
+					new MatchString( 'post_id', (string) $id )
+				)
+			);
+
+			delete_option( self::ERROR_OPTION_KEY );
+
+			return 'acknowledged' === $response['result']['status'];
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Search collection.
+	 * 
+	 * @param array<float> $embeddings Embeddings.
+	 * @param float        $score_threshold Cosine similarity threshold.
+	 * 
+	 * @return array<array<string, mixed>>|\WP_Error
+	 */
+	public function search( $embeddings, $score_threshold ) {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$search   = (
+				new SearchRequest(
+					new VectorStruct( $embeddings, 'embeddings' )
+				)
+			)
+			->setLimit( 10 )
+			->setScoreThreshold( $score_threshold )
+			->setWithPayload( true );
+			$response = $client->collections( self::COLLECTION_NAME )->points()->search( $search );
+
+			// Any completed search means the service recovered.
+			delete_option( self::ERROR_OPTION_KEY );
+
+			if ( empty( $response['result'] ) ) {
+				return [];
+			}
+
+			$results = $response['result'];
+
+			$payload = array_map(
+				function ( $result ) {
+					$payload          = $result['payload'];
+					$payload['score'] = $result['score'];
+					return $payload;
+				},
+				$results
+			);
+
+			return $payload;
+		} catch ( \Exception $e ) {
+			return $this->handle_exception( $e );
+		}
+	}
+
+	/**
+	 * Disconnect Qdrant Integration.
+	 *
+	 * @since 1.3.0
+	 *  
+	 * @return bool|\WP_Error
+	 */
+	public function disconnect() {
+		$client = $this->ensure_client();
+
+		if ( is_wp_error( $client ) ) {
+			return $client;
+		}
+
+		try {
+			$response = $client->collections( self::COLLECTION_NAME )->points()->deleteByFilter(
+				( new Filter() )->addMust(
+					new MatchString( 'website_url', get_site_url() )
+				)
+			);
+
+			return 'acknowledged' === $response['result']['status'];
+		} catch ( \Exception $e ) {
+			return new \WP_Error( 'collection_error', $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Migrate Data to Qdrant.
+	 * 
+	 * @return void
+	 */
+	public function migrate_data() {
+		$db_table = DB_Table::instance();
+		$posts    = $db_table->get_by_storage( 'WordPress' );
+
+		if ( empty( $posts ) ) {
+			$migration_status = get_option( 'hyve_qdrant_migration', [] );
+
+			if ( ! empty( $migration_status ) ) {
+				$migration_status['in_progress'] = false;
+				update_option( 'hyve_qdrant_migration', $migration_status );
+			}
+
+			return;
+		}
+
+		$points = [];
+
+		foreach ( $posts as $post ) {
+			$points[] = [
+				'embeddings' => json_decode( $post->embeddings, true ),
+				'data'       => [
+					'post_id'      => $post->post_id,
+					'post_title'   => $post->post_title,
+					'post_content' => $post->post_content,
+					'token_count'  => $post->token_count,
+					'website_url'  => get_site_url(),
+				],
+			];
+		}
+
+		$qdrant = self::instance();
+
+		$success = $qdrant->add_points( $points );
+
+		if ( is_wp_error( $success ) ) {
+			return;
+		}
+
+		foreach ( $posts as $post ) {
+			$db_table->update(
+				intval( $post->id ),
+				[
+					'storage' => 'Qdrant',
+				] 
+			);
+		}
+
+		$migration_status = get_option( 'hyve_qdrant_migration', [] );
+
+		$migration_status['current'] += count( $posts );
+
+		$current  = $migration_status['current'] ?? 0;
+		$total    = $migration_status['total'] ?? 0;
+		$has_more = $current < $total;
+
+		if ( ! $has_more ) {
+			$migration_status['in_progress'] = false;
+		}
+
+		update_option( 'hyve_qdrant_migration', $migration_status );
+
+		if ( $has_more ) {
+			wp_schedule_single_event( time() + 10, 'hyve_lite_migrate_data' );
+		}
+	}
+
+	/**
+	 * Persist a Qdrant service error and reconcile the connection status.
+	 *
+	 * Surfaces the failure in the dashboard notice and, for errors that mean
+	 * the integration is no longer usable (revoked key, or a missing collection
+	 * or cluster), marks the connection inactive so the UI stops reporting a
+	 * connection that no longer works.
+	 *
+	 * @since 1.4.2
+	 *
+	 * @param \Exception $e The caught exception.
+	 *
+	 * @return \WP_Error
+	 */
+	private function handle_exception( $e ) {
+		$code = $e->getCode();
+
+		update_option(
+			self::ERROR_OPTION_KEY,
+			[
+				'code'     => $code,
+				'message'  => $e->getMessage(),
+				'date'     => wp_date( 'c' ),
+				'provider' => 'Qdrant',
+			]
+		);
+
+		if ( in_array( $code, [ 401, 403, 404 ], true ) ) {
+			update_option( 'hyve_qdrant_status', 'inactive' );
+		}
+
+		return new \WP_Error( 'collection_error', $e->getMessage() );
+	}
+
+	/**
+	 * Get an actionable message for a Qdrant error code.
+	 *
+	 * @since 1.4.2
+	 *
+	 * @param int|string $code The error code.
+	 *
+	 * @return string|null The message, or null when the code is unmapped.
+	 */
+	public static function get_error_message_for_code( $code ) {
+		$credentials = __( 'Hyve could not authenticate with Qdrant. Please check your API key and endpoint URL in the Integrations settings.', 'hyve-lite' );
+
+		$messages = [
+			401 => $credentials,
+			403 => $credentials,
+			404 => __( 'Your Qdrant collection or cluster could not be reached. It may have been deleted or paused. Please check your Qdrant instance and reconnect.', 'hyve-lite' ),
+		];
+
+		return isset( $messages[ $code ] ) ? $messages[ $code ] : null;
+	}
+
+	/**
+	 * Qdrant Status.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return bool
+	 */
+	public static function is_active() {
+		return 'active' === get_option( 'hyve_qdrant_status', 'inactive' );
+	}
+
+	/**
+	 * Qdrant Migration Status.
+	 * 
+	 * @since 1.3.0
+	 * 
+	 * @return array<string, mixed>
+	 */
+	public static function migration_status() {
+		return get_option( 'hyve_qdrant_migration', [] );
+	}
+
+	/**
+	 * Random Hash.
+	 * 
+	 * @since 1.3.0
+	 * 
+	 * @return string
+	 */
+	public static function random_hash() {
+		$data = random_bytes( 16 );
+
+		$data[6] = chr( ( ord( $data[6] ) & 0x0f ) | 0x40 );
+		$data[8] = chr( ( ord( $data[8] ) & 0x3f ) | 0x80 );
+
+		return vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split( bin2hex( $data ), 4 ) );
+	}
+}
