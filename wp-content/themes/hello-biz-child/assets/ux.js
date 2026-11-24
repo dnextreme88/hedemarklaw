@@ -6,7 +6,7 @@
  *
  *  1. Header: mobile menu button and the "Firm" disclosure menu.
  *  2. Section entrance: parts of each section rise in once as they enter the screen.
- *  3. Gravity Forms: "Sending…" state on submit, focus on the error summary.
+ *  3. Gravity Forms: "Submitting…" label beside the spinner, focus on the error summary.
  *  4. Essential Addons "Load more articles": busy state, focus on the first new post.
  * 4b. Blog search: "Searching…" busy state on the search button.
  *  5. Testimonials: previous / next / pause controls, no autoplay under reduced motion.
@@ -155,13 +155,52 @@
 		btn.removeAttribute( 'aria-disabled' );
 		btn.classList.remove( 'is-busy' );
 	}
+	var SUBMIT_LABEL = 'Submitting…';
+
+	// Gravity Forms 2.9 (Orbital theme) submits through its own script and, while the
+	// request runs, adds `gform-has-spinner` to the button and a `.gform-loader` span
+	// inside it. CSS puts that loader before the text; this changes the text label.
+	// Only the text node changes, so the loader span stays in place.
+	function labelNode( btn ) {
+		for ( var i = 0; i < btn.childNodes.length; i++ ) {
+			var n = btn.childNodes[ i ];
+			if ( 3 === n.nodeType && n.nodeValue.trim() ) { return n; }
+		}
+		return null;
+	}
+	function setSubmitting( btn, on ) {
+		if ( 'INPUT' === btn.tagName ) {
+			if ( on && ! btn.dataset.hpLabel ) { btn.dataset.hpLabel = btn.value; btn.value = SUBMIT_LABEL; }
+			if ( ! on && btn.dataset.hpLabel ) { btn.value = btn.dataset.hpLabel; delete btn.dataset.hpLabel; }
+			return;
+		}
+		var node = labelNode( btn );
+		if ( ! node ) { return; }
+		if ( on && ! btn.dataset.hpLabel ) { btn.dataset.hpLabel = node.nodeValue; node.nodeValue = SUBMIT_LABEL; }
+		if ( ! on && btn.dataset.hpLabel ) { node.nodeValue = btn.dataset.hpLabel; delete btn.dataset.hpLabel; }
+	}
 	function initForms() {
+		if ( ! document.querySelector( '.gform_wrapper' ) ) { return; }
+
+		// Watch every Gravity Forms submit button for the spinner class.
+		new MutationObserver( function ( records ) {
+			records.forEach( function ( r ) {
+				var btn = r.target;
+				if ( ! btn.classList || ! btn.classList.contains( 'gform_button' ) ) { return; }
+				setSubmitting( btn, btn.classList.contains( 'gform-has-spinner' ) );
+			} );
+		} ).observe( document.body, { attributes: true, attributeFilter: [ 'class' ], subtree: true } );
+
+		// Fallback for a form that submits without the Gravity Forms spinner: show our
+		// own busy state (ring spinner + label).
 		document.addEventListener( 'submit', function ( e ) {
 			var form = e.target;
 			if ( ! form.id || 0 !== form.id.indexOf( 'gform_' ) ) { return; }
 			var btn = form.querySelector( '.gform_footer [type="submit"], .gform_page_footer [type="submit"]' );
-			// Give the browser one frame to start the submit before the label changes.
-			window.setTimeout( function () { busy( btn, 'Sending…' ); }, 0 );
+			// Give Gravity Forms one frame to add its own spinner first.
+			window.setTimeout( function () {
+				if ( btn && ! btn.classList.contains( 'gform-has-spinner' ) ) { busy( btn, SUBMIT_LABEL ); }
+			}, 0 );
 		}, true );
 
 		function afterRender() {

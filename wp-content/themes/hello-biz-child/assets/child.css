@@ -646,10 +646,16 @@ html.hp-noscroll { overflow: hidden; }
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
+/* Phones (2026-11-25): a compact band. The top padding clears the fixed 68px
+   header plus 2em, and 2em sits under the title. A one-line title band is about
+   68 + 32 + 39 + 32 = 171px tall, not 341px. Bands no longer share one phone
+   height: a title that wraps to more lines makes its band taller. */
 @media (max-width: 767px) {
 	.hp-dotgrid.e-con,
 	.hp-article.hp-dotgrid {
-		min-height: 341px !important;
+		min-height: 0 !important;
+		padding-top: calc(68px + 2em) !important;
+		padding-bottom: 2em !important;
 	}
 }
 /* Two-column About layout (fixed 300px portrait rail + fluid bio). */
@@ -1596,12 +1602,21 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 	max-width: none !important;
 	min-width: 0 !important;
 }
-/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl). */
+/* Rounded, cropped service thumbnail (mockup: h-40 object-cover rounded-2xl).
+   The 3:2 shape is on the image widget box, and the image fills it (2026-11-25).
+   With the ratio on the image only, the column flex layout sized the box from the
+   image's 290 x 194 file size, so on wide phones and small tablets the image grew
+   past its 193px box and covered the heading and the text under it. */
+.hp-svc-media > .elementor-widget-image {
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	border-radius: var(--hp-radius);
+}
 .elementor .hp-svc-media img,
 .hp-svc-media img {
 	width: 100% !important;
-	height: auto !important;
-	aspect-ratio: 3 / 2;
+	height: 100% !important;
 	object-fit: cover;
 	border-radius: var(--hp-radius);
 	display: block;
@@ -2541,3 +2556,42 @@ a.hp-learn:hover::after,
 /* Elementor's per-page Essential Addons CSS loads after this file and sets the
    blog "Read more" to display: block. Win on specificity, not with !important. */
 .hp-bloglist .eael-grid-post-excerpt .eael-post-elements-readmore-btn { display: inline-block; }
+
+/* ---------------------------------------------------------------------
+   GRAVITY FORMS SUBMIT SPINNER (2026-11-25)
+   The Orbital theme puts its .gform-loader inside the submit button with
+   position: absolute and auto margins, so it sat on top of the label. Put it
+   back in the flex row as the first item, before the label. ux.js changes
+   the label to "Submitting…" while the class gform-has-spinner is on.
+   --------------------------------------------------------------------- */
+.gform_wrapper .gform_button.gform-has-spinner {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: progress;
+}
+.gform_wrapper .gform_button .gform-loader {
+	position: static !important;
+	inset: auto !important;
+	order: -1;
+	flex: none;
+	margin: 0 !important;
+}
+/* Fallback busy state (ux.js busy()) for a form without the Gravity Forms spinner. */
+.gform_wrapper .gform_button.is-busy {
+	display: inline-flex !important;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: progress;
+}
+.gform_wrapper .gform_button.is-busy::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}
