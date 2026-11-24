@@ -814,9 +814,20 @@ html.hp-noscroll { overflow: hidden; }
 	font-family: var(--hp-sans);
 	font-size: 17px;
 	line-height: 1.65;
-	max-width: 70ch;
+	/* No line-length cap: the excerpt fills the card width (60 words, about two
+	   lines on desktop). On phones, show at most 4 lines. */
+	max-width: none;
 	color: var(--hp-ink2);
 	margin: 0 0 16px;
+}
+@media (max-width: 767px) {
+	.hp-bloglist .eael-grid-post-excerpt p {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 4;
+		line-clamp: 4;
+		overflow: hidden;
+	}
 }
 
 /* Read more (text link with arrow). */
@@ -893,6 +904,92 @@ html.hp-noscroll { overflow: hidden; }
 	font-family: var(--hp-sans);
 	color: var(--hp-muted);
 	padding-top: 32px;
+}
+
+/* ---------------------------------------------------------------------
+   BLOG SEARCH ([hlc_blog_search], inc/blog_search.php)
+   A search box above the list. With /blog/?q=term the results show in
+   the list style above, and the Post Grid widget hides.
+   --------------------------------------------------------------------- */
+.hp-blog-searching .elementor-widget-eael-post-grid { display: none !important; }
+
+.hp-blogsearch { font-family: var(--hp-sans); margin: 0 0 32px; }
+.hp-blogsearch__label {
+	display: block;
+	font-size: var(--hp-fs-small);
+	font-weight: 600;
+	color: var(--hp-ink);
+	margin: 0 0 8px;
+}
+.hp-blogsearch__row { display: flex; gap: 12px; }
+.hp-blogsearch__input {
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: 48px;
+	padding: 0 16px;
+	font-family: var(--hp-sans);
+	font-size: var(--hp-fs-body);
+	color: var(--hp-ink);
+	background: var(--hp-white);
+	border: 1px solid var(--hp-hairline);
+	border-radius: var(--hp-radius);
+	transition: border-color .15s ease;
+}
+.hp-blogsearch__input::placeholder { color: var(--hp-muted); opacity: 1; }
+.hp-blogsearch__input:hover { border-color: var(--hp-bluelight); }
+.hp-blogsearch__input:focus { outline: none; border-color: var(--hp-blue); box-shadow: var(--hp-focus); }
+.hp-blogsearch__btn {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 48px;
+	padding: 0 28px;
+	border: 0;
+	border-radius: var(--hp-pill);
+	background: var(--hp-ink);
+	color: #fff;
+	font-family: var(--hp-sans);
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color .15s ease, transform .1s ease;
+}
+.hp-blogsearch__btn:hover,
+.hp-blogsearch__btn:focus { background: var(--hp-blue); color: #fff; }
+.hp-blogsearch__btn:active { transform: translateY(1px); }
+/* Busy state while the results page loads (ux.js, the same spinner as "Load more"). */
+.hp-blogsearch__btn.is-busy { cursor: progress; background: var(--hp-ink2); }
+.hp-blogsearch__btn.is-busy::before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: hp-spin .8s linear infinite;
+}
+
+.hp-blogsearch__status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 8px 24px;
+	margin: 24px 0 16px;
+}
+.hp-blogsearch__count { margin: 0; font-size: var(--hp-fs-body); color: var(--hp-ink2); }
+.hp-blogsearch__clear { font-size: 16px; font-weight: 600; color: var(--hp-blue); text-decoration: underline; text-underline-offset: 3px; }
+.hp-blogsearch__clear:hover { color: var(--hp-ink); }
+
+/* The Post Grid widget setting paints its cards white; the results list is outside
+   that widget, so paint them here. */
+.hp-blogsearch__results .eael-grid-post-holder { background-color: var(--hp-white); }
+
+@media (max-width: 480px) {
+	.hp-blogsearch__row { flex-direction: column; }
+	.hp-blogsearch__btn { width: 100%; }
 }
 
 /* ---------------------------------------------------------------------
@@ -1072,8 +1169,10 @@ html.hp-noscroll { overflow: hidden; }
 	padding: 0 24px;
 	text-align: center;
 }
+/* CTA band only: Fraunces headline, Fraunces italic lead (2026-11-24). The buttons
+   stay in Inter. */
 .hp-cta__title {
-	font-family: var(--hp-sans);
+	font-family: var(--hp-serif);
 	font-weight: 400;
 	font-size: clamp(32px, 5vw, 48px);
 	line-height: 1.12;
@@ -1081,7 +1180,8 @@ html.hp-noscroll { overflow: hidden; }
 	margin: 0 0 24px;
 }
 .hp-cta__text {
-	font-family: var(--hp-sans);
+	font-family: var(--hp-serif);
+	font-style: italic;
 	font-size: var(--hp-fs-lead);
 	line-height: 1.6;
 	color: rgba(244, 247, 249, 0.88);

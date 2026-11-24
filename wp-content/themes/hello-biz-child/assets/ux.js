@@ -8,6 +8,7 @@
  *  2. Section entrance: parts of each section rise in once as they enter the screen.
  *  3. Gravity Forms: "Sending…" state on submit, focus on the error summary.
  *  4. Essential Addons "Load more articles": busy state, focus on the first new post.
+ * 4b. Blog search: "Searching…" busy state on the search button.
  *  5. Testimonials: previous / next / pause controls, no autoplay under reduced motion.
  *  6. Probate fee calculator: thousands separators while typing, live result.
  *  7. Calendly inline calendar: placeholder until the calendar loads, link fallback.
@@ -208,6 +209,26 @@
 	}
 
 	/* ------------------------------------------------------------------
+	   4b. Blog search ([hlc_blog_search] on /blog)
+	   ------------------------------------------------------------------ */
+	function initBlogSearch() {
+		var form = document.querySelector( '.hp-blogsearch__form' );
+		if ( ! form ) { return; }
+		var btn = form.querySelector( '.hp-blogsearch__btn' );
+		// The search is a full page load. Show the busy state until the new page
+		// replaces this one, and block a second submit in the meantime.
+		form.addEventListener( 'submit', function ( e ) {
+			if ( btn && btn.dataset.hpBusy ) { e.preventDefault(); return; }
+			// Give the browser one frame to start the submit before the label changes.
+			window.setTimeout( function () { busy( btn, 'Searching…' ); }, 0 );
+		} );
+		// Back / forward cache: the page comes back as it was left, still busy.
+		window.addEventListener( 'pageshow', function ( e ) {
+			if ( e.persisted ) { unbusy( btn ); }
+		} );
+	}
+
+	/* ------------------------------------------------------------------
 	   5. Testimonials
 	   ------------------------------------------------------------------ */
 	function initTestimonials() {
@@ -373,6 +394,7 @@
 		initHeader();
 		initForms();
 		initLoadMore();
+		initBlogSearch();
 		initTestimonials();
 		initCalculator();
 		initCalendly();
