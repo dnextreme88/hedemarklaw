@@ -72,6 +72,18 @@ The hover underline on arrow links broke into two pieces, one under the text and
 - Elementor's per-page `eael-36.css` sets the blog "Read more" to `display: block`; a more specific selector sets it back to `inline-block`.
 - The previous / next post cards are whole-card links and keep their own style.
 
+### FAQ width, About alignment, and pricing card labels (follow-up)
+- **FAQ answers:** `.hp-faqx__inner` had `max-width: 75ch`, so answers used about half of the card. It is now `none`, so the answer fills the card width, like the question. This also applies to the FAQ preview on the home page.
+- **About page:** Elementor centered the 1140px inner box of `.hp-about-row`. `.hp-about-row > .e-con-inner` now starts at the left edge of the same 1600px box as the page title: 32px at 1440px width, and 153px at 1920px. From 768px up, the portrait is left-aligned with the name under it: the title, the portrait, the name, the job title, and the icons all start at 32px at 1440px width. Below 768px the columns stack, and the portrait, the name, the job title, and the contact icons are all centered. Before, the last three were pinned left by their Elementor `align-self: flex-start` setting.
+- **Theme version:** `style.css` goes from 1.9.2 to 1.10.0. `child.css` and `ux.js` load with `?ver=` set to the theme version, so browsers that cached the 1.9.2 files now load the new ones.
+- **Pricing cards:** The three cards on `/pricing/` said "View pricing". `scripts/pricing-card-labels-20261124.php` (new) sets the link name and the visible label of each card to "View estate planning pricing", "View probate pricing", and "View trust administration pricing". The visible label gets `aria-hidden="true"`, because it repeats the link name. Each link name is unique (WCAG 2.4.4) and holds the visible label (WCAG 2.5.3). A second run changes nothing. Run it on staging and live after deploy:
+
+```
+studio wp eval-file scripts/pricing-card-labels-20261124.php
+```
+
+- Not changed: cards on other pages, for example `/estate-law/` and `/real-estate/`, have the same mismatch between the visible label and the link name (for example "View estate planning pricing" and "Estate planning pricing").
+
 ## Verification (local)
 - Script: first run added the widget; second run printed "Nothing to do".
 - `/blog/`: the search box shows above the list; the grid shows as before.

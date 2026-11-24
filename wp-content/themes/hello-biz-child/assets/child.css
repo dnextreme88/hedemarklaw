@@ -657,6 +657,29 @@ html.hp-noscroll { overflow: hidden; }
 	flex-wrap: nowrap !important;
 	align-items: flex-start !important;
 }
+/* Left-align the About content with the page title above it (2026-11-24).
+   Elementor centers the row's 1140px inner box. The title sits in a 1600px box
+   that is centered on very wide screens, so the inner box starts at the left
+   edge of that same box, not at the page edge. */
+.hp-about-row > .e-con-inner {
+	margin-left: max(0px, calc((100% - 1600px) / 2)) !important;
+	margin-right: auto !important;
+}
+/* The portrait shares the left edge of the name under it. Phones keep it centered. */
+@media (min-width: 768px) {
+	.hp-col-left .elementor-widget-image { text-align: left !important; }
+}
+/* Phones (stacked columns): center the name, the job title, and the contact icons
+   under the centered portrait. Their Elementor settings pin them to the left edge
+   with align-self: flex-start. */
+@media (max-width: 767px) {
+	.hp-col-left > .elementor-widget,
+	.hp-col-left > .e-con-inner > .elementor-widget {
+		align-self: center !important;
+		text-align: center !important;
+	}
+	.hp-col-left .elementor-icon-list-items { justify-content: center !important; }
+}
 .hp-col-left {
 	flex: 0 0 300px !important;
 	width: 300px !important;
@@ -1502,7 +1525,7 @@ a.hp-learn:hover::after { transform: translateX(3px); }
 .hp-faqx__item.is-open .hp-faqx__panel { max-height: 1000px; }
 .hp-faqx__inner {
 	padding: 0 24px 24px;
-	max-width: 75ch;
+	max-width: none; /* the answer fills the card width, like the question (2026-11-24) */
 	font-family: var(--hp-sans);
 	font-size: var(--hp-fs-body);
 	line-height: 1.65;
