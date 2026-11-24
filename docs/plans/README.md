@@ -5,7 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
-| **2026-11-24** | [Blog search — a search box on /blog, wider list excerpts, and Fraunces CTA band text](20261124-blog-search.md) |
+| **2026-11-24** | [Blog search — a search box on /blog, wider list excerpts, a slate header and CTA band with Fraunces text, and one arrow link style](20261124-blog-search.md) |
 | **2026-11-24** | [Trust shortcode names, footer map link, "Initial Intake" heading, and one title band height](20261124-trust-shortcodes-map-intake-bands.md) |
 | **2026-11-24** | [Accessibility toolbar and AI chat — AccessiYes, WP Accessibility, and Hyve Lite](20261124-accessibility-and-chat.md) |
 | **2026-11-24** | [Wider layout — 1600px header and page content, header bar fixes, Home button hover colors](20261124-wider-layout-1600.md) |

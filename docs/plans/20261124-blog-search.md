@@ -49,6 +49,28 @@ The "Free 20-minute consultation" band (`.hp-cta`) only. It shows on the Element
 - `.hp-cta__title`: Fraunces (`--hp-serif`), weight 400. This replaces Inter from 2026-10-13.
 - `.hp-cta__text`: Fraunces italic, weight 400. The site already loads this style.
 - The buttons stay in Inter. No other section changes.
+- The band background is `--hp-ink2` (`#22384D`), the same as the header. The button hover text stays `--hp-ink` on white.
+- The home page had its own band, built from Elementor widgets with `#00305B` and Inter set in the widget settings, so it ignored the CSS. `scripts/unify-home-cta-20261124.php` (new) replaces it with a copy of the shared `hp-cta` band from `/about/`, with new element IDs. A second run changes nothing. Run it on staging and live after deploy:
+
+```
+studio wp eval-file scripts/unify-home-cta-20261124.php
+```
+
+- All 15 bands now come from the `hp-cta` markup: 14 Elementor pages and the blog post template. A computed-style check on every page found the `#22384D` background, a Fraunces title, and Fraunces italic text in each band, and no block left in `#00305B`. `/blog/`, `/contact/`, and `/book/` have no band.
+
+### Header colors (follow-up)
+- The header bar, the Firm dropdown panel, and the mobile menu panel use `--hp-ink2` (`#22384D`) in place of `--hp-ink` (`#00305B`).
+- New tokens: `--hp-steel` `#C3D4E3` (current-page text and underline bar, about 7.9:1 on `#22384D`), `--hp-steel-hover` `#3A5670` (hover fill, about 1.6:1 on `#22384D`), `--hp-steel-press` `#44637F` (pressed fill).
+- The nav links, the open Firm button, the phone link, and the mobile menu button use the steel hover fill. Before, they used white at 10%.
+- A top-level link with `aria-current="page"` gets no hover or press change. A dropdown link to the current page keeps its static marker on hover. The Firm button keeps its hover because it opens the menu. On a blog post, the Blog link has `aria-current="true"`, so it keeps its hover: it goes to a different page.
+
+### Arrow links (follow-up)
+The hover underline on arrow links broke into two pieces, one under the text and one under the arrow. The links were `inline-flex`, so the text and the arrow were separate flex items, and each got its own underline. The six arrow-link types also had different rules: "See all FAQs" had no arrow movement, and the back link had a lighter weight.
+- One ARROW LINKS block at the end of `child.css` covers `.hp-learn` ("Learn more", "More about Justin"), `.hp-faq-more` ("See all FAQs"), `.hp-svc-more` ("Read more" on /services/), the blog and search "Read more", `.hp-article__back` ("All blog posts"), and `.hp-crumb` ("All pricing").
+- Each link is an `inline-block` (16px, weight 600, `--hp-blue`, 10px vertical padding for a 44px tap target). The arrow is an `inline-block` pseudo-element, and a text underline does not reach into an inline block. On hover: `--hp-ink` text, a 1px underline under the text only, and the arrow moves 3px (forward for →, back for ←).
+- `inc/user_fields_panel.php`: the FAQ teaser link has no `<span>→</span>` now; the arrow comes from CSS. `template-parts/single.php`: the back link has no SVG now; the arrow comes from CSS.
+- Elementor's per-page `eael-36.css` sets the blog "Read more" to `display: block`; a more specific selector sets it back to `inline-block`.
+- The previous / next post cards are whole-card links and keep their own style.
 
 ## Verification (local)
 - Script: first run added the widget; second run printed "Nothing to do".
