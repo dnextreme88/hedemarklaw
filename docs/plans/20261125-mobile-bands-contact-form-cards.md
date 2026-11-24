@@ -1,14 +1,15 @@
-# Compact phone title bands, form submit spinner, Contact name rows, service images, and required intake fields
+# Compact phone title bands, form submit spinner, Contact name rows, service images, required intake fields, and the Contact disclaimer
 
 ## Context
 
-Four layout problems, most of them on small screens, and one form change:
+Four layout problems, most of them on small screens, and two form changes:
 
 1. On phones, the light blue title band (`.hp-dotgrid`) was 341px tall for a one-line title. Most of that height was empty space.
 2. On a Gravity Forms submit, the loading spinner sat on top of the "Submit" label, and the label did not change.
 3. On the Contact form, First Name and Last Name shared one row. Every other field has its own row.
 4. On `/services/`, at wide-phone and small-tablet widths (for example 716px), each service image grew past its box and covered the heading and the text under it.
 5. On the Initial Intake form, many questions were optional. Every input except the "additional information" box must now be required, and a conditional field must be required only while it shows.
+6. On `/contact/`, the disclaimer sat after the form; on `/book/` it sits before the form.
 
 ## Changes
 
@@ -48,7 +49,16 @@ studio wp eval-file scripts/contact-form-full-width-names-20261125.php
 studio wp eval-file scripts/initial-intake-required-fields-20261125.php
 ```
 
-### 6. Theme version
+### 6. Contact disclaimer before the form (`scripts/contact-disclaimer-before-form-20261125.php`, new)
+- On `/book/`, the "Do not submit any privileged or confidential information…" disclaimer (`.hp-fineprint`) sits just before the form. On `/contact/`, it sat after the form.
+- The script moves the `/contact/` disclaimer widget to just before the form shortcode widget, in the same container. The page order is now: intro text, map, disclaimer, form.
+- It finds the page by path and the widgets by content (`[gravityform` and `hp-fineprint`), not by IDs. A second run changes nothing. Run it on staging and live after deploy:
+
+```
+studio wp eval-file scripts/contact-disclaimer-before-form-20261125.php
+```
+
+### 7. Theme version
 `style.css` goes from 1.10.0 to 1.10.2, so browsers load the new `child.css` and `ux.js`.
 
 ## Verification (local)
@@ -58,4 +68,5 @@ studio wp eval-file scripts/initial-intake-required-fields-20261125.php
 - `/services/` at 716px: the image is at 378–817px and the heading starts at 837px, below it. At 375px and at 1440px the layout is correct.
 - Initial Intake, with `GFAPI::validate_form` (runs the submit checks; saves no entry and sends nothing), one case per process: Estate Planning + Individual with no spouse names is valid; Estate Planning + Couple with no spouse names fails on the 3 spouse fields; with spouse names it is valid; a missing "children" answer fails; Probate with deadlines "No" and no description is valid; with "Yes" and no description it fails; no asset type checked fails; Trust Administration with all answers is valid; a missing target date fails; an empty "additional information" box is valid.
 - Initial Intake on `/book/` in the browser, with Estate Planning and Couple chosen: every visible field shows "(Required)" except "Any additional information you'd like to include?".
+- `/contact/` and `/book/` at 1440px: the disclaimer is just before the form on both pages, with a 20px gap. On `/contact/`, the map comes before the disclaimer.
 - Not tested: a submit on the booking intake forms. They use the same Gravity Forms classes, so the same CSS and script apply.
