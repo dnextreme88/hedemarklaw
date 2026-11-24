@@ -5,6 +5,7 @@ Dated implementation and upgrade plans for this site. Each plan is a Markdown fi
 
 | Executed | Plan |
 |----------|------|
+| **2026-11-24** | [Trust shortcode names, footer map link, "Initial Intake" heading, and one title band height](20261124-trust-shortcodes-map-intake-bands.md) |
 | **2026-11-24** | [Accessibility toolbar and AI chat — AccessiYes, WP Accessibility, and Hyve Lite](20261124-accessibility-and-chat.md) |
 | **2026-11-24** | [Wider layout — 1600px header and page content, header bar fixes, Home button hover colors](20261124-wider-layout-1600.md) |
 | **2026-11-24** | [Contact page — Gravity Forms contact form, map, and header nav link](20261124-contact-form.md) |

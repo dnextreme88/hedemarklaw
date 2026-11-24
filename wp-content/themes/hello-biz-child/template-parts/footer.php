@@ -71,7 +71,7 @@ endif;
 							<path d="M12 22s7-7.58 7-12A7 7 0 0 0 5 10c0 4.42 7 12 7 12z" />
 							<circle cx="12" cy="10" r="2.5" />
 						</svg>
-						<a href="https://maps.google.com/?q=220+Montgomery+Street+Suite+1100+San+Francisco+CA+94104" target="_blank" rel="noopener">220 Montgomery Street, Suite 1100, San Francisco, CA 94104</a>
+						<a href="<?php echo esc_url( 'https://www.google.com/maps/place/Hedemark+Law,+P.C./@37.7913209,-122.4022407,17z/data=!3m1!4b1!4m6!3m5!1s0x80858099d645cfc9:0xede97a73c4234422!8m2!3d37.7913209!4d-122.4022407!16s%2Fg%2F11c3k570k5?entry=ttu&g_ep=EgoyMDI2MTExOC4xIKXMDSoASAFQAw%3D%3D' ); ?>" target="_blank" rel="noopener">220 Montgomery Street, Suite 1100, San Francisco, CA 94104</a>
 					</li>
 					<li>
 						<svg class="hp-footer__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
