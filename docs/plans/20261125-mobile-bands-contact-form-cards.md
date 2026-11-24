@@ -1,13 +1,14 @@
-# Compact phone title bands, form submit spinner, Contact name rows, and service images
+# Compact phone title bands, form submit spinner, Contact name rows, service images, and required intake fields
 
 ## Context
 
-Four layout problems, most of them on small screens:
+Four layout problems, most of them on small screens, and one form change:
 
 1. On phones, the light blue title band (`.hp-dotgrid`) was 341px tall for a one-line title. Most of that height was empty space.
 2. On a Gravity Forms submit, the loading spinner sat on top of the "Submit" label, and the label did not change.
 3. On the Contact form, First Name and Last Name shared one row. Every other field has its own row.
 4. On `/services/`, at wide-phone and small-tablet widths (for example 716px), each service image grew past its box and covered the heading and the text under it.
+5. On the Initial Intake form, many questions were optional. Every input except the "additional information" box must now be required, and a conditional field must be required only while it shows.
 
 ## Changes
 
@@ -36,7 +37,18 @@ studio wp eval-file scripts/contact-form-full-width-names-20261125.php
 - **Fix:** The 3:2 ratio is on the image widget box (`.hp-svc-media > .elementor-widget-image`, with `overflow: hidden` and the brand radius), and the image fills the box (`height: 100%`, `object-fit: cover`).
 - On desktop, nothing changes: each image is 440 × 294, beside an 881px text column.
 
-### 5. Theme version
+### 5. Initial Intake required fields (`scripts/initial-intake-required-fields-20261125.php`, new)
+- Every input on the "Initial Intake" form is now required, except "Any additional information you'd like to include?". Section headings and other display-only field types are not inputs, so the script leaves them alone.
+- 21 fields changed: the "Individual or Couple" question, the Estate Planning, Probate, and Trust Administration questions, and the two "Please describe the deadline(s)" boxes. Full Name, Email, Contact Number, the matter type, the spouse name fields, and the conflict-check names were already required.
+- Gravity Forms skips the required check for a field that its conditional logic hides. So a conditional field is required only while it shows: the spouse name fields only for "Couple", each matter's questions only for that matter type, and each deadline description only after "Yes".
+- Full Name keeps the Gravity Forms rule for a required Name field: First and Last are required, and Middle is optional.
+- The script finds the form by its title and the optional field by its label, not by IDs. A second run changes nothing. Run it on staging and live after deploy:
+
+```
+studio wp eval-file scripts/initial-intake-required-fields-20261125.php
+```
+
+### 6. Theme version
 `style.css` goes from 1.10.0 to 1.10.2, so browsers load the new `child.css` and `ux.js`.
 
 ## Verification (local)
@@ -44,4 +56,6 @@ studio wp eval-file scripts/contact-form-full-width-names-20261125.php
 - Contact form at 1440px: First Name, Last Name, Email, Choose an option, and the message field each have their own full-width row.
 - Contact form submit (empty form, so validation fails and nothing is saved or sent): during the request the button shows the loader at 32–52px and "Submitting…" at 58–163px, with no overlap; after the response the label is "Submit" again.
 - `/services/` at 716px: the image is at 378–817px and the heading starts at 837px, below it. At 375px and at 1440px the layout is correct.
+- Initial Intake, with `GFAPI::validate_form` (runs the submit checks; saves no entry and sends nothing), one case per process: Estate Planning + Individual with no spouse names is valid; Estate Planning + Couple with no spouse names fails on the 3 spouse fields; with spouse names it is valid; a missing "children" answer fails; Probate with deadlines "No" and no description is valid; with "Yes" and no description it fails; no asset type checked fails; Trust Administration with all answers is valid; a missing target date fails; an empty "additional information" box is valid.
+- Initial Intake on `/book/` in the browser, with Estate Planning and Couple chosen: every visible field shows "(Required)" except "Any additional information you'd like to include?".
 - Not tested: a submit on the booking intake forms. They use the same Gravity Forms classes, so the same CSS and script apply.
