@@ -615,6 +615,34 @@ html.hp-noscroll { overflow: hidden; }
 	background-image: none !important;
 	background-color: var(--hp-mist) !important;
 }
+/* One height for every title band (Elementor pages and the single blog post).
+   The Elementor pages had different bottom paddings (64px or 48px) and some had a
+   16px margin under the title. A title that wraps to a second line on a phone also
+   made the band taller. Fixed paddings, no title margin, and a minimum height with
+   the title at the bottom give every band the same height. One-line titles measure
+   160 + 69 + 64 = 293px on desktop. The phone minimum (160 + 3 x 39 + 64 = 341px)
+   fits a three-line title, for example "Book a trust administration consultation".
+   Only a longer title makes its band taller. */
+.hp-dotgrid.e-con,
+.hp-article.hp-dotgrid {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end !important;
+	min-height: 293px !important;
+	padding-top: 160px !important;
+	padding-bottom: 64px !important;
+}
+.hp-dotgrid .elementor-widget-heading {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+@media (max-width: 767px) {
+	.hp-dotgrid.e-con,
+	.hp-article.hp-dotgrid {
+		min-height: 341px !important;
+	}
+}
 /* Two-column About layout (fixed 300px portrait rail + fluid bio). */
 .hp-about-row {
 	flex-wrap: nowrap !important;
@@ -921,7 +949,8 @@ html.hp-noscroll { overflow: hidden; }
 	line-height: 1.08;
 	letter-spacing: -0.01em;
 	color: var(--hp-ink);
-	max-width: 22ch;
+	/* No 22ch limit: a normal title fits one line on desktop, so the band matches the
+	   page bands (293px). Long titles still wrap, balanced. */
 	text-wrap: balance;
 	margin: 0;
 }
@@ -2304,3 +2333,6 @@ body a:hover { color: var(--hp-ink); }
 /* FAQ questions wrap (the parent theme sets nowrap on buttons, which cut long questions off on phones). */
 .hp-faqx__head { white-space: normal; overflow-wrap: anywhere; }
 .hp-faqx__head > :first-child { min-width: 0; }
+
+/* The skip link target gets focus by script only; no ring on the whole page. */
+.hp-main:focus { outline: none; }

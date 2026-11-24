@@ -5,12 +5,14 @@
  * This file adds a "User Fields" admin menu. It uses the built-in WordPress Settings
  * API, so it needs no extra plugin. The page holds grouped sections:
  *
- *   1. "Services Settings" — service rate rows (a label and an amount per row), stored
- *      in the option `hlc_service_rates`. The `[hlc_service_rates]` shortcode renders
- *      them as the branded rate table. The same section holds the Trust Administration
- *      price teaser (one text line), stored in the option `hlc_trust_price_teaser`. The
- *      `[hlc_trust_price_teaser]` shortcode renders it as the `.hp-price` line on the
- *      Pricing page card.
+ *   1. "Services Settings" — the Trust Administration rate schedule rows (a label and
+ *      an amount per row), stored in the option `hlc_service_rates`. The
+ *      `[hlc_trust_administration_rate_schedules]` shortcode renders them as the branded
+ *      rate table. The same section holds the Trust Administration price teaser (one text
+ *      line), stored in the option `hlc_trust_price_teaser`. The
+ *      `[hlc_trust_administration_rate_teaser]` shortcode renders it as the `.hp-price`
+ *      line on the Pricing page card. The option names did not change with the shortcode
+ *      names, so saved values stay in place.
  *   2. "FAQs" — question and answer rows, stored in the option `hlc_faqs`. The
  *      `[hlc_faqs]` shortcode renders them as the branded FAQ accordion.
  *
@@ -264,11 +266,11 @@ function hlc_render_user_fields_page() {
 				<div class="hlc-field">
 					<label for="hlc-trust-price-teaser"><strong>Trust Administration price teaser (Pricing page card)</strong></label>
 					<input type="text" id="hlc-trust-price-teaser" class="large-text" name="<?php echo esc_attr( HLC_TRUST_PRICE_TEASER_OPTION ); ?>" value="<?php echo esc_attr( $trust_teaser ); ?>" placeholder="For example Hourly, from $500/hour" />
-					<p class="description">The full price line on the Trust Administration card. To show it on a page, add the shortcode <code>[hlc_trust_price_teaser]</code> in an Elementor Shortcode widget.</p>
+					<p class="description">The full price line on the Trust Administration card. To show it on a page, add the shortcode <code>[hlc_trust_administration_rate_teaser]</code> in an Elementor Shortcode widget.</p>
 				</div>
 
-				<h3>Rate schedule</h3>
-				<p class="description">Edit the label and value for each rate row. To show these rates on a page, add the shortcode <code>[hlc_service_rates]</code> in an Elementor Shortcode widget.</p>
+				<h3>Trust Administration rate schedule</h3>
+				<p class="description">Edit the label and value for each rate row. To show these rates on a page, add the shortcode <code>[hlc_trust_administration_rate_schedules]</code> in an Elementor Shortcode widget.</p>
 
 				<div class="hlc-repeater">
 					<div class="hlc-repeater__list">
@@ -350,14 +352,14 @@ function hlc_render_user_fields_page() {
 }
 
 /**
- * Shortcode: [hlc_service_rates]
+ * Shortcode: [hlc_trust_administration_rate_schedules]
  *
- * Render the service rate rows as the branded rate table. Return an empty string when
- * there are no rate rows.
+ * Render the Trust Administration rate schedule rows as the branded rate table. Return an
+ * empty string when there are no rate rows.
  *
  * @return string The rate table HTML, or an empty string.
  */
-add_shortcode( 'hlc_service_rates', function () {
+function hlc_render_trust_administration_rate_schedules() {
 	$rates = get_option( HLC_SERVICE_RATES_OPTION, hlc_default_service_rates() );
 	if ( ! is_array( $rates ) || empty( $rates ) ) {
 		return '';
@@ -381,23 +383,33 @@ add_shortcode( 'hlc_service_rates', function () {
 	$html .= '</ul>';
 
 	return $html;
-} );
+}
+add_shortcode( 'hlc_trust_administration_rate_schedules', 'hlc_render_trust_administration_rate_schedules' );
 
 /**
- * Shortcode: [hlc_trust_price_teaser]
+ * Shortcode: [hlc_trust_administration_rate_teaser]
  *
  * Render the Trust Administration price teaser as the `.hp-price` line on the Pricing
  * page card. Return an empty string when the value is empty.
  *
  * @return string The price teaser HTML, or an empty string.
  */
-add_shortcode( 'hlc_trust_price_teaser', function () {
+function hlc_render_trust_administration_rate_teaser() {
 	$teaser = trim( (string) get_option( HLC_TRUST_PRICE_TEASER_OPTION, hlc_default_trust_price_teaser() ) );
 	if ( '' === $teaser ) {
 		return '';
 	}
 	return '<p class="hp-price">' . esc_html( $teaser ) . '</p>';
-} );
+}
+add_shortcode( 'hlc_trust_administration_rate_teaser', 'hlc_render_trust_administration_rate_teaser' );
+
+/*
+ * Old shortcode names, kept as aliases. Staging and live still have the old names in
+ * their Elementor data until scripts/rename-trust-shortcodes-20261124.php runs there.
+ * Remove these two lines after that.
+ */
+add_shortcode( 'hlc_service_rates', 'hlc_render_trust_administration_rate_schedules' );
+add_shortcode( 'hlc_trust_price_teaser', 'hlc_render_trust_administration_rate_teaser' );
 
 /**
  * Shortcode: [hlc_faqs]

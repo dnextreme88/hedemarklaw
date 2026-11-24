@@ -384,3 +384,21 @@ add_action( 'wp_footer', function () {
 	</script>
 	<?php
 }, 99 );
+
+/*
+ * Skip link target on Elementor pages.
+ *
+ * The header "Skip to content" link points to #content. The Elementor
+ * "Header & Footer" page template prints no element with that id, so the link
+ * did nothing on those pages. Wrap the Elementor content in a <main> landmark
+ * with id="content". tabindex="-1" lets the skip link move keyboard focus there.
+ */
+add_action( 'elementor/page_templates/header-footer/before_content', function () {
+	echo '<main id="content" class="hp-main" tabindex="-1">';
+} );
+add_action( 'elementor/page_templates/header-footer/after_content', function () {
+	echo '</main>';
+} );
+
+// The child header prints its own styled skip link; turn off the parent's duplicate.
+add_filter( 'hello-plus-theme/enable_skip_link', '__return_false' );
